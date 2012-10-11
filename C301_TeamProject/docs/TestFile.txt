@@ -6,3 +6,6 @@ Making my 50000000th test....
 Kris making a new test through the git interface. Does this work?
 You guys watching the new south park in 30 min?
 Nope!!!
+
+
+Does this work for GIT?
