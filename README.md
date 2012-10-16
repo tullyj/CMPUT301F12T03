@@ -16,6 +16,4 @@ Copyright [2012] [Kris Kushniruk, Tully Johnson, Edwin Chung, Colin Hunt]
    limitations under the License.
 
 
-C301 Group - Colin, Edwin, Kris and Tully
-put a new line in the read me!
-testing push again...
+
