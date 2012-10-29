@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".WelcomePage"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".MainPage"
+            android:label="@string/title_activity_main" >
+           <meta-data
+               android:name="android.support.PARENT_ACTIVITY"
+               android:value="com.example.c301_teamproject.WelcomePage" />
+                   
+        </activity>
+        
+        <activity
+            android:name=".CreateTask"
+            android:label="@string/title_activity_main" >
+           <meta-data
+               android:name="android.support.PARENT_ACTIVITY"
+               android:value="com.example.c301_teamproject.MainPage" />
+                   
+        </activity>
+        
+        <activity
+            android:name=".CreateItem"
+            android:label="@string/title_activity_main" >
+           <meta-data
+               android:name="android.support.PARENT_ACTIVITY"
+               android:value="com.example.c301_teamproject.CreateTask" />
+                   
+        </activity>
+        
+        
+        
+        
     </application>
 
 </manifest>

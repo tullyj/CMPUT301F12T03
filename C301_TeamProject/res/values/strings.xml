@@ -1,8 +1,22 @@
 <resources>
 
-    <string name="app_name">C301_TeamProject</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Task Force</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="enter">Enter</string>
+    <string name="create_task">Create Task</string>
+    <string name="your_tasks">Your Task(s)</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="title">Title</string>
+    <string name="title_hint">Enter title here</string>
+    <string name="items_attached">Items Attached:</string>
+    <string name="plus_sign">+</string>
+    <string name="number_sign">#</string>
+    <string name="public_string">Public</string>
+    <string name="private_string">Private</string>
+    <string name="save_task">Save Task</string>
+    <string name="save_item">Save Item</string>
+    <string name="desired_num">Desired Number:</string>
+    <string name="description">Description:</string>
 
 </resources>
