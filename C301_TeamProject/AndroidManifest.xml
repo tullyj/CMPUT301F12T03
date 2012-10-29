@@ -32,7 +32,7 @@
         
         <activity
             android:name=".CreateTask"
-            android:label="@string/title_activity_main" >
+            android:label="@string/create_task" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
                android:value="com.example.c301_teamproject.MainPage" />
@@ -41,15 +41,30 @@
         
         <activity
             android:name=".CreateItem"
-            android:label="@string/title_activity_main" >
+            android:label="@string/create_item" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
                android:value="com.example.c301_teamproject.CreateTask" />
                    
         </activity>
         
+          <activity
+            android:name=".ViewTasks"
+            android:label="@string/tasks" >
+           <meta-data
+               android:name="android.support.PARENT_ACTIVITY"
+               android:value="com.example.c301_teamproject.MainPage" />
+                   
+        </activity>
         
-        
+          <activity
+            android:name=".ViewSingleTask"
+            android:label="@string/view_full_task" >
+           <meta-data
+               android:name="android.support.PARENT_ACTIVITY"
+               android:value="com.example.c301_teamproject.MainPage" />
+                   
+        </activity>
         
     </application>
 

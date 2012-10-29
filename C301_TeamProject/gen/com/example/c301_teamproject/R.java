@@ -22,18 +22,21 @@ public final class R {
         public static final int desiredNum=0x7f070002;
         public static final int editText1=0x7f070007;
         public static final int listView1=0x7f070005;
-        public static final int menu_settings=0x7f07000c;
-        public static final int saveTask=0x7f070009;
+        public static final int menu_settings=0x7f07000d;
+        public static final int saveTask=0x7f070008;
+        public static final int showTaskTitle=0x7f07000c;
         public static final int textView1=0x7f070001;
         public static final int textView2=0x7f070003;
         public static final int titleTextBox=0x7f070004;
-        public static final int togglePublic=0x7f070008;
+        public static final int togglePublic=0x7f070009;
     }
     public static final class layout {
         public static final int create_item=0x7f030000;
         public static final int create_task=0x7f030001;
         public static final int main_page=0x7f030002;
-        public static final int welcome_page=0x7f030003;
+        public static final int view_single_task=0x7f030003;
+        public static final int view_tasks=0x7f030004;
+        public static final int welcome_page=0x7f030005;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
@@ -41,10 +44,12 @@ public final class R {
     public static final class string {
         public static final int all_tasks=0x7f040006;
         public static final int app_name=0x7f040000;
+        public static final int create_item=0x7f040014;
         public static final int create_task=0x7f040004;
         public static final int description=0x7f040011;
         public static final int desired_num=0x7f040010;
         public static final int enter=0x7f040003;
+        public static final int filter=0x7f040012;
         public static final int items_attached=0x7f040009;
         public static final int menu_settings=0x7f040001;
         public static final int number_sign=0x7f04000b;
@@ -53,9 +58,12 @@ public final class R {
         public static final int public_string=0x7f04000c;
         public static final int save_item=0x7f04000f;
         public static final int save_task=0x7f04000e;
+        public static final int tasks=0x7f040015;
+        public static final int test=0x7f040013;
         public static final int title=0x7f040007;
         public static final int title_activity_main=0x7f040002;
         public static final int title_hint=0x7f040008;
+        public static final int view_full_task=0x7f040016;
         public static final int your_tasks=0x7f040005;
     }
     public static final class style {

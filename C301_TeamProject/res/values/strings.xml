@@ -7,7 +7,7 @@
     <string name="create_task">Create Task</string>
     <string name="your_tasks">Your Task(s)</string>
     <string name="all_tasks">All Tasks</string>
-    <string name="title">Title</string>
+    <string name="title">Title:</string>
     <string name="title_hint">Enter title here</string>
     <string name="items_attached">Items Attached:</string>
     <string name="plus_sign">+</string>
@@ -18,5 +18,11 @@
     <string name="save_item">Save Item</string>
     <string name="desired_num">Desired Number:</string>
     <string name="description">Description:</string>
+    <string name="filter">Filter</string>
+    <string name="test">Test Name</string>
+    <string name="create_item">Create Item</string>
+    <string name="tasks">Tasks</string>
+    <string name="view_full_task">View/Fulfill Task</string>
+    
 
 </resources>

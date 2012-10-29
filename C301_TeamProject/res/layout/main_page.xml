@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button1"
         android:layout_centerVertical="true"
-        android:text="@string/your_tasks" />
+        android:text="@string/your_tasks"
+        android:onClick="yourTasks" />
 
     <Button
         android:id="@+id/button3"
@@ -28,6 +29,7 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_below="@+id/button2"
         android:layout_marginTop="22dp"
-        android:text="@string/all_tasks" />
+        android:text="@string/all_tasks"
+        android:onClick="allTasks" />
 
 </RelativeLayout>

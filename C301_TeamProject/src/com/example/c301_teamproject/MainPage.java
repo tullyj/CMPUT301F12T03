@@ -35,9 +35,19 @@ public class MainPage extends Activity {
 		
 		public void yourTasks(View view){
 			
+			Intent intent = new Intent(this, ViewTasks.class);
+			
+			//need to send parameters to filter into your tasks
+			startActivity(intent);
+			
 		}
 		
 		public void allTasks(View view){
+			
+			Intent intent = new Intent(this, ViewTasks.class);
+			
+			//need to send parameters to filter into all tasks
+			startActivity(intent);
 			
 			
 		}
