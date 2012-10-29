@@ -2,7 +2,7 @@
 
     <string name="app_name">Task Force</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Task Force</string>
     <string name="enter">Enter</string>
     <string name="create_task">Create Task</string>
     <string name="your_tasks">Your Task(s)</string>

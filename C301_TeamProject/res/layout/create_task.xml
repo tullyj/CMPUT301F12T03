@@ -13,24 +13,13 @@
         android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/title_hint" >
-
-        
+ 
     </EditText>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/titleTextBox"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:text="@string/title" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/titleTextBox"
         android:layout_marginTop="58dp"
         android:text="@string/items_attached"
@@ -63,14 +52,6 @@
         android:ems="10"
         android:hint="@string/number_sign" />
 
-    <ToggleButton
-        android:id="@+id/togglePublic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listView1"
-        android:layout_toLeftOf="@+id/editText1"
-        android:text="@string/public_string" />
-
     <Button
         android:id="@+id/saveTask"
         style="?android:attr/buttonStyleSmall"
@@ -80,14 +61,25 @@
         android:layout_centerHorizontal="true"
         android:text="@string/save_task" />
 
-    <ToggleButton
-        android:id="@+id/togglePrivate"
+   
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/togglePublic"
-        android:layout_alignBottom="@+id/togglePublic"
-        android:layout_alignRight="@+id/editText1"
-        android:layout_marginRight="36dp"
-        android:text="@string/private_string" />
+        android:layout_above="@+id/textView2"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/titleTextBox"
+        android:text="@string/title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ToggleButton
+        android:id="@+id/togglePublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listView1"
+        android:layout_centerHorizontal="true"
+        android:textOff="@string/public_string"
+        android:textOn="@string/private_string" />
 
 </RelativeLayout>
