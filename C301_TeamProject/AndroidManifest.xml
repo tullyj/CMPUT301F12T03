@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.c301_teamproject"
+    package="ca.ualberta.cs.c301_teamproject"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -26,7 +26,7 @@
             android:label="@string/title_activity_main" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
-               android:value="com.example.c301_teamproject.WelcomePage" />
+               android:value="ca.ualberta.cs.c301_teamproject.WelcomePage" />
                    
         </activity>
         
@@ -35,7 +35,7 @@
             android:label="@string/create_task" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
-               android:value="com.example.c301_teamproject.MainPage" />
+               android:value="ca.ualberta.cs.c301_teamproject.MainPage" />
                    
         </activity>
         
@@ -44,7 +44,7 @@
             android:label="@string/create_item" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
-               android:value="com.example.c301_teamproject.CreateTask" />
+               android:value="ca.ualberta.cs.c301_teamproject.CreateTask" />
                    
         </activity>
         
@@ -53,7 +53,7 @@
             android:label="@string/tasks" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
-               android:value="com.example.c301_teamproject.MainPage" />
+               android:value="ca.ualberta.cs.c301_teamproject.MainPage" />
                    
         </activity>
         
@@ -62,7 +62,7 @@
             android:label="@string/view_full_task" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
-               android:value="com.example.c301_teamproject.MainPage" />
+               android:value="ca.ualberta.cs.c301_teamproject.MainPage" />
                    
         </activity>
         
