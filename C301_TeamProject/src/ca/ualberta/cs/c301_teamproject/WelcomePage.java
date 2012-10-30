@@ -20,10 +20,10 @@ public class WelcomePage extends Activity {
         return true;
     }
     
-   public void enterTaskForce(View view){
-	   
-	   Intent intent = new Intent(this, MainPage.class);
-	   startActivity(intent);
-	   
-   }
+    public void enterTaskForce(View view){
+   
+        Intent intent = new Intent(this, MainPage.class);
+        startActivity(intent);
+
+    }
 }

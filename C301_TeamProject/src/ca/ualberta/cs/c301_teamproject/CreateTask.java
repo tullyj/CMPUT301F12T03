@@ -8,27 +8,27 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class CreateTask extends Activity {
-	
-	@Override
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task);
     }
 
-	@Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
+        case android.R.id.home:
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-	
-	public void createItem(View view){
-		
-		Intent intent = new Intent(this, CreateItem.class);
-		startActivity(intent);
-	}
+
+    public void createItem(View view) {
+
+        Intent intent = new Intent(this, CreateItem.class);
+        startActivity(intent);
+    }
 
 }
