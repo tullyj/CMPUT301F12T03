@@ -204,10 +204,5 @@ public class CrowdClient {
         return newTask;
 	}
 	
-	// Main Test
-	public static void main(String...args){
-		
-		CrowdClient client = new CrowdClient();
-		client.testServiceMethods();
-	}
+
 }
