@@ -16,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import com.google.gson;
+import com.google.gson.Gson;
 
 /**
  * CrowdSource Service Client (Teaser)
