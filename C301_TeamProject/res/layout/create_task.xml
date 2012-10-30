@@ -23,7 +23,7 @@
         android:layout_below="@+id/titleTextBox"
         android:layout_marginTop="58dp"
         android:text="@string/items_attached"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ListView
         android:id="@+id/listView1"

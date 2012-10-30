@@ -42,5 +42,24 @@
         android:layout_marginTop="22dp"
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/itemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/desiredNum"
+        android:layout_marginBottom="23dp"
+        android:layout_toRightOf="@+id/textView1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/itemType"
+        android:layout_alignBottom="@+id/itemType"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginLeft="18dp"
+        android:text="@string/item_type"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>
