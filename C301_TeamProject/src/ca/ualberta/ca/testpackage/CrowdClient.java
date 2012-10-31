@@ -14,8 +14,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
 import com.google.gson.Gson;
 
 /**
@@ -58,7 +56,7 @@ public class CrowdClient {
 			e.printStackTrace();
 		}
 		finally {
-		    httpPost.releaseConnection();
+		    //httpPost.releaseConnection(); //causes method not found error
 		}
 	}
 	
@@ -138,7 +136,7 @@ public class CrowdClient {
 	    }
 	    
 	    // and ensure it is fully consumed
-	    EntityUtils.consume(entity);
+	    //EntityUtils.consume(entity); //causes method not found error
 	    return jsonStringVersion;
 	}
 	
@@ -168,7 +166,7 @@ public class CrowdClient {
 	        Type taskType = Task.class;     
 	        responseTask = gson.fromJson(jsonStringVersion, taskType);
 	    }
-	    EntityUtils.consume(entity);
+	    //EntityUtils.consume(entity); //causes method not found error
         return responseTask;
 	    
 	}
@@ -200,7 +198,7 @@ public class CrowdClient {
 	        Type taskType = Task.class;     
 	        newTask = gson.fromJson(jsonStringVersion, taskType);
 	    }
-	    EntityUtils.consume(entity);
+	    //EntityUtils.consume(entity); //causes method not found error
         return newTask;
 	}
 	
