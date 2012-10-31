@@ -1,4 +1,4 @@
-package ca.ualberta.ca.testpackage;
+package ca.ualberta.cs.c301_crowdclient;
 
 /**
  * Task Value Object (Mock)

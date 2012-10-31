@@ -6,7 +6,9 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
+    
     <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -58,7 +60,7 @@
         </activity>
         
           <activity
-            android:name="ca.ualberta.cs.c301_teamproject.ViewSingleTask"
+            android:name=".ViewSingleTask"
             android:label="@string/view_full_task" >
            <meta-data
                android:name="android.support.PARENT_ACTIVITY"
