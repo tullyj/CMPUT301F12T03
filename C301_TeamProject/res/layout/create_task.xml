@@ -59,9 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:onClick="saveTask"
         android:text="@string/save_task" />
-
-   
 
     <TextView
         android:id="@+id/textView1"

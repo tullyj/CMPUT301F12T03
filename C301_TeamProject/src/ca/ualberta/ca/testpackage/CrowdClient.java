@@ -31,7 +31,7 @@ public class CrowdClient {
 	
 	
 	// POST Request
-	HttpPost httpPost = new HttpPost("http://http://crowdsourcer.softwareprocess.es/F12/CMPUT301F12T03/");
+	HttpPost httpPost = new HttpPost("http://crowdsourcer.softwareprocess.es/F12/CMPUT301F12T03/");
 	
 	/**
 	 * Sends messages to the crowd service and retrieves its responses
