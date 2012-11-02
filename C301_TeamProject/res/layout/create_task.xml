@@ -1,84 +1,120 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/titleTextBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="14dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="@string/title_hint" >
- 
-    </EditText>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="@string/title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/titleTextBox"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/title_hint"
+            android:singleLine="true" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextBox"
-        android:layout_marginTop="58dp"
-        android:text="@string/items_attached"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/items_attached"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.66"
+            android:ems="10"
+            android:hint="@string/number_sign"
+            android:clickable="false" />
+
+        <ImageButton
+            android:id="@+id/attachItem"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:gravity="right"
+            android:src="@android:drawable/ic_input_add" 
+            android:contentDescription="@string/files_attach_desc"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/showAttachedItems"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2" >
+        android:layout_height="254dp" >
     </ListView>
 
-    <Button
-        android:id="@+id/addItemToTask"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignParentRight="true"
-        android:text="@string/plus_sign"
-        android:onClick="createItem" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center_horizontal" >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/listView1"
-        android:layout_toLeftOf="@+id/addItemToTask"
-        android:layout_toRightOf="@+id/textView2"
-        android:ems="10"
-        android:hint="@string/number_sign" />
+        <RadioButton
+            android:id="@+id/publicRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center"
+            android:text="@string/public_string" />
+        
+        <View
+            android:layout_width="6dp" 
+            android:layout_height="match_parent" />
+
+        <RadioButton
+            android:id="@+id/privateRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center"
+            android:text="@string/private_string" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/saveTask"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="saveTask"
         android:text="@string/save_task" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@+id/titleTextBox"
-        android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ToggleButton
-        android:id="@+id/togglePublic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listView1"
-        android:layout_centerHorizontal="true"
-        android:textOff="@string/public_string"
-        android:textOn="@string/private_string" />
-
-</RelativeLayout>
+</LinearLayout>
