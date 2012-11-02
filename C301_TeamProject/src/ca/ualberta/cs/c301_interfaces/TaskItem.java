@@ -8,6 +8,8 @@ public interface TaskItem {
     
     public List<File> getAllFiles();
     
+    public Boolean addFiles(List<File> files);
+    
     public ItemType getType();
     
     public Integer getNumber();

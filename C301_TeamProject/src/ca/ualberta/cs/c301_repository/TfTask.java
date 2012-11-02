@@ -24,7 +24,11 @@ public class TfTask implements Task {
     private Boolean modified = false;
     
     public Boolean addItem(TaskItem item) {
-        return itemList.add(item);
+        Boolean success = itemList.add(item);
+        if (success) {
+            setModified(true);
+        }
+        return success;
     }
 
     public List<TaskItem> getAllItems() {
@@ -37,6 +41,7 @@ public class TfTask implements Task {
 
     public void setTitle(String title) {
         this.title = title;
+        setModified(true);
     }
 
     public String getDescription() {
@@ -45,6 +50,7 @@ public class TfTask implements Task {
 
     public void setDescription(String descr) {
         this.description = descr;
+        setModified(true);
     }
 
     public Visibility getVisibility() {
@@ -53,6 +59,7 @@ public class TfTask implements Task {
 
     public void setVisibility(Visibility v) {
         this.visibility = v;
+        setModified(true);
     }
 
     public Boolean isFulfilled() {
@@ -61,6 +68,7 @@ public class TfTask implements Task {
 
     public void setFulfilled(Boolean fulfilled) {
         this.fulfilled = fulfilled;
+        setModified(true);
     }
 
     public Boolean isModified() {
@@ -77,6 +85,12 @@ public class TfTask implements Task {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+        setModified(true);
+    }
+
+    @Override
+    public String toString() {
+        return "Task " + title + ", " + description;
     }
 
 }

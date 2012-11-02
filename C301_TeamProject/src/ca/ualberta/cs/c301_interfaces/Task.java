@@ -32,4 +32,6 @@ public interface Task {
     public String getDeviceId();
     
     public void setDeviceId(String deviceId);
+    
+    public String toString();
 }
