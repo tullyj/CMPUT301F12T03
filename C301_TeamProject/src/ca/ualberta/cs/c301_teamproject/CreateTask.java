@@ -2,12 +2,15 @@ package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
+import ca.ualberta.cs.c301_crowdclient.Content;
 import ca.ualberta.cs.c301_crowdclient.CrowdClient;
+import ca.ualberta.cs.c301_crowdclient.Task;
 
 public class CreateTask extends Activity {
 
@@ -39,8 +42,23 @@ public class CreateTask extends Activity {
     }
     
     public void saveTask (View view) {
+        int w = 100, h = 100;
+
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
+        
+        Content content = new Content();
+        content.setImage(bmp);
+        
+        Task newTask = new Task();
+        newTask.setContent(content);
+
         CrowdClient c = new CrowdClient();
-        c.testServiceMethods();
+        try {
+            c.insertTask(newTask);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
