@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Task {
     
-    public void addItem();
+    public Boolean addItem(TaskItem item);
     
     public List<TaskItem> getAllItems();
     
@@ -24,4 +24,8 @@ public interface Task {
     public Boolean isFulfilled();
     
     public void setFulfilled(Boolean b);
+    
+    public Boolean isModified();
+    
+    public void setModified(Boolean b);
 }

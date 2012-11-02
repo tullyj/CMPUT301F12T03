@@ -1,5 +1,6 @@
 package ca.ualberta.cs.c301_repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.cs.c301_interfaces.Task;
@@ -7,55 +8,65 @@ import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_interfaces.Visibility;
 
 public class TfTask implements Task {
-
-    public void addItem() {
-        // TODO Auto-generated method stub
-
+    
+    private List<TaskItem> itemList = new ArrayList<TaskItem>();
+    
+    private String title = "Task Title";
+    
+    private String description = "Task Description";
+    
+    private Visibility visibility = Visibility.PUBLIC;
+    
+    private Boolean fulfilled = false;
+    
+    private Boolean modified = false;
+    
+    public Boolean addItem(TaskItem item) {
+        return itemList.add(item);
     }
 
     public List<TaskItem> getAllItems() {
-        // TODO Auto-generated method stub
-        return null;
+        return itemList;
     }
 
     public String getTitle() {
-        // TODO Auto-generated method stub
-        return null;
+        return title;
     }
 
     public void setTitle(String title) {
-        // TODO Auto-generated method stub
-
+        this.title = title;
     }
 
     public String getDescription() {
-        // TODO Auto-generated method stub
-        return null;
+        return description;
     }
 
     public void setDescription(String descr) {
-        // TODO Auto-generated method stub
-
+        this.description = descr;
     }
 
     public Visibility getVisibility() {
-        // TODO Auto-generated method stub
-        return null;
+        return visibility;
     }
 
     public void setVisibility(Visibility v) {
-        // TODO Auto-generated method stub
-
+        this.visibility = v;
     }
 
     public Boolean isFulfilled() {
-        // TODO Auto-generated method stub
-        return null;
+        return fulfilled;
     }
 
-    public void setFulfilled(Boolean b) {
-        // TODO Auto-generated method stub
+    public void setFulfilled(Boolean fulfilled) {
+        this.fulfilled = fulfilled;
+    }
 
+    public Boolean isModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
     }
 
 }
