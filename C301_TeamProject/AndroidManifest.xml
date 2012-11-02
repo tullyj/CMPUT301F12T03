@@ -74,6 +74,15 @@
                    
         </activity>
         
+        <activity
+           android:name=".InputFile"
+           android:label="@string/title_inputfile" >
+         <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value="ca.ualberta.cs.c301_teamproject.ViewSingleTask" />
+                  
+       </activity>
+        
     </application>
 
 </manifest>
