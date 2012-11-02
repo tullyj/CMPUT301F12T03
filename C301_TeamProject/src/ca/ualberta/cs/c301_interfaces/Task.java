@@ -28,4 +28,8 @@ public interface Task {
     public Boolean isModified();
     
     public void setModified(Boolean b);
+    
+    public String getDeviceId();
+    
+    public void setDeviceId(String deviceId);
 }

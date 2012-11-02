@@ -11,6 +11,8 @@ public class TfTask implements Task {
     
     private List<TaskItem> itemList = new ArrayList<TaskItem>();
     
+    private String deviceId = "Device ID";
+    
     private String title = "Task Title";
     
     private String description = "Task Description";
@@ -67,6 +69,14 @@ public class TfTask implements Task {
 
     public void setModified(Boolean modified) {
         this.modified = modified;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
 }
