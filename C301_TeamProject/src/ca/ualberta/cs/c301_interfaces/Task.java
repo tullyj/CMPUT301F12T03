@@ -1,6 +1,7 @@
-package ca.ualberta.cs.c301_teamproject;
+package ca.ualberta.cs.c301_interfaces;
 
 import java.util.List;
+
 
 public interface Task {
     

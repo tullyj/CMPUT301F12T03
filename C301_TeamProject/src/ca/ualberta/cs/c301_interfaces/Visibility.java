@@ -1,4 +1,4 @@
-package ca.ualberta.cs.c301_teamproject;
+package ca.ualberta.cs.c301_interfaces;
 
 public enum Visibility {
     PUBLIC,
