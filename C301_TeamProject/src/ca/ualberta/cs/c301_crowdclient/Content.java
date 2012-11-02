@@ -1,7 +1,5 @@
 package ca.ualberta.cs.c301_crowdclient;
 
-import android.graphics.Bitmap;
-
 /**
  * Task Value Object (Mock)
  * @author Victor Guana - guana[at]ualberta.ca
@@ -13,7 +11,6 @@ public class Content {
 	private String B;
 	private String C;
 	private String D;
-	private Bitmap image;
 	
 	public String getA() {
 		return A;
@@ -52,14 +49,6 @@ public class Content {
 		
 		return A+", "+B+", "+C+", "+D;
 	}
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
 	
 	
 	
