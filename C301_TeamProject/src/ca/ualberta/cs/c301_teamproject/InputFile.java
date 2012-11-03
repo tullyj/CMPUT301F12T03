@@ -36,7 +36,8 @@ public class InputFile extends Activity {
     	// DEBUG -- this is to test button 
     	//print("about to import a file", 1, getApplicationContext());
     	
-    	Dialog importDialog = onCreateDialog(DIALOG_PHOTO);
+//    	Dialog importDialog = onCreateDialog(DIALOG_PHOTO);
+    	Dialog importDialog = onCreateDialog(DIALOG_AUDIO);
         importDialog.show();
     }
     
@@ -69,15 +70,15 @@ public class InputFile extends Activity {
 				builder.setTitle("Import Audio");
 				builder.setMessage("How would you like to add audio?");				
 				// Add "Take a Photo" button
-				builder.setPositiveButton(R.string.import_capturepic, new DialogInterface.OnClickListener() {
-				       public void onClick(DialogInterface dialog, int id) {
-				           // User clicked "Take a Photo" button
-				    	   // create Intent to take a picture and return control to the calling application
-				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    	   // start the image capture Intent
-				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-				       }
-				});     
+//				builder.setPositiveButton(R.string.import_capturepic, new DialogInterface.OnClickListener() {
+//				       public void onClick(DialogInterface dialog, int id) {
+//				           // User clicked "Take a Photo" button
+//				    	   // create Intent to take a picture and return control to the calling application
+//				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//				    	   // start the image capture Intent
+//				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//				       }
+//				});     
 			}
 			
 			// Add "Import from File" button
@@ -97,8 +98,8 @@ public class InputFile extends Activity {
 		}else if(id == DIALOG_ABOUT){
 //			String title = "About Task Force";
 //    		String message = "Created by "; 
-			//aboutDialog mDialog = new aboutDialog();
-			//return mDialog.aboutPrompt(this);
+			PromptDialog mDialog = new PromptDialog();
+			return mDialog.aboutPrompt(this);
 		}
     	return null;
     }
