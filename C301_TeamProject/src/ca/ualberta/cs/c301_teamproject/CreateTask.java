@@ -3,7 +3,6 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,13 +10,19 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import ca.ualberta.cs.c301_interfaces.ItemType;
+import ca.ualberta.cs.c301_interfaces.Task;
+import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_interfaces.Visibility;
+import ca.ualberta.cs.c301_repository.TfTask;
+import ca.ualberta.cs.c301_repository.TfTaskItem;
+import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 public class CreateTask extends Activity {
 	
@@ -93,9 +98,7 @@ public class CreateTask extends Activity {
     	Intent intent = new Intent(this, CreateItem.class);
     	intent.putExtra(EDIT, value);
     	startActivityForResult(intent, 2);
-    	
-    	
-    					
+    	   					
     }
     
     
@@ -173,7 +176,7 @@ public class CreateTask extends Activity {
     
     //this method gathers all of the information about the current task
     //need to still grab all the info from the list (list not done yet)
-    public void gatherTaskInfo(){
+    public Task gatherTaskInfo(){
     	
     	String title, numItem, visibility;
     	RadioButton visChoice;
@@ -191,29 +194,76 @@ public class CreateTask extends Activity {
     	title = getTitle.getText().toString();
     	numItem = itemNum.getText().toString();
     	visibility = visChoice.getText().toString();
+    	String[] items = getItemList();
+    	
+    	//creating a task
+    	Task t = new TfTask();
+    	t.setTitle(title);
+    	
+
+    	
+    	if(visibility == "Public"){
+    		
+    		t.setVisibility(Visibility.PUBLIC);
+  		
+    	}else{
+ 		
+    		t.setVisibility(Visibility.PRIVATE);  		
+    	}
     	
     	
-    	//to get all the items call un-comment line below
-    	//String[] items = getItemList();
-    	//not sure how we want to deal with the array thats returned yet
+    	//creating each individual item
+    	addItemsToTask(t);
+    	return t;
     	
+
     	
-    	//just toasting the task right now to make sure the info is there
-    	Context context = getApplicationContext();
-    	String error = title + "\n" + numItem + "\n" + visibility;
-		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
-		toast.show();
-    	
-  
+
     }
     
-    //commented out your lines colin just for testing
-    public void saveTask (View view) {
-        
-    	//CrowdClient c = new CrowdClient();
-        //c.testServiceMethods();
+    public void addItemsToTask(Task task){
     	
-    	gatherTaskInfo();
+    	
+    	String[] temp = getItemList();
+    	String n, t, description;
+    	
+    	for(int i = 0;i<temp.length;i++){
+    		
+    		String[] temp2 = temp[i].split("\\|\\|");
+    		n = temp2[0];
+    		t = temp2[1];
+    		description = temp2[2];
+    		ItemType type;
+    		
+    		Integer num = Integer.valueOf(n);
+    		
+    		if(t == "Photo"){
+    			type = ItemType.PHOTO;
+    		}else if(t == "Audio"){
+    			type = ItemType.AUDIO;
+    		}else{
+    			type = ItemType.TEXT;
+    		}
+    		
+    		//create the item
+    		TaskItem item = new TfTaskItem(type, num, description);
+    		task.addItem(item);
+    		
+    		
+    	}
+    	
+	
+    }
+        
+    public void saveTask (View view) {
+            	
+    	Task task = gatherTaskInfo();
+    	
+    	//calls to crowd sourcer
+    	TfTaskRepository.addTask(task);
+    	
+    	
+    	
     }
 
 }
