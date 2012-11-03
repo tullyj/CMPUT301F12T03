@@ -12,6 +12,8 @@ public class TfTaskRepository implements TaskRepository {
     
     private CrowdClient crowdClient = new CrowdClient();
     
+    // TODO Can we keep this list up-to-date and then save internally onPause?
+    // Then just check if can connect to server, if not, return this list
     private List<Task> taskList = new ArrayList<Task>();
 
     public void addTask(Task task) {
@@ -21,24 +23,36 @@ public class TfTaskRepository implements TaskRepository {
             if (!taskId.isEmpty()) {
                 entry.setId(taskId);            
             }
+            // We set the device id into the summary
+            entry.setSummary(task.getDeviceId());
             entry.setDescription(task.getDescription());
             entry.setContent(task);
             
             crowdClient.insertEntry(entry);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            System.err.println("<<<Error adding the task>>>");
             e.printStackTrace(System.err);
         }
     }
 
-    public List<Task> getTasksById(String id) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Task> getTasksByDeviceId(String deviceId) {
+        List<Task> taskList = getAllTasks();
+        for (Task task : taskList) {
+            if (task.getDeviceId() == deviceId) {
+                taskList.add(task);
+            }
+        }
+        return taskList;
     }
 
     public List<Task> getAllTasks() {
-        // TODO Auto-generated method stub
-        return null;
+        List<CrowdSourcerEntry> entryList = crowdClient.getEntryList();
+        List<Task> taskList = new ArrayList<Task>();
+        for (CrowdSourcerEntry entry : entryList) {
+            Task task = (Task) entry.getContent();
+            taskList.add(task);
+        }
+        return taskList;
     }
 
 }

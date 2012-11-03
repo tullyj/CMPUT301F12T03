@@ -8,8 +8,12 @@ package ca.ualberta.cs.c301_crowdclient;
 public class CrowdSourcerEntry {
 	
 	private String summary;
+	
 	private CrowdSourcerContent content;
+	
+	// This is the task id
 	private String id;
+	
 	private String description;
 	
 	public String getSummary() {

@@ -6,7 +6,7 @@ public interface TaskRepository {
 
     public void addTask(Task task);
     
-    public List<Task> getTasksById(String id);
+    public List<Task> getTasksByDeviceId(String deviceId);
     
     public List<Task> getAllTasks();
 }

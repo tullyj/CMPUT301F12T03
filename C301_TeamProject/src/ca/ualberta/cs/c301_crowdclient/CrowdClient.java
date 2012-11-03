@@ -202,6 +202,11 @@ public class CrowdClient {
 	    //EntityUtils.consume(entity); //causes method not found error
         return newEntry;
 	}
+
+    public List<CrowdSourcerEntry> getEntryList() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 	
 
 }
