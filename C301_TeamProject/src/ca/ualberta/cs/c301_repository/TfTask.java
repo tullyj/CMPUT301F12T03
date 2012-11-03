@@ -3,11 +3,12 @@ package ca.ualberta.cs.c301_repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.cs.c301_crowdclient.CrowdSourcerContent;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_interfaces.Visibility;
 
-public class TfTask implements Task {
+public class TfTask implements Task, CrowdSourcerContent {
     
     private List<TaskItem> itemList = new ArrayList<TaskItem>();
     

@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,9 +19,19 @@ public class ViewTasks extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_tasks);
         
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        
     	Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
-		Toast toast = Toast.makeText(context, "test", duration);
+		String jsonEntryList = null;
+		try {
+			jsonEntryList = TfTaskRepository.listEntries();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Toast toast = Toast.makeText(context, jsonEntryList, duration);
 		toast.show();
         
         
