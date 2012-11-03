@@ -53,6 +53,14 @@ public class CreateItem extends Activity {
     		n.setText(num);
     		d.setText(desc);
     		
+        	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        	R.array.item_choices, android.R.layout.simple_spinner_item);
+        	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        	t.setAdapter(adapter);
+        	
+        	int i = adapter.getPosition(type);
+        	t.setSelection(i);
+    		
     		
     	}
         

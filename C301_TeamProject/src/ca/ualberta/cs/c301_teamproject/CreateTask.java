@@ -128,7 +128,7 @@ public class CreateTask extends Activity {
         intent.putExtra(EDIT, "no");
         startActivityForResult(intent, 1);
     }
-    
+     
 
     
     //this method is called back when startActivityForResult is finished
@@ -137,13 +137,14 @@ public class CreateTask extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     	//requestCode = 1 -> createItem made the call for a result
-    	//resultCode = RESULT_OK always because we never return bad results from CreateItem
     	if(requestCode  == 1){
     		
+    		if(resultCode == RESULT_OK){
     		//grab the results and update the item list then update the listview and number of items
     		String result = data.getStringExtra("result");
     		addItemToList(result);
     		updateListViewAndCount();
+    		}
     		
     	}
     	
@@ -152,15 +153,16 @@ public class CreateTask extends Activity {
     	if(requestCode == 2){
     		
     		//test to see if i made it
-    		Context context = getApplicationContext();
-        	String error = "i am code 2";
-    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
-    		toast.show();
+    		//Context context = getApplicationContext();
+        	//String error = "i am code 2";
+    		//Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
+    		//toast.show();
     		
-    		//at this point we have the position we need to update and the data that
-    		//needs to be updated. Just update the arrayList instead of adding to it
-    		//this shouldnt be to hard
-    		
+    		if(resultCode == RESULT_OK){
+    		String result = data.getStringExtra("result");
+    		currentTaskItems.set(editPosition, result);
+    		updateListViewAndCount();
+    		}
     		
     		
     	}
