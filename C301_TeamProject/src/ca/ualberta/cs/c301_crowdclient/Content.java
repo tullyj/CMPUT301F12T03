@@ -5,7 +5,7 @@ package ca.ualberta.cs.c301_crowdclient;
  * @author Victor Guana - guana[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */
-public class Content {
+public class Content implements CrowdSourcerContent {
 
 	private String A;
 	private String B;

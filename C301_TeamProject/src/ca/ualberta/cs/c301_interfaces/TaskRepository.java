@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TaskRepository {
 
-    public void addTask();
+    public void addTask(Task task);
     
     public List<Task> getTasksById(String id);
     

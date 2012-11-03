@@ -22,6 +22,8 @@ public class TfTask implements Task {
     private Boolean fulfilled = false;
     
     private Boolean modified = false;
+
+    private String taskId = "";
     
     public Boolean addItem(TaskItem item) {
         Boolean success = itemList.add(item);
@@ -88,9 +90,16 @@ public class TfTask implements Task {
         setModified(true);
     }
 
+    public String getTaskId() {
+        return taskId;
+    }
+    
+    public void setTaskId(String id) {
+        this.taskId = id;
+    }
+
     @Override
     public String toString() {
         return "Task " + title + ", " + description;
     }
-
 }

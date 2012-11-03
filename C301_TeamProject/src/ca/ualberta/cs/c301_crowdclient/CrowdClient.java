@@ -14,6 +14,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
 import com.google.gson.Gson;
 
 /**
@@ -38,18 +39,18 @@ public class CrowdClient {
 	 */
 	public void testServiceMethods(){
 
-		// Example Simple Task
-		Task task = initializeTask();
+		// Example Simple Entry
+		CrowdSourcerEntry entry = initializeEntry();
 		
 		try {
-			Task newT = this.insertTask(task);
-			System.out.println("Inserted Task -> " + newT.getId());
+			CrowdSourcerEntry newT = this.insertEntry(entry);
+			System.out.println("Inserted Entry -> " + newT.getId());
 			
-			Task newTClone = this.getTask(newT.getId());
+			CrowdSourcerEntry newTClone = this.getEntry(newT.getId());
 			System.out.println("Double Checking by Listing -> " + newTClone.getId());
 			
-			String lot= this.listTasks();
-			System.out.println("List of Tasks in the CrowdSourcer -> " + lot);
+			String lot= this.listEntrys();
+			System.out.println("List of Entrys in the CrowdSourcer -> " + lot);
 
 		} 
 		catch(Exception e){
@@ -61,10 +62,10 @@ public class CrowdClient {
 	}
 	
 	/**
-	 * Initializes a simple mock task
+	 * Initializes a simple mock entry
 	 * @return
 	 */
-	private Task initializeTask() {
+	private CrowdSourcerEntry initializeEntry() {
 		
 		Content c = new Content();
 		c.setA("a ahoy");
@@ -72,9 +73,9 @@ public class CrowdClient {
 		c.setC("c ahoy");
 		c.setD("c ahoy");
 		
-		Task t = new Task();
-		t.setDescription("Long description of the task...");
-		t.setSummary("Short summary of the task...");
+		CrowdSourcerEntry t = new CrowdSourcerEntry();
+		t.setDescription("Long description of the entry...");
+		t.setSummary("Short summary of the entry...");
 		t.setContent(c);	
 		return t;
 	}
@@ -113,10 +114,10 @@ public class CrowdClient {
 	
 	/**
 	 * Consumes the LIST operation of the service
-	 * @return JSON representation of the task list
+	 * @return JSON representation of the entry list
 	 * @throws Exception
 	 */
-	public String listTasks() throws Exception{
+	public String listEntrys() throws Exception{
 		
 		String jsonStringVersion = new String();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
@@ -142,12 +143,12 @@ public class CrowdClient {
 	
 	/**
 	 * Consumes the GET operation of the service
-	 * @return Task object given the id idP
+	 * @return Entry object given the id idP
 	 * @throws Exception
 	 */
-	public Task getTask(String idP) throws Exception{
+	public CrowdSourcerEntry getEntry(String idP) throws Exception{
 		
-		Task responseTask = new Task();
+		CrowdSourcerEntry responseEntry = new CrowdSourcerEntry();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
 		nvps.add(new BasicNameValuePair("action", "get"));
 		nvps.add(new BasicNameValuePair("id", idP));
@@ -163,26 +164,26 @@ public class CrowdClient {
 	    if (entity != null) {
 	        InputStream is = entity.getContent();
 	        String jsonStringVersion = convertStreamToString(is);
-	        Type taskType = Task.class;     
-	        responseTask = gson.fromJson(jsonStringVersion, taskType);
+	        Type entryType = CrowdSourcerEntry.class;     
+	        responseEntry = gson.fromJson(jsonStringVersion, entryType);
 	    }
 	    //EntityUtils.consume(entity); //causes method not found error
-        return responseTask;
+        return responseEntry;
 	    
 	}
 	   
 	/**
 	 * Consumes the POST/Insert operation of the service
-	 * @return JSON representation of the task created
+	 * @return JSON representation of the entry created
 	 * @throws Exception
 	 */
-	public Task insertTask(Task taskP) throws Exception{
+	public CrowdSourcerEntry insertEntry(CrowdSourcerEntry entryP) throws Exception{
 		
-		Task newTask = new Task();
+		CrowdSourcerEntry newEntry = new CrowdSourcerEntry();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
 		nvps.add(new BasicNameValuePair("action", "post"));
-		nvps.add(new BasicNameValuePair("summary", taskP.getSummary()));
-		nvps.add(new BasicNameValuePair("content", gson.toJson(taskP.getContent())));
+		nvps.add(new BasicNameValuePair("summary", entryP.getSummary()));
+		nvps.add(new BasicNameValuePair("content", gson.toJson(entryP.getContent())));
 		
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		HttpResponse response = httpclient.execute(httpPost);
@@ -195,11 +196,11 @@ public class CrowdClient {
 	    if (entity != null) {
 	        InputStream is = entity.getContent();
 	        String jsonStringVersion = convertStreamToString(is);
-	        Type taskType = Task.class;     
-	        newTask = gson.fromJson(jsonStringVersion, taskType);
+	        Type entryType = CrowdSourcerEntry.class;     
+	        newEntry = gson.fromJson(jsonStringVersion, entryType);
 	    }
 	    //EntityUtils.consume(entity); //causes method not found error
-        return newTask;
+        return newEntry;
 	}
 	
 

@@ -5,10 +5,10 @@ package ca.ualberta.cs.c301_crowdclient;
  * @author Victor Guana - guana[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */
-public class Task {
+public class CrowdSourcerEntry {
 	
 	private String summary;
-	private Content content;
+	private CrowdSourcerContent content;
 	private String id;
 	private String description;
 	
@@ -20,11 +20,11 @@ public class Task {
 		this.summary = summary;
 	}
 
-	public Content getContent() {
+	public CrowdSourcerContent getContent() {
 		return content;
 	}
 
-	public void setContent(Content content) {
+	public void setContent(CrowdSourcerContent content) {
 		this.content = content;
 	}
 

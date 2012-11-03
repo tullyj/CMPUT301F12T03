@@ -2,8 +2,10 @@ package ca.ualberta.cs.c301_interfaces;
 
 import java.util.List;
 
+import ca.ualberta.cs.c301_crowdclient.CrowdSourcerContent;
 
-public interface Task {
+
+public interface Task extends CrowdSourcerContent {
     
     public Boolean addItem(TaskItem item);
     
@@ -34,4 +36,8 @@ public interface Task {
     public void setDeviceId(String deviceId);
     
     public String toString();
+
+    public String getTaskId();
+    
+    public void setTaskId(String id);
 }
