@@ -2,10 +2,13 @@ package ca.ualberta.cs.c301_teamproject;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class CreateItem extends Activity {
@@ -22,10 +25,7 @@ public class CreateItem extends Activity {
     	R.array.item_choices, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
-        
-        
-        
-        
+             
     }
 
     @Override
@@ -36,6 +36,35 @@ public class CreateItem extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    
+    //this method gathers all of the information from the current screen and packages it
+    //up to be returned to CreateTask
+    public String gatherItemInformation(){
+    	
+    	String info;
+    	Spinner itemType = (Spinner)findViewById(R.id.itemType);
+    	EditText num = (EditText)findViewById(R.id.desiredNum);
+    	EditText desc = (EditText)findViewById(R.id.description);
+    	
+    	String type = itemType.getSelectedItem().toString();
+    	String numItem = num.getText().toString();
+    	String description = desc.getText().toString();
+    	
+    	info = numItem + " " + type + " files(s) - Description:" + description; 
+    	
+    	return info;
+    }
+    
+    
+    //this method returns to CreateTask and passes the information about the item just created
+    public void saveItem(View view){
+    	
+    	Intent returnIntent = new Intent();
+    	returnIntent.putExtra("result",gatherItemInformation());
+    	setResult(RESULT_OK,returnIntent);     
+    	finish();
     }
     
     

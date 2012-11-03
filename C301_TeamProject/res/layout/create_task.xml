@@ -58,21 +58,23 @@
             android:layout_height="match_parent" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/showCurrentItemNum"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.66"
+            android:clickable="false"
             android:ems="10"
             android:hint="@string/number_sign"
-            android:clickable="false" />
+            android:gravity="center_horizontal" />
 
         <ImageButton
             android:id="@+id/attachItem"
-            android:layout_width="35dp"
+            android:layout_width="45dp"
             android:layout_height="35dp"
+            android:contentDescription="@string/files_attach_desc"
             android:gravity="right"
-            android:src="@android:drawable/ic_input_add" 
-            android:contentDescription="@string/files_attach_desc"/>
+            android:onClick="createItem"
+            android:src="@android:drawable/ic_input_add" />
 
         <View
             android:layout_width="4dp"
@@ -82,39 +84,42 @@
     <ListView
         android:id="@+id/showAttachedItems"
         android:layout_width="match_parent"
-        android:layout_height="254dp" >
+        android:layout_height="204dp" >
     </ListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:gravity="center_horizontal" >
 
-        <RadioButton
-            android:id="@+id/publicRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:text="@string/public_string" />
         
-        <View
-            android:layout_width="6dp" 
-            android:layout_height="match_parent" />
+ 			<RadioGroup
+ 			    android:id="@+id/visibiltyChoice"
+ 			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" >
+			        <RadioButton
+			            android:id="@+id/publicRadioButton"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_gravity="center_horizontal|center_vertical"
+			            android:gravity="center"
+			            android:text="@string/public_string" />	
+			        <RadioButton
+			            android:id="@+id/privateRadioButton"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_gravity="center_horizontal|center_vertical"
+			            android:gravity="center"
+			            android:text="@string/private_string" />
+        	</RadioGroup>
+    
+        
+        
+        
 
-        <RadioButton
-            android:id="@+id/privateRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:text="@string/private_string" />
-    </LinearLayout>
 
     <Button
         android:id="@+id/saveTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save_task" />
+        android:text="@string/save_task"
+        android:onClick="saveTask" />
 
 </LinearLayout>
