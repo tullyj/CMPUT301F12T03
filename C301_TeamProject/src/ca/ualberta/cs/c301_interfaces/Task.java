@@ -2,14 +2,15 @@ package ca.ualberta.cs.c301_interfaces;
 
 import java.util.List;
 
-import ca.ualberta.cs.c301_crowdclient.CrowdSourcerContent;
+import ca.ualberta.cs.c301_repository.TfTaskItem;
 
 
-public interface Task extends CrowdSourcerContent {
+public interface Task 
+        /* extends CrowdSourcerContent */ {
     
     public Boolean addItem(TaskItem item);
     
-    public List<TaskItem> getAllItems();
+    public List<TfTaskItem> getAllItems();
     
     public String getTitle();
     

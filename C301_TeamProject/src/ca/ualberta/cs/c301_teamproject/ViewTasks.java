@@ -24,15 +24,8 @@ public class ViewTasks extends Activity {
         
     	Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
-		String jsonEntryList = null;
-		try {
-			jsonEntryList = TfTaskRepository.listEntries();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		Toast toast = Toast.makeText(context, jsonEntryList, duration);
-		toast.show();
+//		Toast toast = Toast.makeText(context, jsonEntryList, duration);
+//		toast.show();
         
         
         //testing grabbing tasks
@@ -43,7 +36,7 @@ public class ViewTasks extends Activity {
 				
 
 
-				toast = Toast.makeText(context, task.getTitle(), duration);
+				Toast toast = Toast.makeText(context, task.getTitle(), duration);
 				toast.show();
 				
 				

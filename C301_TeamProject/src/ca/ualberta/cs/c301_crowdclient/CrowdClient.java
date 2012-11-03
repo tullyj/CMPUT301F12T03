@@ -66,20 +66,20 @@ public class CrowdClient {
 	 * Initializes a simple mock entry
 	 * @return
 	 */
-	private CrowdSourcerEntry initializeEntry() {
-		
-		Content c = new Content();
-		c.setA("a ahoy");
-		c.setB("b ahoy");
-		c.setC("c ahoy");
-		c.setD("c ahoy");
-		
-		CrowdSourcerEntry t = new CrowdSourcerEntry();
-		t.setDescription("Long description of the entry...");
-		t.setSummary("Short summary of the entry...");
-		t.setContent(c);	
-		return t;
-	}
+//	private CrowdSourcerEntry initializeEntry() {
+//		
+//		Content c = new Content();
+//		c.setA("a ahoy");
+//		c.setB("b ahoy");
+//		c.setC("c ahoy");
+//		c.setD("c ahoy");
+//		
+//		CrowdSourcerEntry t = new CrowdSourcerEntry();
+//		t.setDescription("Long description of the entry...");
+//		t.setSummary("Short summary of the entry...");
+//		t.setContent(c);	
+//		return t;
+//	}
 
 	/*
 	 * To convert the InputStream to String we use the BufferedReader.readLine()
@@ -222,11 +222,15 @@ public class CrowdClient {
 	}
 
 	public List<CrowdSourcerEntry> getEntryList() throws Exception {
-        // TODO Auto-generated method stub
 	    String jsonEntryList = listEntrys();
 	    
 	    Type listType = new TypeToken<List<CrowdSourcerEntry>>(){}.getType();
-	    List<CrowdSourcerEntry> entryList = gson.fromJson(jsonEntryList, listType);
+	    List<CrowdSourcerEntry> shallowEntryList = gson.fromJson(jsonEntryList, listType);
+	    List<CrowdSourcerEntry> entryList = new ArrayList<CrowdSourcerEntry>(); 
+	    for (CrowdSourcerEntry shallowEntry : shallowEntryList) {
+	        CrowdSourcerEntry entry = getEntry(shallowEntry.getId());
+	        entryList.add(entry);
+	    }
         return entryList;
     }
 

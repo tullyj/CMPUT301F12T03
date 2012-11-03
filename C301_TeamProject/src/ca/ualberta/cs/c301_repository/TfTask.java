@@ -8,9 +8,9 @@ import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_interfaces.Visibility;
 
-public class TfTask implements Task, CrowdSourcerContent {
+public class TfTask extends CrowdSourcerContent implements Task {
     
-    private List<TaskItem> itemList = new ArrayList<TaskItem>();
+    private List<TfTaskItem> itemList = new ArrayList<TfTaskItem>();
     
     private String deviceId = "Device ID";
     
@@ -26,15 +26,17 @@ public class TfTask implements Task, CrowdSourcerContent {
 
     private String taskId = "";
     
+    public TfTask() {}
+    
     public Boolean addItem(TaskItem item) {
-        Boolean success = itemList.add(item);
+        Boolean success = itemList.add((TfTaskItem) item);
         if (success) {
             setModified(true);
         }
         return success;
     }
 
-    public List<TaskItem> getAllItems() {
+    public List<TfTaskItem> getAllItems() {
         return itemList;
     }
 

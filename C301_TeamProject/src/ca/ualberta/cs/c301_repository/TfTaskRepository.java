@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.cs.c301_crowdclient.CrowdClient;
-import ca.ualberta.cs.c301_crowdclient.CrowdSourcerContent;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_interfaces.Task;
 
@@ -22,7 +21,7 @@ public class TfTaskRepository {
             // We set the device id into the summary
             entry.setSummary(task.getDeviceId());
             entry.setDescription(task.getDescription());
-            entry.setContent(task);
+            entry.setContent((TfTask) task);
 
             String taskId = task.getTaskId();
             if (taskId.isEmpty()) {
@@ -51,20 +50,11 @@ public class TfTaskRepository {
         List<CrowdSourcerEntry> entryList = crowdClient.getEntryList();
         List<Task> taskList = new ArrayList<Task>();
         for (CrowdSourcerEntry entry : entryList) {
-//            Task task = (TfTask) entry.getContent();
-            CrowdSourcerContent task = entry.getContent();
-
-            String taskId = entry.getId();
-            if (task == null) {
-            	System.err.println("<<<TASK IS NULL!!!>>>");
-            }
-            //taskList.add(task);
+            TfTask task = (TfTask) entry.getContent();
+            task.setTaskId(entry.getId());
+            taskList.add(task);
         }
         return taskList;
-    }
-    
-    public static String listEntries() throws Exception {
-    	return crowdClient.listEntrys();
     }
 
 }

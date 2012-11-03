@@ -1,5 +1,7 @@
 package ca.ualberta.cs.c301_crowdclient;
 
+import ca.ualberta.cs.c301_repository.TfTask;
+
 /**
  * Task Value Object
  * @author Victor Guana - guana[at]ualberta.ca
@@ -10,7 +12,7 @@ public class CrowdSourcerEntry {
 	
 	private String summary;
 	
-	private CrowdSourcerContent content;
+	private TfTask content;
 	
 	// This is the task id
 	private String id;
@@ -25,11 +27,11 @@ public class CrowdSourcerEntry {
 		this.summary = summary;
 	}
 
-	public CrowdSourcerContent getContent() {
+	public TfTask getContent() {
 		return content;
 	}
 
-	public void setContent(CrowdSourcerContent content) {
+	public void setContent(TfTask content) {
 		this.content = content;
 	}
 

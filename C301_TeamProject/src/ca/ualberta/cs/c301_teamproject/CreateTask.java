@@ -101,39 +101,13 @@ public class CreateTask extends Activity {
     	   					
     }
     
-    //this method will format the item for presentation before updating the item list
-    public String[] formatItemText(String[] input){
-    	
-    	String[] send = new String[input.length];
-    	
-    	for(int i = 0;i<input.length;i++){
-    		
-    		String[] temp = input[i].split("\\|\\|");
-    		
-    		String num = temp[0];
-    		String type = temp[1];
-    		String desc = temp[2];
-    		
-    		//this string will be shown in the item list
-    		send[i] = num + " " + type + " files(s) - Description: " + desc;
-    		
-    		
-    	}
-    	
-    	
-    	
-    	return send;
-    }
-    
     
     //this method updates the list view and the count of the current items
     public void updateListViewAndCount(){
     	
     	//updating the currentTaskItems then getting a array of the list
     	ListView items = (ListView)findViewById(R.id.showAttachedItems);
-    	String[] l = getItemList();
-    	String[] result = formatItemText(l);
-    	
+    	String[] result = getItemList();
     	
     	//updating the list view
     	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, result);
@@ -181,6 +155,11 @@ public class CreateTask extends Activity {
     	//this is where the global int position comes into play
     	if(requestCode == 2){
     		
+    		//test to see if i made it
+    		//Context context = getApplicationContext();
+        	//String error = "i am code 2";
+    		//Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
+    		//toast.show();
     		
     		if(resultCode == RESULT_OK){
     		String result = data.getStringExtra("result");
@@ -215,7 +194,7 @@ public class CreateTask extends Activity {
     	title = getTitle.getText().toString();
     	numItem = itemNum.getText().toString();
     	visibility = visChoice.getText().toString();
-
+    	String[] items = getItemList();
     	
     	//creating a task
     	Task t = new TfTask();
@@ -242,7 +221,6 @@ public class CreateTask extends Activity {
 
     }
     
-    //this method will add all of the items to the task object
     public void addItemsToTask(Task task){
     	
     	
