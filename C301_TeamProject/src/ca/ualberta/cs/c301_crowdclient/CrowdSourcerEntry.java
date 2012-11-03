@@ -3,6 +3,7 @@ package ca.ualberta.cs.c301_crowdclient;
 /**
  * Task Value Object
  * @author Victor Guana - guana[at]ualberta.ca
+ * @author Colin Hunt - colin[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */
 public class CrowdSourcerEntry {
