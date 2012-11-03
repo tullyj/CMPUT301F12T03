@@ -32,6 +32,8 @@
     <string name="import_capturepic">Take a Photo</string>
     <string name="import_captureaudio">Record Audio</string>
     <string name="import_cancel">Cancel</string>
+    <string name="about_task_force">Created by Colin Hunt, Edwin Chung, Kris Kushniruk, Tully Johnson</string>
+    <string name="about_title">About Task Force</string>
     
     <string-array name = "item_choices">
         <item>Text</item>
