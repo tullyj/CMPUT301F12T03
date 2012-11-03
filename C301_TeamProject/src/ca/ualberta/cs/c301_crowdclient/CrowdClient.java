@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * CrowdSource Service Client (Teaser)
@@ -37,29 +38,29 @@ public class CrowdClient {
 	/**
 	 * Sends messages to the crowd service and retrieves its responses
 	 */
-	public void testServiceMethods(){
-
-		// Example Simple Entry
-		CrowdSourcerEntry entry = initializeEntry();
-		
-		try {
-			CrowdSourcerEntry newT = this.insertEntry(entry);
-			System.out.println("Inserted Entry -> " + newT.getId());
-			
-			CrowdSourcerEntry newTClone = this.getEntry(newT.getId());
-			System.out.println("Double Checking by Listing -> " + newTClone.getId());
-			
-			String lot= this.listEntrys();
-			System.out.println("List of Entrys in the CrowdSourcer -> " + lot);
-
-		} 
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		finally {
-		    //httpPost.releaseConnection(); //causes method not found error
-		}
-	}
+//	public void testServiceMethods(){
+//
+//		// Example Simple Entry
+//		CrowdSourcerEntry entry = initializeEntry();
+//		
+//		try {
+//			CrowdSourcerEntry newT = this.insertEntry(entry);
+//			System.out.println("Inserted Entry -> " + newT.getId());
+//			
+//			CrowdSourcerEntry newTClone = this.getEntry(newT.getId());
+//			System.out.println("Double Checking by Listing -> " + newTClone.getId());
+//			
+//			String lot= this.listEntrys();
+//			System.out.println("List of Entrys in the CrowdSourcer -> " + lot);
+//
+//		} 
+//		catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		finally {
+//		    //httpPost.releaseConnection(); //causes method not found error
+//		}
+//	}
 	
 	/**
 	 * Initializes a simple mock entry
@@ -177,9 +178,9 @@ public class CrowdClient {
 	 * @return JSON representation of the entry created
 	 * @throws Exception
 	 */
-	public CrowdSourcerEntry insertEntry(CrowdSourcerEntry entryP) throws Exception{
+	public void insertEntry(CrowdSourcerEntry entryP) throws Exception {
 		
-		CrowdSourcerEntry newEntry = new CrowdSourcerEntry();
+		//CrowdSourcerEntry newEntry = new CrowdSourcerEntry();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
 		nvps.add(new BasicNameValuePair("action", "post"));
 		nvps.add(new BasicNameValuePair("summary", entryP.getSummary()));
@@ -193,20 +194,42 @@ public class CrowdClient {
 	    
 	    System.out.println(status);
 	    
-	    if (entity != null) {
-	        InputStream is = entity.getContent();
-	        String jsonStringVersion = convertStreamToString(is);
-	        Type entryType = CrowdSourcerEntry.class;     
-	        newEntry = gson.fromJson(jsonStringVersion, entryType);
-	    }
+//	    if (entity != null) {
+//	        InputStream is = entity.getContent();
+//	        String jsonStringVersion = convertStreamToString(is);
+//	        Type entryType = CrowdSourcerEntry.class;     
+//	        newEntry = gson.fromJson(jsonStringVersion, entryType);
+//	    }
 	    //EntityUtils.consume(entity); //causes method not found error
-        return newEntry;
+        //return newEntry;
 	}
 
-    public List<CrowdSourcerEntry> getEntryList() {
+	public void updateEntry(CrowdSourcerEntry entry) throws Exception {
+	    // TODO Auto-generated method stub
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        nvps.add(new BasicNameValuePair("action", "update"));
+        nvps.add(new BasicNameValuePair("summary", entry.getSummary()));
+        nvps.add(new BasicNameValuePair("content", gson.toJson(entry.getContent())));
+        nvps.add(new BasicNameValuePair("id", entry.getId()));
+
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+        HttpResponse response = httpclient.execute(httpPost);
+
+        String status = response.getStatusLine().toString();
+        HttpEntity entity = response.getEntity();
+
+        System.out.println(status);
+	}
+
+	public List<CrowdSourcerEntry> getEntryList() throws Exception {
         // TODO Auto-generated method stub
-        return null;
+	    String jsonEntryList = listEntrys();
+	    
+	    Type listType = new TypeToken<List<CrowdSourcerEntry>>(){}.getType();
+	    List<CrowdSourcerEntry> entryList = gson.fromJson(jsonEntryList, listType);
+        return entryList;
     }
+
 	
 
 }
