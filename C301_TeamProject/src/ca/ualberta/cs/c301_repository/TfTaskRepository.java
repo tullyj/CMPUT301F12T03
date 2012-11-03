@@ -8,15 +8,15 @@ import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskRepository;
 
-public class TfTaskRepository implements TaskRepository {
+public class TfTaskRepository {
     
-    private CrowdClient crowdClient = new CrowdClient();
+    private static CrowdClient crowdClient = new CrowdClient();
     
     // TODO Can we keep this list up-to-date and then save internally onPause?
     // Then just check if can connect to server, if not, return this list
     private List<Task> taskList = new ArrayList<Task>();
 
-    public void addTask(Task task) {
+    public static void addTask(Task task) {
         try {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             String taskId = task.getTaskId();
