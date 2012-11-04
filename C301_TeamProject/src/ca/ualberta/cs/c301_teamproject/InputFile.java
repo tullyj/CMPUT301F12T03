@@ -111,6 +111,7 @@ public class InputFile extends Activity {
 			builder.setNeutralButton(R.string.import_fromfile, new DialogInterface.OnClickListener() {
 			       public void onClick(DialogInterface dialog, int id) {
 			           // User clicked "Import from File" button
+			    	   Toast.makeText(getApplicationContext(), "Opens File Browser", Toast.LENGTH_LONG).show();
 			       }
 			});
 			
