@@ -48,8 +48,9 @@ public class InputFile extends Activity {
      * When "+" is clicked create a dialog for obtaining the desired item.
      * @param v		Current view.
      */
-    public void importFile(View v){    	
-    	Dialog importDialog = onCreateDialog(DIALOG_PHOTO);
+    public void importFile(View v){
+    	//currently hardcoded for data types
+    	Dialog importDialog = onCreateDialog(DIALOG_AUDIO);
 //    	Dialog importDialog = onCreateDialog(DIALOG_AUDIO);
         importDialog.show();
     }

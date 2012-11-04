@@ -26,7 +26,7 @@
     <string name="item_type">Item type</string>
     <string name="visibility">Task visibility</string>
     <string name="title_inputfile">Input File</string>
-	<string name="files_attach_desc">attachfiles</string>
+    <string name="files_attach_desc">attachfiles</string>
     <string name="save_changes">Save Changes</string>
     <string name="import_fromfile">From Files</string>
     <string name="import_capturepic">Take a Photo</string>
@@ -34,13 +34,16 @@
     <string name="import_cancel">Cancel</string>
     <string name="about_task_force">Created by Colin Hunt, Edwin Chung, Kris Kushniruk, Tully Johnson</string>
     <string name="about_title">About Task Force</string>
-    
-    <string-array name = "item_choices">
+
+    <string-array name="item_choices">
         <item>Text</item>
         <item>Audio</item>
         <item>Photo</item>
     </string-array>
+
     <string name="no_data">No Data</string>
-    
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_input_text">Enter Text</string>
+    <string name="text_instructions">Please enter your text:</string>
 
 </resources>

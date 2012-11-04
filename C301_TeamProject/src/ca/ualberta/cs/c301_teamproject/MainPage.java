@@ -50,6 +50,7 @@ public class MainPage extends Activity {
 
     }
 
+    //for debugging input file menu
     public void goToInputFile(View view) {
 
         Intent intent = new Intent(this, InputFile.class);
@@ -57,5 +58,14 @@ public class MainPage extends Activity {
         // need to send parameters to filter into all tasks
         startActivity(intent);
 
+    }
+    
+    //for debugging input text menu
+    public void goToInputText(View view){
+    	
+        Intent intent = new Intent(this, InputText.class);
+
+        // need to send parameters to filter into all tasks
+        startActivity(intent);
     }
 }

@@ -67,14 +67,13 @@
         android:layout_marginTop="20dp"
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.07"
+        android:layout_weight="1"
         android:gravity="bottom|center_vertical"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical" >
 
         <EditText
             android:id="@+id/description"
