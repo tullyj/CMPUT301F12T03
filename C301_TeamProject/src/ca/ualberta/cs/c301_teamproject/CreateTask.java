@@ -214,6 +214,9 @@ public class CreateTask extends Activity {
     	
     	//creating each individual item
     	addItemsToTask(t);
+    	
+    	// TODO need to add the device id to the task
+    	
     	return t;
     	
 

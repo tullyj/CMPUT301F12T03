@@ -1,18 +1,28 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
-import android.widget.Toast;
-import ca.ualberta.cs.c301_interfaces.Task;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 public class ViewTasks extends Activity {
+    
+    public static final String TASK_ID = 
+            "ca.ualberta.cs.c301_teamproject.TASK_ID";
+    ArrayAdapter<CrowdSourcerEntry> adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,37 +32,33 @@ public class ViewTasks extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
-    	Context context = getApplicationContext();
-		int duration = Toast.LENGTH_SHORT;
-//		Toast toast = Toast.makeText(context, jsonEntryList, duration);
-//		toast.show();
-        
-        
-        //testing grabbing tasks
         try {
-			List<Task> taskList = TfTaskRepository.getAllTasks();
-			
-			for(Task task: taskList){
-				
-
-
-				Toast toast = Toast.makeText(context, task.getTitle(), duration);
-				toast.show();
-				
-				
-				
-			}
-			
-			
-			
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        
+            List<Map<String,String>> mapList = 
+                    TfTaskRepository.getShallowEntries();
+            final List<CrowdSourcerEntry> shallowEntryList = 
+                    new ArrayList<CrowdSourcerEntry>();
+            for (Map<String,String> map : mapList) {
+               CrowdSourcerEntry entry = new CrowdSourcerEntry();
+               entry.setId(map.get("id"));
+               entry.setDescription(map.get("description"));
+               entry.setSummary(map.get("summary"));
+               shallowEntryList.add(entry);
+            }
+            this.adapter = new ArrayAdapter<CrowdSourcerEntry>(this,
+                    android.R.layout.simple_list_item_1, shallowEntryList);
+            ListView listView = (ListView) findViewById(R.id.taskList);
+            listView.setAdapter(adapter);
+            
+            listView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+                    viewTask(position, shallowEntryList);
+                }
+            });
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
     }
 
@@ -64,6 +70,14 @@ public class ViewTasks extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void viewTask(int position, 
+            List<CrowdSourcerEntry> shallowEntryList) {
+        CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
+        Intent intent = new Intent(this, ViewSingleTask.class);
+        intent.putExtra(TASK_ID, shallowEntry.getId());
+        startActivity(intent);
     }
 
 }

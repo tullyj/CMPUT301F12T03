@@ -20,8 +20,8 @@ public class TfTaskRepository {
         try {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             // We set the device id into the summary
-            entry.setSummary(task.getDeviceId());
-            entry.setDescription(task.getTitle());
+            entry.setSummary(task.getTitle());
+            entry.setDescription(task.getDeviceId());
             entry.setContent((TfTask) task);
 
             String taskId = task.getTaskId();
@@ -61,6 +61,16 @@ public class TfTaskRepository {
     public static List<Map<String,String>> getShallowEntries() 
             throws Exception {
         return crowdClient.getShallowList();
+    }
+
+    public static Task getTaskById(String taskId) throws Exception {
+        CrowdSourcerEntry entry = crowdClient.getEntry(taskId);
+        Task task = entry.getContent();
+        if (task == null) {
+            throw new Exception("TfTaskRepository got a null task in " +
+            		"getTaskById() with id=" + taskId);
+        }
+        return task;
     }
 
 }

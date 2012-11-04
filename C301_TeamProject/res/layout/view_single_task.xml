@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/taskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -18,10 +18,10 @@
         android:id="@+id/showTaskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@id/taskTitle"
+        android:layout_alignBottom="@id/taskTitle"
         android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@id/taskTitle"
         android:text="@string/test"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

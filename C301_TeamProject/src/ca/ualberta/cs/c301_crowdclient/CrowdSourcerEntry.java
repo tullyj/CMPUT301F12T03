@@ -52,6 +52,6 @@ public class CrowdSourcerEntry {
 	}
 
 	public String toString(){
-		return summary+", "+content+", "+id+", "+description+", "+content.toString();
+		return summary;
 	}
 }
