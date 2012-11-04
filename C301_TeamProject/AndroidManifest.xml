@@ -11,7 +11,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
  	<uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+	<uses-permission android:name="android.permission.CAMERA" />
  	
     <uses-permission android:name="android.permission.INTERNET" />
     
@@ -76,7 +76,8 @@
         
         <activity
            android:name=".InputFile"
-           android:label="@string/title_inputfile" >
+           android:label="@string/title_inputfile"
+           android:screenOrientation="portrait" >
          <meta-data
               android:name="android.support.PARENT_ACTIVITY"
               android:value="ca.ualberta.cs.c301_teamproject.ViewSingleTask" />
