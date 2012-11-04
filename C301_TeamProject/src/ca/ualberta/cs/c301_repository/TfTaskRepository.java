@@ -2,6 +2,7 @@ package ca.ualberta.cs.c301_repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ca.ualberta.cs.c301_crowdclient.CrowdClient;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
@@ -20,7 +21,7 @@ public class TfTaskRepository {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             // We set the device id into the summary
             entry.setSummary(task.getDeviceId());
-            entry.setDescription(task.getDescription());
+            entry.setDescription(task.getTitle());
             entry.setContent((TfTask) task);
 
             String taskId = task.getTaskId();
@@ -50,11 +51,16 @@ public class TfTaskRepository {
         List<CrowdSourcerEntry> entryList = crowdClient.getEntryList();
         List<Task> taskList = new ArrayList<Task>();
         for (CrowdSourcerEntry entry : entryList) {
-            TfTask task = (TfTask) entry.getContent();
+            Task task = entry.getContent();
             task.setTaskId(entry.getId());
             taskList.add(task);
         }
         return taskList;
+    }
+    
+    public static List<Map<String,String>> getShallowEntries() 
+            throws Exception {
+        return crowdClient.getShallowList();
     }
 
 }

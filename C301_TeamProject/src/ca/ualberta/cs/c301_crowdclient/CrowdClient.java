@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -184,7 +185,9 @@ public class CrowdClient {
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
 		nvps.add(new BasicNameValuePair("action", "post"));
 		nvps.add(new BasicNameValuePair("summary", entryP.getSummary()));
-		nvps.add(new BasicNameValuePair("content", gson.toJson(entryP.getContent())));
+		nvps.add(new BasicNameValuePair(
+		        "content", gson.toJson(entryP.getContent()))
+		);
 		
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		HttpResponse response = httpclient.execute(httpPost);
@@ -209,7 +212,9 @@ public class CrowdClient {
         List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         nvps.add(new BasicNameValuePair("action", "update"));
         nvps.add(new BasicNameValuePair("summary", entry.getSummary()));
-        nvps.add(new BasicNameValuePair("content", gson.toJson(entry.getContent())));
+        nvps.add(new BasicNameValuePair(
+                "content", gson.toJson(entry.getContent()))
+        );
         nvps.add(new BasicNameValuePair("id", entry.getId()));
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
@@ -222,18 +227,22 @@ public class CrowdClient {
 	}
 
 	public List<CrowdSourcerEntry> getEntryList() throws Exception {
-	    String jsonEntryList = listEntrys();
-	    
-	    Type listType = new TypeToken<List<CrowdSourcerEntry>>(){}.getType();
-	    List<CrowdSourcerEntry> shallowEntryList = gson.fromJson(jsonEntryList, listType);
+	    List<Map<String,String>> shallowEntryList = getShallowList();
 	    List<CrowdSourcerEntry> entryList = new ArrayList<CrowdSourcerEntry>(); 
-	    for (CrowdSourcerEntry shallowEntry : shallowEntryList) {
-	        CrowdSourcerEntry entry = getEntry(shallowEntry.getId());
+	    for (Map<String,String> shallowEntry : shallowEntryList) {
+	        CrowdSourcerEntry entry = getEntry(shallowEntry.get("id"));
 	        entryList.add(entry);
 	    }
         return entryList;
     }
 
+	public List<Map<String, String>> getShallowList() throws Exception {
+        String jsonEntryList = listEntrys();
+        Type listType = new TypeToken<List<Map<String,String>>>(){}.getType();
+        List<Map<String, String>> shallowEntryList = 
+                gson.fromJson(jsonEntryList, listType);
+        return shallowEntryList;
+	}
 	
 
 }
