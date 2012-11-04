@@ -50,4 +50,12 @@ public class MainPage extends Activity {
 
     }
 
+    public void goToInputFile(View view) {
+
+        Intent intent = new Intent(this, InputFile.class);
+
+        // need to send parameters to filter into all tasks
+        startActivity(intent);
+
+    }
 }
