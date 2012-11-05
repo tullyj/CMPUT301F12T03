@@ -58,7 +58,7 @@ public class MainPage extends Activity {
     //for debugging input file menu
     public void goToInputFile(View view) {
 
-        Intent intent = new Intent(this, InputFile.class);
+        Intent intent = new Intent(this, ItemList.class);
 
         // need to send parameters to filter into all tasks
         startActivity(intent);
