@@ -15,6 +15,12 @@ public class ItemListElement {
 		super();
 	}
 	
+	/**
+	 * Contructor for ItemListElement, contains icon, title, and sub text.
+	 * @param icon
+	 * @param title
+	 * @param sub
+	 */
 	public ItemListElement(int icon, String title, String sub){
 		super();
 		this.icon = icon;

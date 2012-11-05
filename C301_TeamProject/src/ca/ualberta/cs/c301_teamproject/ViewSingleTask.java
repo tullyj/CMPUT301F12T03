@@ -18,8 +18,16 @@ import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 
+/**
+ * Shows items for a task in a list, click item to view. Click "+" button
+ * to add files to task/item (fullfilling the task).
+ *
+ */
 public class ViewSingleTask extends Activity {
 
+	private Task task;
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +36,7 @@ public class ViewSingleTask extends Activity {
         Intent intent = getIntent();
         String taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
         
-        Task task = null;
+        task = null;
         try {
             task = TfTaskRepository.getTaskById(taskId);
         } catch (Exception e) {
@@ -55,10 +63,11 @@ public class ViewSingleTask extends Activity {
 	/**
 	 * Refreshes, or recreates, the listview on the ItemList screen.
 	 */
-    public void updateList(Task task){   	
+    public void updateList(final Task task){   	
     	final List<TfTaskItem> items = task.getAllItems();
     	ItemListElement[] elements = new ItemListElement[items.size()];
     	String title = "";
+    	String itemType = null;
     	for(int i = 0; i < items.size(); i++){
 //    		listElements.add(new ItemListElement(
 //    	    		android.R.drawable.ic_input_get, "Test Item " + (i+1), 
@@ -66,19 +75,22 @@ public class ViewSingleTask extends Activity {
     		switch(items.get(i).getType()){
     			case TEXT:
     				title = "Texts";
+    				itemType = "TEXT";
     				break;
     			case PHOTO:
     				title = "Photos";
+    				itemType = "PHOTO";
     				break;
     			case AUDIO:
     				title = "Audio";
+    				itemType = "AUDIO";
     				break;
     			
     		}
     		elements[i] = new ItemListElement(android.R.drawable.ic_input_get, 
     			title, items.get(i).getDescription());
     	}
-        
+        final String itemT = itemType;
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
         ListView listView = (ListView) findViewById(R.id.singleTaskList);
         listView.setAdapter(adapter);
@@ -88,8 +100,32 @@ public class ViewSingleTask extends Activity {
 				Toast.makeText(getApplicationContext(), 
 					"Opening Item: " + items.get(position).getType().toString(), 
 						Toast.LENGTH_LONG).show();
+				
+				Intent intent = new Intent(getApplicationContext(), ItemList.class);
+				// Pass TaskId, and Item Number
+				intent.putExtra("SendItem", new String[]{task.getTaskId(), 
+						itemT});
+				
+				startActivity(intent);
 			}	
         });
     }
-
+    @Override
+	/**
+	 * Receives result from adding files to an item.
+	 * @param requestCode		Describes type of intent.
+	 * @param resultCode		Describes status of intent.
+	 * @param data				The intent.
+	 */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+            	Toast.makeText(getApplicationContext(), 
+    				"Task '" + task.getTitle() + 
+    				"'has been modified, uploading to webservice", 
+    				Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+            
 }
