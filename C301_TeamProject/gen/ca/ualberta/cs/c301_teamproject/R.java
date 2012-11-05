@@ -34,7 +34,7 @@ public final class R {
         public static final int button3=0x7f090023;
         public static final int button4=0x7f090024;
         public static final int button5=0x7f090025;
-        public static final int buttonFilter=0x7f09002a;
+        public static final int buttonFilter=0x7f09002b;
         public static final int description=0x7f090006;
         public static final int desiredNum=0x7f090004;
         public static final int files_attach_desc=0x7f090020;
@@ -45,7 +45,7 @@ public final class R {
         public static final int listItemFraction=0x7f09001b;
         public static final int listSummaryLayout=0x7f090019;
         public static final int listTitle=0x7f090018;
-        public static final int menu_settings=0x7f09002b;
+        public static final int menu_settings=0x7f09002c;
         public static final int path=0x7f090010;
         public static final int privateRadioButton=0x7f09000e;
         public static final int progressBar1=0x7f09001c;
@@ -61,7 +61,8 @@ public final class R {
         public static final int showAttachedItems=0x7f09000b;
         public static final int showCurrentItemNum=0x7f090009;
         public static final int showTaskTitle=0x7f090028;
-        public static final int taskList=0x7f090029;
+        public static final int singleTaskList=0x7f090029;
+        public static final int taskList=0x7f09002a;
         public static final int taskTitle=0x7f090027;
         public static final int textView1=0x7f090003;
         public static final int textView2=0x7f090005;
@@ -102,7 +103,7 @@ public final class R {
         public static final int enter=0x7f050003;
         public static final int files_attach_desc=0x7f05001a;
         public static final int filter=0x7f050012;
-        public static final int hello_world=0x7f050027;
+        public static final int hello_world=0x7f050029;
         public static final int import_cancel=0x7f05001f;
         public static final int import_captureaudio=0x7f05001e;
         public static final int import_capturepic=0x7f05001d;
@@ -110,7 +111,7 @@ public final class R {
         public static final int item_type=0x7f050017;
         public static final int items_attached=0x7f050009;
         public static final int menu_settings=0x7f050001;
-        public static final int no_data=0x7f05002a;
+        public static final int no_data=0x7f05002c;
         public static final int number_sign=0x7f05000b;
         public static final int plus_sign=0x7f05000a;
         public static final int private_string=0x7f05000d;
@@ -121,12 +122,14 @@ public final class R {
         public static final int save_changes=0x7f05001b;
         public static final int save_item=0x7f05000f;
         public static final int save_task=0x7f05000e;
+        public static final int single_task_item=0x7f050027;
+        public static final int single_task_item_desc=0x7f050028;
         public static final int tasks=0x7f050015;
         public static final int test=0x7f050013;
-        public static final int text_instructions=0x7f050029;
+        public static final int text_instructions=0x7f05002b;
         public static final int title=0x7f050007;
-        public static final int title_activity_file_browser=0x7f05002b;
-        public static final int title_activity_input_text=0x7f050028;
+        public static final int title_activity_file_browser=0x7f05002d;
+        public static final int title_activity_input_text=0x7f05002a;
         public static final int title_activity_item_list=0x7f050026;
         public static final int title_activity_main=0x7f050002;
         public static final int title_hint=0x7f050008;
