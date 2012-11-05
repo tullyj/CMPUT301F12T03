@@ -29,7 +29,7 @@ public class InputFile extends Activity {
 	static final int DIALOG_ABOUT = 2;
 	static int itemType;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public ArrayList<String> listValues = new ArrayList<String>();
+	public ArrayList<File> files = new ArrayList<File>();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class InputFile extends Activity {
     }
     
     public void saveClick(View v){
-    	if(listValues.size() > 0){
+    	if(files.size() > 0){
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
@@ -160,7 +160,7 @@ public class InputFile extends Activity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
             	try{
-            			listValues.add(data.getData().getPath());
+            			files.add(new File(data.getData().getPath()));
             	}catch(Exception e){
             		try{
             			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
@@ -187,7 +187,7 @@ public class InputFile extends Activity {
             			
             			Uri uriImage = Uri.withAppendedPath(
             					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(iID));
-            			listValues.add(uriImage.getPath());
+            			files.add(new File(uriImage.getPath()));
             			myCursor.close();
             			
             		} catch(Exception ex){
@@ -208,13 +208,15 @@ public class InputFile extends Activity {
 	/**
 	 * Refreshes, or recreates, the listview on the Input File screen.
 	 */
-    public void updateList(){
-    	String[] values = new String[listValues.size()];
-        listValues.toArray(values);
+    public void updateList(){        
+        String[] filenames = new String[files.size()];
+        for(int i = 0; i < files.size(); i++){
+        	filenames[i] = files.get(i).getName();
+        }
         
         ListView listView = (ListView) this.findViewById(R.id.importList);		
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
-        	android.R.layout.simple_list_item_1, values);
+        	android.R.layout.simple_list_item_1, filenames);
         listView.setAdapter(adapter);
     }
 }
