@@ -13,13 +13,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * This class will create a item for a task. Always called with startActivityForResult
+ * @author topched
+ *
+ */
 public class CreateItem extends Activity {
 	
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
+    	/**
+    	 * The onCreate will populate the fields if we are editing a item
+    	 */
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.create_item);
     	
@@ -79,7 +85,10 @@ public class CreateItem extends Activity {
     }
     
     
-    //this method gathers all of the information from the current screen and packages it
+    /**
+     * This method gathers all of the information from the current screen
+     * @return	A string that represents the item
+     */
     //up to be returned to CreateTask
     public String gatherItemInformation(){
     	
@@ -92,19 +101,72 @@ public class CreateItem extends Activity {
     	String numItem = num.getText().toString();
     	String description = desc.getText().toString();
     	
-    	info = numItem + "||" + type + "||" + description; 
+    	boolean valid = validateInput(numItem, description);
     	
-    	return info;
+    	if(valid){
+	    	info = numItem + "||" + type + "||" + description; 	
+	    	return info;
+    	}else{
+    		return null;
+    	}
+    }
+    
+    /**
+     * This method just validates the input
+     * @param num		The number of the item
+     * @param desc		The description of the item
+     * @return		A string representing the item
+     */
+    public boolean validateInput(String num, String desc){
+    	
+    	boolean valid = true;
+    	int number = 0;
+    	String error = "";
+    	
+    	if(num.length()>0){
+    		number = Integer.parseInt(num);
+    	}else{
+    		error += "Please enter a number\n";
+    		valid = false;
+    	}
+    	
+    	if(desc.equals("")){
+    		error += "Please enter a description\n";
+    		valid = false;
+    	}else if(number > 50){
+    		error += "Item count can't exceed 50\n";
+    		valid = false;
+    	}
+    	
+    	//if valid input return true, else toast then return false
+    	if(valid){
+    		return true;
+    	}else{
+    		
+    		Context context = getApplicationContext();
+    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
+    		toast.show();
+    		return false;
+    	}
+    	
+    	
     }
     
     
-    //this method returns to CreateTask and passes the information about the item just created
+    /**
+     * This method returns to CreateTask and passes the information about the item just created
+     * or edited
+     * @param view	The current view
+     */
     public void saveItem(View view){
     	
-    	Intent returnIntent = new Intent();
-    	returnIntent.putExtra("result",gatherItemInformation());
-    	setResult(RESULT_OK,returnIntent);     
-    	finish();
+    	String info = gatherItemInformation();
+    	if(info != null){
+	    	Intent returnIntent = new Intent();
+	    	returnIntent.putExtra("result",info);
+	    	setResult(RESULT_OK,returnIntent);     
+	    	finish();
+    	}
     }
     
     

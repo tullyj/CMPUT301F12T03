@@ -18,6 +18,11 @@ import android.widget.ListView;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
+/**
+ * This class is used for viewing tasks. When fully implemented the screen wont freeze when loading
+ * 
+ *
+ */
 public class ViewTasks extends Activity {
     
     public static final String TASK_ID = 

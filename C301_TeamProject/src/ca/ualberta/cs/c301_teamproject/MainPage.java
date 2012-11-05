@@ -7,6 +7,11 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * This class just has the buttons for the main page.
+ * NOTE: there are extra buttons on this page for demonstration purposes
+ *
+ */
 public class MainPage extends Activity {
 
     @Override

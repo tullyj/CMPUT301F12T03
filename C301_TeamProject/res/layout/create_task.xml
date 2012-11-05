@@ -88,40 +88,33 @@
         android:layout_width="match_parent"
         android:layout_height="204dp" >
     </ListView>
-
-
-        
- 			<RadioGroup
- 			    android:id="@+id/visibiltyChoice"
- 			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="vertical" >
-			        <RadioButton
-			            android:id="@+id/publicRadioButton"
-			            android:layout_width="wrap_content"
-			            android:layout_height="wrap_content"
-			            android:layout_gravity="center_horizontal|center_vertical"
-			            android:gravity="center"
-			            android:text="@string/public_string" />	
-			        <RadioButton
-			            android:id="@+id/privateRadioButton"
-			            android:layout_width="wrap_content"
-			            android:layout_height="wrap_content"
-			            android:layout_gravity="center_horizontal|center_vertical"
-			            android:gravity="center"
-			            android:text="@string/private_string" />
-        	</RadioGroup>
-    
-        
-        
-        
-
-
-    <Button
-        android:id="@+id/saveTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_task"
-        android:onClick="saveTask" />
+ 
+ 		<RadioGroup
+ 		    android:id="@+id/visibiltyChoice"
+ 		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		        <RadioButton
+		            android:id="@+id/publicRadioButton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal|center_vertical"
+		            android:gravity="center"
+		            android:text="@string/public_string" />	
+		        <RadioButton
+		            android:id="@+id/privateRadioButton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal|center_vertical"
+		            android:gravity="center"
+		            android:text="@string/private_string" />
+       	</RadioGroup>
+       	
+    	<Button
+	        android:id="@+id/saveTask"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/save_task"
+	        android:onClick="saveTask" />
 
 </LinearLayout>
