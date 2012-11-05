@@ -83,11 +83,17 @@ public class InputFile extends Activity {
         return true;
     }
     
+    /**
+     * Saves the files to an item. Returns to the view single task activity.
+     * @param v
+     */
     public void saveClick(View v){
     	if(files.size() > 0){
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
+	    	Intent itemIntent = new Intent(this, ViewSingleTask.class);
+	    	startActivityForResult(itemIntent, 1);
     	}else{
     		Toast.makeText(getApplicationContext(), 
     	    		"Please add a file before saving." , Toast.LENGTH_LONG).show();
@@ -153,8 +159,6 @@ public class InputFile extends Activity {
 			});
 			return builder.create();
 		}else if(id == DIALOG_ABOUT){
-//			String title = "About Task Force";
-//    		String message = "Created by "; 
 			PromptDialog mDialog = new PromptDialog();
 			return mDialog.aboutPrompt(this);
 		}

@@ -9,6 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Custom ListAdapter for Task Force's multiline, with icon, ListView.
+ * @author tullyj
+ *
+ */
 public class ItemListAdapter extends ArrayAdapter<ItemListElement>{
 	Context context;
 	int layoutRID;
@@ -28,6 +33,9 @@ public class ItemListAdapter extends ArrayAdapter<ItemListElement>{
 	}
 	
 	@Override
+	/**
+	 * Sets the icon, title, and subtext to the list adapter.
+	 */
 	public View getView(int position, View convertView, ViewGroup parent){
 		View row = convertView;
 		ItemListHolder holder = null;

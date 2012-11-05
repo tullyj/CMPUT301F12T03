@@ -7,8 +7,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 
+/**
+ * Custom dialog screens for Task Force.
+ * @author tullyj
+ */
 public class PromptDialog {
 	
+	/**
+	 * Displays dialog about the program. 
+	 * @param context
+	 * @return	Dialog
+	 */
     public Dialog aboutPrompt(final Context context){
     	AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -18,9 +27,8 @@ public class PromptDialog {
     	builder.setPositiveButton(android.R.string.ok,
     		new DialogInterface.OnClickListener(){
     			public void onClick(DialogInterface dialog, int which){
-//    				Toast.makeText(context, 
-//    					"Enjoy BatteryLogger", Toast.LENGTH_SHORT).show();
-    					return;
+					// on click function...
+					return;
     			}
     		});
     	return builder.create();
