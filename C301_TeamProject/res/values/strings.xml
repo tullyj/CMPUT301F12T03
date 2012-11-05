@@ -39,6 +39,8 @@
     <string name="row_sub_blank">Description</string>
     <string name="title_list_item">File List</string>
     <string name="title_activity_item_list">ItemList</string>
+    <string name="single_task_item">Item: </string>
+    <string name="single_task_item_desc">(click to fullfill)</string>
 
     <string-array name="item_choices">
         <item>Text</item>
