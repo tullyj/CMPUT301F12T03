@@ -2,6 +2,7 @@ package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -55,7 +56,7 @@ public class InputFile extends Activity {
         importDialog.show();
     }
     
-    @Override
+    
     /**
      * When the menu button item "About" is selected display about dialog.
      * @param item	item clicked.
@@ -113,6 +114,10 @@ public class InputFile extends Activity {
 			       public void onClick(DialogInterface dialog, int id) {
 			           // User clicked "Import from File" button
 			    	   Toast.makeText(getApplicationContext(), "Opens File Browser", Toast.LENGTH_LONG).show();
+			    	   
+			    	   //start file browser
+			    	   Intent intent = new Intent(getBaseContext(), FileBrowser.class);
+			    	   startActivity(intent);
 			       }
 			});
 			

@@ -41,9 +41,10 @@
         <item>Photo</item>
     </string-array>
 
-    <string name="no_data">No Data</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_input_text">Enter Text</string>
     <string name="text_instructions">Please enter your text:</string>
+    <string name="no_data">No Data</string>
+    <string name="title_activity_file_browser">File Browser</string>
 
 </resources>
