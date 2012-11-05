@@ -61,9 +61,16 @@ public class InputText extends Activity {
     		OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
     		myOutWriter.append(inputText);
     		myOutWriter.close();
+    		
+    		addToList(myTextFile);
+    		
     	} catch (Exception e) {
     		Toast.makeText(getBaseContext(), e.getMessage(), 
     				Toast.LENGTH_SHORT).show();
     	}
+    }
+    
+    public void addToList(File myTextFile){
+    	InputFile.files.add(myTextFile);
     }
 }
