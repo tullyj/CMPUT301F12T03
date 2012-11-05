@@ -151,9 +151,11 @@ public class CreateTask extends Activity {
 	
     }
     
-    /**
-     * Method for converting our input to ItemListElement
-     */
+  /**
+   * Method for converting our input to ItemListElement
+   * @param in		Array containing all the elements
+   * @return		Returns an ArrayList<ItemListElement>
+   */
     public ArrayList<ItemListElement> formatOutputForList(String[] in){
     	
     	ArrayList<ItemListElement> item = new ArrayList<ItemListElement>();
@@ -390,7 +392,7 @@ public class CreateTask extends Activity {
     		
     		Context context = getApplicationContext();
     		String error = "Saving task to web service";
-    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_LONG);
+    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
     		toast.show();
  		
     	}
