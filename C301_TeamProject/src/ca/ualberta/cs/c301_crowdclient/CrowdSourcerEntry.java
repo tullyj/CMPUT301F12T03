@@ -3,18 +3,19 @@ package ca.ualberta.cs.c301_crowdclient;
 import ca.ualberta.cs.c301_repository.TfTask;
 
 /**
- * Task Value Object
+ * Entry to store in the webservice. Contains a task object as content.
  * @author Victor Guana - guana[at]ualberta.ca
- * @author Colin Hunt - colin[at]ualberta.ca
+ * @author Modified by Colin Hunt - colin[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */
 public class CrowdSourcerEntry {
 	
 	private String summary;
 	
+	/** Content is a TfTask object because gson needs to have a concrete type */
 	private TfTask content;
 	
-	// This is the task id
+	/** This is the task id */
 	private String id;
 	
 	private String description;

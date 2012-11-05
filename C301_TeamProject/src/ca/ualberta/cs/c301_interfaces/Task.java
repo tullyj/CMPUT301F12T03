@@ -4,7 +4,11 @@ import java.util.List;
 
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 
-
+/**
+ * Interface for interacting with a task object.
+ * @author colinhunt
+ *
+ */
 public interface Task 
         /* extends CrowdSourcerContent */ {
     
