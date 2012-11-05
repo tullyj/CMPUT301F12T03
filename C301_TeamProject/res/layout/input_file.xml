@@ -1,8 +1,18 @@
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
+    android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <!-- <LinearLayout -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:orientation="vertical" > -->
+
+
+    <!-- </LinearLayout> -->
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -19,19 +29,17 @@
             android:text="@string/title_inputfile"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
-
-
-
+
     <ListView
         android:id="@+id/importList"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/save"
-        android:layout_below="@+id/linearLayout1">
+        android:layout_below="@+id/linearLayout1"
+        tools:listitem="@android:layout/simple_list_item_1" >
 
     </ListView>
-
-
+
     <Button
         android:id="@+id/save"
         style="?android:attr/buttonStyleSmall"
@@ -39,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:onClick="saveClick"
         android:text="@string/save_changes" />
 
     <ImageButton

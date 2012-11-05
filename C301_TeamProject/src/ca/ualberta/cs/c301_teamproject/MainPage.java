@@ -7,6 +7,11 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * This class just has the buttons for the main page.
+ * NOTE: there are extra buttons on this page for demonstration purposes
+ *
+ */
 public class MainPage extends Activity {
 
     @Override
@@ -53,7 +58,7 @@ public class MainPage extends Activity {
     //for debugging input file menu
     public void goToInputFile(View view) {
 
-        Intent intent = new Intent(this, InputFile.class);
+        Intent intent = new Intent(this, ItemList.class);
 
         // need to send parameters to filter into all tasks
         startActivity(intent);

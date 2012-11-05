@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/rowTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/rowIcon"
+        android:paddingTop="@dimen/listPadding"
+        android:text="@string/row_title_blank"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/rowSub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rowTitle"
+        android:layout_toRightOf="@+id/rowIcon"
+        android:paddingBottom="@dimen/listPadding"
+        android:text="@string/row_sub_blank" />
+
+<!--         android:layout_alignParentTop="true" -->
+
+    <ImageView
+        android:id="@+id/rowIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@id/rowSub"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="false"
+        android:contentDescription="@+id/files_attach_desc"
+        android:src="@android:drawable/ic_input_get" />
+
+    <TextView
+        android:id="@+id/rowC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/rowTitle"
+        android:paddingTop="@dimen/listPaddingAlt"
+        android:text="@string/row_carrot"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

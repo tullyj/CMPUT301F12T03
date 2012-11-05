@@ -2,11 +2,9 @@ package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,14 +27,17 @@ public class InputFile extends Activity {
 	static final int DIALOG_AUDIO = 0;
 	static final int DIALOG_PHOTO = 1;
 	static final int DIALOG_ABOUT = 2;
+	static int itemType;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public ArrayList<String> listValues = new ArrayList<String>();
+	public ArrayList<File> files = new ArrayList<File>();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_file);
+        itemType = getIntent().getIntExtra("ItemType", 0);
         updateList();
+        importFile((View) findViewById(R.layout.input_file));
     }
 
     @Override
@@ -49,14 +50,17 @@ public class InputFile extends Activity {
      * When "+" is clicked create a dialog for obtaining the desired item.
      * @param v		Current view.
      */
-    public void importFile(View v){
-    	//currently hardcoded for data types
-    	Dialog importDialog = onCreateDialog(DIALOG_AUDIO);
-//    	Dialog importDialog = onCreateDialog(DIALOG_AUDIO);
+    public void importFile(View v){    	
+    	Dialog importDialog;
+    	if(itemType == DIALOG_PHOTO){
+    		importDialog = onCreateDialog(DIALOG_PHOTO);
+    	}else{ //if(itemType == DIALOG_AUDIO){
+    		importDialog = onCreateDialog(DIALOG_AUDIO);
+    	}
         importDialog.show();
     }
     
-    
+    @Override
     /**
      * When the menu button item "About" is selected display about dialog.
      * @param item	item clicked.
@@ -65,6 +69,17 @@ public class InputFile extends Activity {
     	Dialog helpDialog = onCreateDialog(DIALOG_ABOUT);
         helpDialog.show();
         return true;
+    }
+    
+    public void saveClick(View v){
+    	if(files.size() > 0){
+	    	Toast.makeText(getApplicationContext(), 
+	    		"Adding Files to Item of Task\n" +
+	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
+    	}else{
+    		Toast.makeText(getApplicationContext(), 
+    	    		"Please add a file before saving." , Toast.LENGTH_LONG).show();
+    	}
     }
     
     /**
@@ -82,8 +97,7 @@ public class InputFile extends Activity {
 				builder.setMessage("How would you like to add a photo?");				
 				// Add "Take a Photo" button
 				builder.setPositiveButton(R.string.import_capturepic, new DialogInterface.OnClickListener() {
-				    @SuppressLint("SdCardPath")
-					public void onClick(DialogInterface dialog, int id) {
+				       public void onClick(DialogInterface dialog, int id) {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -112,12 +126,10 @@ public class InputFile extends Activity {
 			// Add "Import from File" button
 			builder.setNeutralButton(R.string.import_fromfile, new DialogInterface.OnClickListener() {
 			       public void onClick(DialogInterface dialog, int id) {
-			           // User clicked "Import from File" button
-			    	   Toast.makeText(getApplicationContext(), "Opens File Browser", Toast.LENGTH_LONG).show();
-			    	   
-			    	   //start file browser
-			    	   Intent intent = new Intent(getBaseContext(), FileBrowser.class);
-			    	   startActivity(intent);
+			    	   // Start the FileBrowser activity
+			    	   Intent intent = new Intent(getApplicationContext(), FileBrowser.class);
+			           // need to send parameters to filter into all tasks
+			           startActivity(intent);
 			       }
 			});
 			
@@ -148,7 +160,7 @@ public class InputFile extends Activity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
             	try{
-            			listValues.add(data.getData().getPath());
+            			files.add(new File(data.getData().getPath()));
             	}catch(Exception e){
             		try{
             			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
@@ -175,7 +187,7 @@ public class InputFile extends Activity {
             			
             			Uri uriImage = Uri.withAppendedPath(
             					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(iID));
-            			listValues.add(uriImage.getPath());
+            			files.add(new File(uriImage.getPath()));
             			myCursor.close();
             			
             		} catch(Exception ex){
@@ -196,13 +208,15 @@ public class InputFile extends Activity {
 	/**
 	 * Refreshes, or recreates, the listview on the Input File screen.
 	 */
-    public void updateList(){
-    	String[] values = new String[listValues.size()];
-        listValues.toArray(values);
+    public void updateList(){        
+        String[] filenames = new String[files.size()];
+        for(int i = 0; i < files.size(); i++){
+        	filenames[i] = files.get(i).getName();
+        }
         
         ListView listView = (ListView) this.findViewById(R.id.importList);		
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
-        	android.R.layout.simple_list_item_1, values);
+        	android.R.layout.simple_list_item_1, filenames);
         listView.setAdapter(adapter);
     }
 }

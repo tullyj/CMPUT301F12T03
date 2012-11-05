@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+/**
+ * This class is the welcome page, any click on the screen will move yor forward
+ *
+ */
 public class WelcomePage extends Activity {
 
     @Override

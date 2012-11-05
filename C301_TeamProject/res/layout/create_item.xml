@@ -56,6 +56,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="number"
+            android:gravity="center"
             android:hint="@string/number_sign" />
     </LinearLayout>
 

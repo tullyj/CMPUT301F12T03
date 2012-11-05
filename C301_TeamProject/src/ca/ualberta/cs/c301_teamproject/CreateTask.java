@@ -3,6 +3,7 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
@@ -23,6 +25,13 @@ import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
+
+/**
+ * This class is responsible for grabbing all of the information needed for creating a task 
+ * then passes it off to the repository for creation
+ * @author topched
+ *
+ */
 
 public class CreateTask extends Activity {
 	
@@ -39,6 +48,10 @@ public class CreateTask extends Activity {
         //http://stackoverflow.com/questions/6343166/android-os-networkonmainthreadexception
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        
+        //setting the default radio button to public
+        RadioGroup vis = (RadioGroup)findViewById(R.id.visibiltyChoice);
+        vis.check(R.id.publicRadioButton);
         
         //only create this list on create, does not get re-created when it returns from adding a item
         currentTaskItems = new ArrayList<String>();
@@ -74,22 +87,33 @@ public class CreateTask extends Activity {
     }
     
     
-    //just adding a item to the task list
+    /**
+     * This method adds an item to the current tasks ArrayList
+     * @param Item	item to be added to the task
+     */
     public void addItemToList(String item){
     	
     	currentTaskItems.add(item);
     }
     
     
-    //this method will return all the items currently attached to the task
+    /**
+     * This method will return an array of strings, which is the item list for the
+     * current task
+     * @return	A string array containing the item list for the current task
+     */
     public String[] getItemList(){
     	
     	return currentTaskItems.toArray(new String[currentTaskItems.size()]);
     }
     
     
-    //updateItemList will add the new item to the list, get an array of the new list, update the list
-    //view and also update the item count
+    /**
+     * When a item is clicked on the list view. Grabs the information for the item and
+     * then passes that off to CreateItem for editing. When it returns to this activity
+     * onActivityResult will be called with requestCode = 2
+     * @param position	Position of list item clicked
+     */
     public void updateItemList(int position){
     	
     	String temp[] = getItemList();
@@ -102,7 +126,9 @@ public class CreateTask extends Activity {
     }
     
     
-    //this method updates the list view and the count of the current items
+    /**
+     * This method updates the list view and the count of the current items
+     */
     public void updateListViewAndCount(){
     	
     	//updating the currentTaskItems then getting a array of the list
@@ -118,13 +144,14 @@ public class CreateTask extends Activity {
     	int value = result.length;
     	String val = Integer.toString(value);
     	num.setText(val);
-    	
-    	
+	
     }
     
-    
-
-    //this method starts an activity for a result. onActivityResult is called when it returns
+    /**
+     * This method is called when the "+" button is clicked. When it returns to this activity onActivityResult
+     * will be called with requestCode = 1
+     * @param view	The current view
+     */
     public void createItem(View view) {
     	
         Intent intent = new Intent(this, CreateItem.class);
@@ -134,9 +161,15 @@ public class CreateTask extends Activity {
      
 
     
-    //this method is called back when startActivityForResult is finished
-    //this link below was used for this portion: 
-    //http://stackoverflow.com/questions/10407159/android-how-to-manage-start-activity-for-result
+    /**
+     * This method is called back when startActivityForResult is finished
+     *   this link below was used for this portion: 
+     *   http://stackoverflow.com/questions/10407159/android-how-to-manage-start-activity-for-result
+     * @param requestCode	Selects either creating item(1) or editing item(2)
+     * @param resultCode	Status of the result
+     * @param data			The data coming back from CreateItem	
+     */
+  
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     	//requestCode = 1 -> createItem made the call for a result
@@ -155,27 +188,22 @@ public class CreateTask extends Activity {
     	//this is where the global int position comes into play
     	if(requestCode == 2){
     		
-    		//test to see if i made it
-    		//Context context = getApplicationContext();
-        	//String error = "i am code 2";
-    		//Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
-    		//toast.show();
-    		
+		
     		if(resultCode == RESULT_OK){
     		String result = data.getStringExtra("result");
     		currentTaskItems.set(editPosition, result);
     		updateListViewAndCount();
     		}
-    		
-    		
-    	}
-    	
-    	
+    		   		
+    	}  	
     }
     
     
-    //this method gathers all of the information about the current task
-    //need to still grab all the info from the list (list not done yet)
+    /**
+     * This method gathers all of the information about the current task, then
+     * creates the task
+     * @return A task object with each item added to it
+     */
     public Task gatherTaskInfo(){
     	
     	String title, numItem, visibility;
@@ -196,34 +224,81 @@ public class CreateTask extends Activity {
     	visibility = visChoice.getText().toString();
     	String[] items = getItemList();
     	
-    	//creating a task
-    	Task t = new TfTask();
-    	t.setTitle(title);
+    	//validate input
+    	boolean valid = validateInput(title, visibility, items);
     	
-
-    	
-    	if(visibility == "Public"){
-    		
-    		t.setVisibility(Visibility.PUBLIC);
-  		
+    	//if valid input create a task and return it
+    	if(valid){
+	    	//creating a task
+	    	Task t = new TfTask();
+	    	t.setTitle(title);
+	    	
+	
+	    	//setting the visibility enum
+	    	if(visibility == "Public"){
+	    		
+	    		t.setVisibility(Visibility.PUBLIC);
+	  		
+	    	}else{
+	 		
+	    		t.setVisibility(Visibility.PRIVATE);  		
+	    	}
+	    	
+	    	
+	    	//creating each individual item
+	    	addItemsToTask(t);
+	    	
+	    	// TODO need to add the device id to the task
+	    	//put link in git wiki reference page -- need to decide route
+	    	
+	    	return t;
     	}else{
- 		
-    		t.setVisibility(Visibility.PRIVATE);  		
+    		//task not correct
+    		return null;
     	}
-    	
-    	
-    	//creating each individual item
-    	addItemsToTask(t);
-    	
-    	// TODO need to add the device id to the task
-    	
-    	return t;
-    	
-
-    	
 
     }
     
+    
+    /**
+     * This method just validates the input for the task
+     * @param title			The task title
+     * @param visibility	The visibility
+     * @param items			An array of items
+     * @return	true if valid, toast then false otherwise
+     */
+    public boolean validateInput(String title, String visibility, String[] items){
+    	
+    	boolean valid = true;
+    	String error = "";
+    	
+    	if(title.equals("")){
+    		error += "Invalid title\n";
+    		valid = false;
+    	}else if(visibility.equals("")){
+    		error += "Select either Public or Private\n";
+    		valid = false;
+    	}else if(items.length == 0){
+    		error += "Please attach an item to your task\n";
+    		valid = false;
+    	}
+    	
+    	//if valid return else toast
+    	if(valid){
+    		return true;
+    	}else{
+
+    		Context context = getApplicationContext();
+    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
+    		toast.show();
+    		return false;
+    	}
+    }
+    
+    /**
+     * This method adds all the items to the task
+     * @param task	The task to add the items to
+     */
     public void addItemsToTask(Task task){
     	
     	
@@ -257,15 +332,17 @@ public class CreateTask extends Activity {
     	
 	
     }
-        
+    /**
+     * Called when the "Save Task" button is clicked. This method creates the task then saves it
+     * NOTE: Need to make this step async, not working yet so not added
+     * @param view	The current view
+     */
     public void saveTask (View view) {
             	
     	Task task = gatherTaskInfo();
-    	
-    	//calls to crowd sourcer
+    	//calls to crowd sourcer only if a task is returned
+    	if(task != null)
     	TfTaskRepository.addTask(task);
-    	
-    	
     	
     }
 
