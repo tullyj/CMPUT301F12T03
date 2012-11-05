@@ -1,6 +1,7 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
+import java.net.URI;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 
 import android.os.Bundle;
 
@@ -134,7 +136,7 @@ public class FileBrowser extends ListActivity {
 
   
 
-  File file = new File(path.get(position));
+  final File file = new File(path.get(position));
 
   
 
@@ -187,13 +189,15 @@ public class FileBrowser extends ListActivity {
 
       new DialogInterface.OnClickListener() {
 
-       
-
-       
        public void onClick(DialogInterface dialog, int which) {
 
         // TODO Auto-generated method stub
-
+    	   File addFile = file.getAbsoluteFile();
+    	   InputFile.files.add(addFile);
+    	   //go back to input list
+    	   Intent intent = new Intent(getApplicationContext(), InputFile.class);
+    	   intent.putExtra("FromFile", 4);
+    	   startActivity(intent);
        }
 
       }).show();

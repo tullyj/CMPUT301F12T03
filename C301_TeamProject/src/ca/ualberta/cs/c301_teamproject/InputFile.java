@@ -24,20 +24,30 @@ import android.widget.Toast;
  */
 public class InputFile extends Activity {
 
-	static final int DIALOG_AUDIO = 0;
-	static final int DIALOG_PHOTO = 1;
-	static final int DIALOG_ABOUT = 2;
+	static final int DIALOG_AUDIO = 1;
+	static final int DIALOG_PHOTO = 2;
+	static final int DIALOG_ABOUT = 3;
+	static final int DIALOG_FILE = 4;
 	static int itemType;
+	static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public ArrayList<File> files = new ArrayList<File>();
+	static public ArrayList<File> files = new ArrayList<File>();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_file);
-        itemType = getIntent().getIntExtra("ItemType", 0);
+        if(getIntent().getIntExtra("ItemType", 0) > 0)
+        	itemType = getIntent().getIntExtra("ItemType", 0);
+        
+        if(getIntent().getIntExtra("FromFile", 0) == 4)
+        	fromFile = true;
+        else{
+        	importFile((View) findViewById(R.layout.input_file));
+        	fromFile = false;
+        }
         updateList();
-        importFile((View) findViewById(R.layout.input_file));
+        
     }
 
     @Override
@@ -54,8 +64,10 @@ public class InputFile extends Activity {
     	Dialog importDialog;
     	if(itemType == DIALOG_PHOTO){
     		importDialog = onCreateDialog(DIALOG_PHOTO);
-    	}else{ //if(itemType == DIALOG_AUDIO){
+    	}else if(itemType == DIALOG_AUDIO){
     		importDialog = onCreateDialog(DIALOG_AUDIO);
+    	}else{
+    		return;
     	}
         importDialog.show();
     }
