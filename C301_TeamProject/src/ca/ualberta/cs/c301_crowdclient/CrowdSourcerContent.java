@@ -8,7 +8,9 @@ import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 
 /**
- * Interface to allow any class to be used as content in a CrowdSourcerEntry
+ * Parent class to allow any class to be used as content in a CrowdSourcerEntry
+ * Implements task interface right now because was trying to get it to work
+ * with gson.  As a result, all methods are empty.
  * @author Colin Hunt - colin[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */

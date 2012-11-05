@@ -7,6 +7,13 @@ import java.util.List;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 
+/**
+ * TfTaskItem encapsulates an item requirement in a task. Example: user can
+ * define a photo item requirement, give the number of photos requested, and
+ * the Item will contain all the photos added.
+ * @author colinhunt
+ *
+ */
 public class TfTaskItem implements TaskItem {
 
     private List<File> fileList = new ArrayList<File>();

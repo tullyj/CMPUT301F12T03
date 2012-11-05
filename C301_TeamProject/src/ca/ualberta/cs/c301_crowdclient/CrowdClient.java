@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * CrowdSource Service Client (Teaser)
  * @author Victor Guana - guana[at]ualberta.ca
+ * @author Modified by Colin Hunt - colin[at]ualberta.ca
  * University of Alberta, Department of Computing Science
  */
 public class CrowdClient {
@@ -35,52 +36,6 @@ public class CrowdClient {
 	
 	// POST Request
 	HttpPost httpPost = new HttpPost("http://crowdsourcer.softwareprocess.es/F12/CMPUT301F12T03/");
-	
-	/**
-	 * Sends messages to the crowd service and retrieves its responses
-	 */
-//	public void testServiceMethods(){
-//
-//		// Example Simple Entry
-//		CrowdSourcerEntry entry = initializeEntry();
-//		
-//		try {
-//			CrowdSourcerEntry newT = this.insertEntry(entry);
-//			System.out.println("Inserted Entry -> " + newT.getId());
-//			
-//			CrowdSourcerEntry newTClone = this.getEntry(newT.getId());
-//			System.out.println("Double Checking by Listing -> " + newTClone.getId());
-//			
-//			String lot= this.listEntrys();
-//			System.out.println("List of Entrys in the CrowdSourcer -> " + lot);
-//
-//		} 
-//		catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		finally {
-//		    //httpPost.releaseConnection(); //causes method not found error
-//		}
-//	}
-	
-	/**
-	 * Initializes a simple mock entry
-	 * @return
-	 */
-//	private CrowdSourcerEntry initializeEntry() {
-//		
-//		Content c = new Content();
-//		c.setA("a ahoy");
-//		c.setB("b ahoy");
-//		c.setC("c ahoy");
-//		c.setD("c ahoy");
-//		
-//		CrowdSourcerEntry t = new CrowdSourcerEntry();
-//		t.setDescription("Long description of the entry...");
-//		t.setSummary("Short summary of the entry...");
-//		t.setContent(c);	
-//		return t;
-//	}
 
 	/*
 	 * To convert the InputStream to String we use the BufferedReader.readLine()
@@ -206,7 +161,12 @@ public class CrowdClient {
 	    //EntityUtils.consume(entity); //causes method not found error
         //return newEntry;
 	}
-
+	
+	/** 
+	 * Consumes the UPDATE operation of the service
+	 * @param entry to update
+	 * @throws Exception
+	 */
 	public void updateEntry(CrowdSourcerEntry entry) throws Exception {
 	    // TODO Auto-generated method stub
         List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
@@ -225,7 +185,13 @@ public class CrowdClient {
 
         System.out.println(status);
 	}
-
+	
+	/**
+	 * Gets the list of entries by using the GET operation of the service
+	 * on each entry.
+	 * @return List of full crowd sourcer entries.
+	 * @throws Exception
+	 */
 	public List<CrowdSourcerEntry> getEntryList() throws Exception {
 	    List<Map<String,String>> shallowEntryList = getShallowList();
 	    List<CrowdSourcerEntry> entryList = new ArrayList<CrowdSourcerEntry>(); 
@@ -236,6 +202,12 @@ public class CrowdClient {
         return entryList;
     }
 
+	/**
+	 * Gets the list of entries using just the LIST operation of the service.
+	 * The entries in the list do not contain the content field.
+	 * @return A list of name/value pairs.
+	 * @throws Exception
+	 */
 	public List<Map<String, String>> getShallowList() throws Exception {
         String jsonEntryList = listEntrys();
         Type listType = new TypeToken<List<Map<String,String>>>(){}.getType();

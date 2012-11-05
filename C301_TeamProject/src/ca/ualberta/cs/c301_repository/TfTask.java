@@ -8,6 +8,13 @@ import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_interfaces.Visibility;
 
+/**
+ * TfTask encapsulates a task. It holds all information about a task including
+ * the list of items (text item, photo item, ...) associated with a task and
+ * methods for manipulating them.
+ * @author colinhunt
+ *
+ */
 public class TfTask extends CrowdSourcerContent implements Task {
     
     private List<TfTaskItem> itemList = new ArrayList<TfTaskItem>();
