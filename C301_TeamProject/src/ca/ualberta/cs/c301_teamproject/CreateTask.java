@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
@@ -341,9 +342,47 @@ public class CreateTask extends Activity {
             	
     	Task task = gatherTaskInfo();
     	//calls to crowd sourcer only if a task is returned
-    	if(task != null)
-    	TfTaskRepository.addTask(task);
+    	if(task != null){
+    		new saveTask().execute(task);
+		
+    	}
     	
+    }
+    
+    /**
+     * This is here for now until general async is figured out. The screen doesnt freeze
+     *
+     */
+    private class saveTask extends AsyncTask<Task, String, String>{
+
+		@Override
+		protected String doInBackground(Task... arg0) {
+			TfTaskRepository.addTask(arg0[0]);
+			//finish();
+			return "Done saving task";
+		}
+    	
+    	protected void onPreExecute(){
+    		
+    		Context context = getApplicationContext();
+    		String error = "Saving task to web service";
+    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_LONG);
+    		toast.show();
+ 		
+    	}
+    	
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+    		Context context = getApplicationContext();
+    		Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
+    		toast.show();
+    		finish();
+		}
+
+	
+
     }
 
 }
