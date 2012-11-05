@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -136,9 +135,13 @@ public class CreateTask extends Activity {
     	ListView items = (ListView)findViewById(R.id.showAttachedItems);
     	String[] result = getItemList();
     	
+    	ArrayList<ItemListElement> item = formatOutputForList(result);
+    	ItemListElement[] elm = new ItemListElement[item.size()];
+    	item.toArray(elm);
+    	
     	//updating the list view
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, result);
-    	items.setAdapter(adapter);
+    	ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elm);
+        items.setAdapter(adapter);
     	
     	//update the item count
     	EditText num = (EditText)findViewById(R.id.showCurrentItemNum);
@@ -146,6 +149,27 @@ public class CreateTask extends Activity {
     	String val = Integer.toString(value);
     	num.setText(val);
 	
+    }
+    
+    /**
+     * Method for converting our input to ItemListElement
+     */
+    public ArrayList<ItemListElement> formatOutputForList(String[] in){
+    	
+    	ArrayList<ItemListElement> item = new ArrayList<ItemListElement>();
+    	
+    	for(int i = 0;i<in.length;i++){
+    		String[]temp = in[i].split("\\|\\|");
+    		String top = temp[0] + " " + temp[1] + " files(s)";
+    		String bottom = "Description: " + temp[2];
+    		
+    		
+    	
+    		item.add(new ItemListElement(android.R.drawable.ic_input_get, top, bottom));
+    	}
+    	
+    	return item;
+    	
     }
     
     /**
