@@ -12,6 +12,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * This class creates an input text menu that will take a user's input and
+ * generate a text file at a set location and add it to the file list.
+ *  
+ * @author Edwin Chung
+ *
+ */
 public class InputText extends Activity {
 
     @Override
@@ -25,7 +32,11 @@ public class InputText extends Activity {
         getMenuInflater().inflate(R.menu.input_text, menu);
         return true;
     }
-    
+    /**
+     * Will take the user's input and generate a text file in a set directory
+     * 
+     * @param view
+     */
     public void saveChanges(View view) {
     	String inputText = "";
     	
@@ -61,9 +72,22 @@ public class InputText extends Activity {
     		OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
     		myOutWriter.append(inputText);
     		myOutWriter.close();
+    		
+    		//call method to add to the item list
+    		addToList(myTextFile);
+    		
     	} catch (Exception e) {
     		Toast.makeText(getBaseContext(), e.getMessage(), 
     				Toast.LENGTH_SHORT).show();
     	}
+    }
+    
+    /**
+     * Adds the text file to the list of files
+     * 
+     * @param myTextFile			text file to be added
+     */
+    public void addToList(File myTextFile){
+    	//implement add to the list of text files in the task
     }
 }
