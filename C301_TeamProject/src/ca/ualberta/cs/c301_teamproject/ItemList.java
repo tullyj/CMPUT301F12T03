@@ -104,7 +104,7 @@ public class ItemList extends Activity {
     
     public void inputFileClick(View v){
     	Intent intent = new Intent(this, InputFile.class);
-    	intent.putExtra("ItemType", 1);
+    	intent.putExtra("ItemType", 2);
         startActivity(intent);
     }
     
