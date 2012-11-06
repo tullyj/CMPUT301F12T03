@@ -26,15 +26,19 @@ public class TfTaskTest {
      */
     @Test
     public void testAddItem() {
-        TfTask task = new TfTask();
-        TaskItem item = new TfTaskItem(ItemType.TEXT, 5, "test item");
-        task.addItem(item);
-        List<TfTaskItem> itemList = task.getAllItems();
-        assertTrue(itemList.size() == 1);
-        TaskItem gottenItem = itemList.get(1);
-        assertEquals(gottenItem.getType(), item.getType());
-        assertEquals(gottenItem.getNumber(), item.getNumber());
-        assertEquals(gottenItem.getDescription(), item.getDescription());
+        try {            
+            TfTask task = new TfTask();
+            TaskItem item = new TfTaskItem(ItemType.TEXT, 5, "test item");
+            task.addItem(item);
+            List<TfTaskItem> itemList = task.getAllItems();
+            assertTrue(itemList.size() == 1);
+            TaskItem gottenItem = itemList.get(0);
+            assertEquals(gottenItem.getType(), item.getType());
+            assertEquals(gottenItem.getNumber(), item.getNumber());
+            assertEquals(gottenItem.getDescription(), item.getDescription());
+        } catch (Exception e) {
+            fail("Exception occurred");
+        }
     }
 
     /**
@@ -74,7 +78,7 @@ public class TfTaskTest {
     public void testSetDescription() {
         TfTask task = new TfTask();
         String testDescription = "Test description";
-        task.setTitle(testDescription);
+        task.setDescription(testDescription);
         assertEquals(task.getDescription(), testDescription);
     }
 
