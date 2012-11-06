@@ -91,7 +91,7 @@ public class ViewSingleTask extends Activity {
     			title, items.get(i).getDescription());
     	}
         final String itemT = itemType;
-        ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
+        /*ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
         ListView listView = (ListView) findViewById(R.id.singleTaskList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
@@ -108,7 +108,7 @@ public class ViewSingleTask extends Activity {
 				
 				startActivity(intent);
 			}	
-        });
+        });*/
     }
     @Override
 	/**
