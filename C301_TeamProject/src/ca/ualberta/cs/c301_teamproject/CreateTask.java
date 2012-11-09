@@ -3,6 +3,7 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -380,30 +382,34 @@ public class CreateTask extends Activity {
      *
      */
     private class saveTask extends AsyncTask<Task, String, String>{
+    	
+    	Dialog save = new Dialog(CreateTask.this);
+        
 
 		@Override
 		protected String doInBackground(Task... arg0) {
+			
+			//add the task to the repository
 			TfTaskRepository.addTask(arg0[0]);
-			//finish();
-			return "Done saving task";
+			return null;
 		}
     	
     	protected void onPreExecute(){
     		
-    		Context context = getApplicationContext();
-    		String error = "Saving task to web service";
-    		Toast toast = Toast.makeText(context, error, Toast.LENGTH_SHORT);
-    		toast.show();
- 		
+    		//show this saving spinner
+            save.setContentView(R.layout.save_load_dialog);
+            save.setTitle("Saving Task");
+    		save.show();
+    			
     	}
     	
 		@Override
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-    		Context context = getApplicationContext();
-    		Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-    		toast.show();
+    		
+			//close the dialog and the activity
+			save.dismiss();
     		finish();
 		}
 
