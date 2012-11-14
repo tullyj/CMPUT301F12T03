@@ -45,78 +45,78 @@ public class FileBrowser extends ListActivity {
      * @param dirPath		current directory
      */
     private void getDir(String dirPath) {
-	     myPath.setText("Location: " + dirPath);
+         myPath.setText("Location: " + dirPath);
 	
-	     item = new ArrayList<String>();
-	     path = new ArrayList<String>();
+         item = new ArrayList<String>();
+         path = new ArrayList<String>();
 	
-	     File f = new File(dirPath);
-	     File[] files = f.listFiles();  
+         File f = new File(dirPath);
+         File[] files = f.listFiles();  
 	
-	     if(!dirPath.equals(root)) {
+         if(!dirPath.equals(root)) {
 	
-	      item.add(root);
-	      path.add(root);
+         item.add(root);
+         path.add(root);
 	
-	      item.add("../");
-	      path.add(f.getParent());
-	     }
+         item.add("../");
+         path.add(f.getParent());
+         }
 
-	     //populate the list of files/folders to be used by the adaptor
-	     for(int i=0; i < files.length; i++) {
-	       File file = files[i];
-	       path.add(file.getPath());
+         //populate the list of files/folders to be used by the adaptor
+         for(int i=0; i < files.length; i++) {
+           File file = files[i];
+           path.add(file.getPath());
 	       
-	       if(file.isDirectory())
-	        item.add(file.getName() + "/");
-	       else
-	        item.add(file.getName());
-	     }
+           if(file.isDirectory())
+               item.add(file.getName() + "/");
+           else
+               item.add(file.getName());
+         }
 	
-	     //create an adaptor to display the files using "row" layout
-	     ArrayAdapter<String> fileList =
-	      new ArrayAdapter<String>(this, R.layout.row, item);
-	     setListAdapter(fileList);
+         //create an adaptor to display the files using "row" layout
+         ArrayAdapter<String> fileList =
+         new ArrayAdapter<String>(this, R.layout.row, item);
+         setListAdapter(fileList);
     }
 
- @Override
+     @Override
 
- /**
-  * Is called when an item in the browser is clicked
-  */
- protected void onListItemClick(ListView l, View v, int position, long id) {
-	 final File file = new File(path.get(position));
+     /**
+      * Is called when an item in the browser is clicked
+      */
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        final File file = new File(path.get(position));
 
-	 if (file.isDirectory()) {
-		 if(file.canRead())
-			 getDir(path.get(position));
-		 else {
-			 new AlertDialog.Builder(this).setIcon(R.drawable.taskforcebar)
-			 .setMessage("[" + file.getName() + "] folder can't be read!")
-			 .setPositiveButton("OK", 
-					 new DialogInterface.OnClickListener() {
-				 	public void onClick(DialogInterface dialog, int which) {
-        // TODO Auto-generated method stub
-       }
-      }).show();
-   }
-  }
-  else {
-   new AlertDialog.Builder(this)
-    .setIcon(R.drawable.taskforcebar).setMessage("[" + file.getName() + "]")
-    .setPositiveButton("OK", 
-      new DialogInterface.OnClickListener() {
-       public void onClick(DialogInterface dialog, int which) {
-
-    	   File addFile = file.getAbsoluteFile();
-    	   InputFile.files.add(addFile);
+        if (file.isDirectory()) {
+            if(file.canRead())
+                getDir(path.get(position));
+            else {
+                new AlertDialog.Builder(this).setIcon(R.drawable.taskforcebar)
+                .setMessage("[" + file.getName() + "] folder can't be read!")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    }
+                }).show();
+            }
+        }
+        else {
+            new AlertDialog.Builder(this)
+            .setIcon(R.drawable.taskforcebar)
+            .setMessage("[" + file.getName() + "]")
+            .setPositiveButton("OK", 
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    File addFile = file.getAbsoluteFile();
+                    InputFile.files.add(addFile);
     	   
-    	   //go back to input list
-    	   Intent intent = new Intent(getApplicationContext(), InputFile.class);
-    	   intent.putExtra("FromFile", 4);
-    	   startActivity(intent);
-       }
-      }).show();
-  }
- }
+                    //go back to input list
+                    Intent intent = new Intent(getApplicationContext(), 
+                        InputFile.class);
+                    intent.putExtra("FromFile", 4);
+                    startActivity(intent);
+                }
+            }).show();
+            }
+    }
 }
