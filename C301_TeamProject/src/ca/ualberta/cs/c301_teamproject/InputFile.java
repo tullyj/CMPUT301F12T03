@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,11 +27,15 @@ public class InputFile extends Activity {
 
 	static final int DIALOG_AUDIO = 1;
 	static final int DIALOG_PHOTO = 2;
+	static final int DIALOG_VIDEO = 5;
 	static final int DIALOG_ABOUT = 3;
 	static final int DIALOG_FILE = 4;
 	static int itemType;
 	static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+	private static final int CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE = 300;
+	private static final int FILE_ACTIVITY_REQUEST_CODE = 400;
 	static public ArrayList<File> files = new ArrayList<File>();
 	
     @Override
@@ -64,6 +69,8 @@ public class InputFile extends Activity {
     	Dialog importDialog;
     	if(itemType == DIALOG_PHOTO){
     		importDialog = onCreateDialog(DIALOG_PHOTO);
+    	}else if(itemType == DIALOG_VIDEO){
+    		importDialog = onCreateDialog(DIALOG_VIDEO);
     	}else if(itemType == DIALOG_AUDIO){
     		importDialog = onCreateDialog(DIALOG_AUDIO);
     	}else{
@@ -92,8 +99,8 @@ public class InputFile extends Activity {
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
-	    	Intent itemIntent = new Intent(this, ViewSingleTask.class);
-	    	startActivityForResult(itemIntent, 1);
+	    	//Intent itemIntent = getIntent();
+	    	finish();
     	}else{
     		Toast.makeText(getApplicationContext(), 
     	    		"Please add a file before saving." , Toast.LENGTH_LONG).show();
@@ -107,7 +114,7 @@ public class InputFile extends Activity {
      */
     public Dialog onCreateDialog(int id){     
     	//Context context = getApplicationContext();
-    	if(id == DIALOG_PHOTO || id == DIALOG_AUDIO){
+    	if (id <= DIALOG_VIDEO && id != DIALOG_ABOUT){
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			
 			if(id == DIALOG_PHOTO){
@@ -126,19 +133,38 @@ public class InputFile extends Activity {
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
 				});
-			}else{
+			}else if(id == DIALOG_VIDEO){
+	    		builder.setTitle("Import Video");
+				builder.setMessage("How would you like to add a video?");				
+				// Add "Take a Photo" button
+				builder.setPositiveButton(R.string.import_capturevideo, new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				           // User clicked "Take a Photo" button
+				    	   // create Intent to take a picture and return control to the calling application
+				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()));
+				    	   Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
+				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+				    	   // start the image capture Intent
+				    	   startActivityForResult(photoIntent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+				       }
+				});
+			}else if(id == DIALOG_AUDIO){
 				builder.setTitle("Import Audio");
 				builder.setMessage("How would you like to add audio?");				
 				// Add "Record Audio" button
-//				builder.setPositiveButton(R.string.import_capturepic, new DialogInterface.OnClickListener() {
-//				       public void onClick(DialogInterface dialog, int id) {
-//				           // User clicked "Take a Photo" button
-//				    	   // create Intent to take a picture and return control to the calling application
-//				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//				    	   // start the image capture Intent
-//				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-//				       }
-//				});     
+				builder.setPositiveButton(R.string.import_captureaudio, new DialogInterface.OnClickListener() {
+				       public void onClick(DialogInterface dialog, int id) {
+				           // User clicked "Record Audio" button
+				    	   //Intent intent = new Intent(getApplicationContext(), InputAudio.class);
+				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+				    	   Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
+				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
+				    	   intent.putExtra("AudioExtra", mUri);
+				    	   // start the AUDIO capture Intent
+				    	   startActivityForResult(intent, CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
+				       }
+				});     
 			}
 			
 			// Add "Import from File" button
@@ -146,8 +172,9 @@ public class InputFile extends Activity {
 			       public void onClick(DialogInterface dialog, int id) {
 			    	   // Start the FileBrowser activity
 			    	   Intent intent = new Intent(getApplicationContext(), FileBrowser.class);
+			    	   intent.putExtra("FileType", itemType);
 			           // need to send parameters to filter into all tasks
-			           startActivity(intent);
+			           startActivityForResult(intent, FILE_ACTIVITY_REQUEST_CODE);
 			       }
 			});
 			
@@ -173,12 +200,14 @@ public class InputFile extends Activity {
 	 * @param data				The intent.
 	 */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE ||
+        	requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
             	try{
-            			files.add(new File(data.getData().getPath()));
+            		files.add(new File(data.getData().getPath()));
             	}catch(Exception e){
             		try{
+            			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
             			String[] projection = {
             					MediaStore.Images.Thumbnails._ID,
@@ -205,9 +234,10 @@ public class InputFile extends Activity {
             					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(iID));
             			files.add(new File(uriImage.getPath()));
             			myCursor.close();
+            			}else throw new Exception();
             			
             		} catch(Exception ex){
-            			// Image capture failed, advise user
+            			// capture failed, advise user
                     	Toast.makeText(this, "Unable to find image file", Toast.LENGTH_LONG).show();
             		}
             	}
@@ -218,6 +248,20 @@ public class InputFile extends Activity {
                 // Image capture failed, advise user
             	Toast.makeText(this, "Image Capture Failed", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE) {
+        	if (resultCode == RESULT_OK) {
+        		try{
+        			files.add(new File(data.getData().getPath()));
+        			updateList();
+        		} catch(Exception ex){
+        			// capture failed, advise user
+                	Toast.makeText(this, "Unable to find Audio file", Toast.LENGTH_LONG).show();
+        		}	
+        	}
+        	
+        } else if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
+        	if (resultCode == RESULT_OK)
+        		updateList();
         }
     }
     

@@ -1,7 +1,10 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ca.ualberta.cs.c301_interfaces.ItemType;
@@ -32,7 +35,10 @@ public class ItemList extends Activity {
 
 	static final int DIALOG_AUDIO = 1;
 	static final int DIALOG_PHOTO = 2;
+	static final int DIALOG_VIDEO = 5;
 	static final int DIALOG_ABOUT = 3;
+	static final int TEXT_INTENT = 6;
+	static final int FILE_INTENT = 7;
 	private String taskId;
 	private ItemType itemType;
 	private TaskItem item;
@@ -42,7 +48,23 @@ public class ItemList extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_list);
+        setContentView(R.layout.item_list);        
+        
+        
+        // Get Task and Item
+        String[] inArgs = getIntent().getStringArrayExtra("SendItem");
+        
+        // When item type is known from passing of intent with extra containing item type.
+        taskId = inArgs[0];
+        // Set title of Type of list
+        ((TextView) findViewById(R.id.listTitle)).setText(inArgs[2] + " List");
+        // Set Description from item.getDescription()
+        ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[3]);
+        
+        if(inArgs[1].equals("TEXT")) itemType = ItemType.TEXT;
+        else if(inArgs[1].equals("PHOTO")) itemType = ItemType.PHOTO;
+        else if(inArgs[1].equals("VIDEO")) itemType = ItemType.VIDEO;
+        else itemType = ItemType.AUDIO;
         
         // Set the progress bar and textview listItemFraction.
         int[] progress = populateList();
@@ -55,16 +77,6 @@ public class ItemList extends Activity {
         String frac = Integer.toString(progress[0]) + "/" + Integer.toString(progress[1]); 
         ((TextView) findViewById(R.id.listItemFraction)).setText(frac);
         
-        // When item type is known from passing of intent with extra containing item type.
-        ((TextView) findViewById(R.id.listTitle)).setText("Item List");
-        ((TextView) findViewById(R.id.listItemDesc)).setText(
-        		"Description of item requirements");
-        // Get Task and Item
-        String[] inArgs = getIntent().getStringArrayExtra("SendItem");
-        taskId = inArgs[0];
-        if(inArgs[1].equals("TEXT")) itemType = ItemType.TEXT;
-        else if(inArgs[1].equals("PHOTO")) itemType = ItemType.PHOTO;
-        else itemType = ItemType.AUDIO;
         
         updateList();
     }
@@ -102,38 +114,42 @@ public class ItemList extends Activity {
     /**
      * Looks through the current item within a task for the list of files.
      */
-    private int[] populateList(){
-//    	Task task = null;
-//        try {
-//            task = TfTaskRepository.getTaskById(taskId);
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//            e.printStackTrace();
-//        }
-//        
-//        List<TfTaskItem> itemList = task.getAllItems();
-//        for(int i = 0; i < itemList.size(); i++){
-//        	if(itemList.get(i).getType() == itemType)
-//        		item = itemList.get(i);
-//        }
-    	// Count will be number of files currently for a given item.
-//    	int count = files.size();
-//    	int total = item.getNumber();
-    	//List<File> files = item.getAllFiles();
-
-    	// Total is the target total number for this item.
-
-    	int count = 12;
-    	int total = 20;
+    private int[] populateList(){        
+    	Task task = null;
+        try {
+            task = TfTaskRepository.getTaskById(taskId);
+            
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
         
-    	// DEBUG -- for testing
+        
+        List<TfTaskItem> itemList = task.getAllItems();
+        for(int i = 0; i < itemList.size(); i++){
+        	if(itemList.get(i).getType() == itemType)
+        		item = itemList.get(i);
+        }
+    	
+        // Total is the target total number for this item.
+        int total = item.getNumber();
+    	List<File> files = item.getAllFiles();
+    	// Count will be number of files currently for a given item.
+    	int count = files.size();
+    	
     	for(int i = 0; i < count; i++){
-	    	listElements.add(new ItemListElement(
-	    		android.R.drawable.ic_input_get, "Test Item " + (i+1), 
-	    			"This is a sample description..."));
+    		listElements.add(new ItemListElement(
+    			android.R.drawable.ic_input_get, itemType + " " + (i+1), 
+    				getTime(files.get(i).lastModified())));
     	}
     	
     	return new int[]{count, total};
+    }
+    
+    public String getTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return format.format(date).toString();
     }
     
     /**
@@ -143,13 +159,13 @@ public class ItemList extends Activity {
     public void inputFileClick(View v){
     	Intent intent = null;
     	int num = getItemNum(itemType);
-    	if(num != 5){
+    	if(num != TEXT_INTENT)
 	    	intent = new Intent(this, InputFile.class);
-	    	intent.putExtra("ItemType", num);
-    	}else
+    	else
     		intent = new Intent(this, InputText.class);
+    	intent.putExtra("ItemType", num);
     	
-        startActivity(intent);
+        startActivityForResult(intent, FILE_INTENT);
     }
     
     /**
@@ -159,20 +175,19 @@ public class ItemList extends Activity {
      * @return	int of item type.
      */
     private int getItemNum(ItemType type){
-    	
-    	// DEBUG -- For testing purposes hard-coded to photo item type.
-//    	switch(type){
-//	    	case TEXT:
-//				return 5;
-//	    	case PHOTO:
-//				return DIALOG_PHOTO;
-//			case AUDIO:
-//				return DIALOG_AUDIO;
-//			default:
-//				return 0;
-//    	}
-    	return DIALOG_PHOTO;
-    	
+    	switch(type){
+	    	case TEXT:
+				return TEXT_INTENT;
+	    	case PHOTO:
+				return DIALOG_PHOTO;
+			case AUDIO:
+				return DIALOG_AUDIO;
+			case VIDEO:
+				return DIALOG_VIDEO;
+			default:
+				return 0;
+    	}
+    	//return DIALOG_AUDIO;
     }
     
 	/**
@@ -194,5 +209,10 @@ public class ItemList extends Activity {
 						Toast.LENGTH_LONG).show();
 			}	
         });
+    }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == FILE_INTENT) 
+    		finish();
     }
 }

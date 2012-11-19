@@ -80,6 +80,7 @@ public class InputText extends Activity {
     		Toast.makeText(getBaseContext(), e.getMessage(), 
     				Toast.LENGTH_SHORT).show();
     	}
+    	finish();
     }
     
     /**

@@ -31,6 +31,7 @@
     <string name="import_fromfile">From Files</string>
     <string name="import_capturepic">Take a Photo</string>
     <string name="import_captureaudio">Record Audio</string>
+    <string name="import_capturevideo">Record Video</string>
     <string name="import_cancel">Cancel</string>
     <string name="about_task_force">Created by Colin Hunt, Edwin Chung, Kris Kushniruk, Tully Johnson</string>
     <string name="about_title">About Task Force</string>
@@ -46,6 +47,7 @@
         <item>Text</item>
         <item>Audio</item>
         <item>Photo</item>
+        <item>Video</item>
     </string-array>
 
     <string name="hello_world">Hello world!</string>

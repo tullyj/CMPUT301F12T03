@@ -26,6 +26,7 @@ import ca.ualberta.cs.c301_interfaces.ItemType;
 public class ViewSingleTask extends Activity {
 
 	private Task task;
+	private String taskId;
 	
 	
     @Override
@@ -34,7 +35,7 @@ public class ViewSingleTask extends Activity {
         setContentView(R.layout.view_single_task);
         
         Intent intent = getIntent();
-        String taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
+        taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
         
         task = null;
         try {
@@ -67,49 +68,54 @@ public class ViewSingleTask extends Activity {
     	final List<TfTaskItem> items = task.getAllItems();
     	ItemListElement[] elements = new ItemListElement[items.size()];
     	String title = "";
-    	String itemType = null;
+    	//String itemType = null;
+    	String[] info = new String[2];
     	for(int i = 0; i < items.size(); i++){
-//    		listElements.add(new ItemListElement(
-//    	    		android.R.drawable.ic_input_get, "Test Item " + (i+1), 
-//    	    			"This is a sample description..."));
-    		switch(items.get(i).getType()){
-    			case TEXT:
-    				title = "Texts";
-    				itemType = "TEXT";
-    				break;
-    			case PHOTO:
-    				title = "Photos";
-    				itemType = "PHOTO";
-    				break;
-    			case AUDIO:
-    				title = "Audio";
-    				itemType = "AUDIO";
-    				break;
-    			
-    		}
+    		info = getTypeInfo(items.get(i).getType());
+    		title = info[0];
+    		//itemT = 
     		elements[i] = new ItemListElement(android.R.drawable.ic_input_get, 
     			title, items.get(i).getDescription());
+    		title = "";
     	}
-        final String itemT = itemType;
+        //final String itemT = itemType;
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
         ListView listView = (ListView) findViewById(R.id.singleTaskList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id){
-				Toast.makeText(getApplicationContext(), 
-					"Opening Item: " + items.get(position).getType().toString(), 
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), 
+//					"Opening Item: " + items.get(position).getType().toString(), 
+//						Toast.LENGTH_LONG).show();
 				
 				Intent intent = new Intent(getApplicationContext(), ItemList.class);
 				// Pass TaskId, and Item Number
-				intent.putExtra("SendItem", new String[]{task.getTaskId(), 
-						itemT});
+				String[] infoT = getTypeInfo(items.get(position).getType());
 				
+				intent.putExtra("SendItem", new String[]{taskId, infoT[1], 
+					infoT[0], items.get(position).getDescription()});
 				startActivity(intent);
 			}	
         });
     }
+    
+    private String[] getTypeInfo(ItemType type) {
+    	//Toast.makeText(getApplicationContext(), 
+		//		"Opening Item: " + type.toString(), Toast.LENGTH_LONG).show();
+    	switch(type) {
+		    case TEXT:
+		    	return new String[]{"Texts", "TEXT"};
+			case PHOTO:
+				return new String[]{"Photos", "PHOTO"};
+			case AUDIO:
+				return new String[]{"Audio", "AUDIO"};
+			case VIDEO:
+				return new String[]{"Videos", "VIDEO"};
+    	}
+    	return new String[]{"",""};
+    }
+    
     @Override
 	/**
 	 * Receives result from adding files to an item.

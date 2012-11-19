@@ -344,10 +344,12 @@ public class CreateTask extends Activity {
     		
     		Integer num = Integer.valueOf(n);
     		
-    		if(t == "Photo"){
+    		if(t.equals("Photo")){
     			type = ItemType.PHOTO;
-    		}else if(t == "Audio"){
+    		}else if(t.equals("Audio")){
     			type = ItemType.AUDIO;
+    		}else if(t.equals("Video")){
+    			type = ItemType.VIDEO;
     		}else{
     			type = ItemType.TEXT;
     		}

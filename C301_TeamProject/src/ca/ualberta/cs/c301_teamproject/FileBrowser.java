@@ -111,10 +111,13 @@ public class FileBrowser extends ListActivity {
                     InputFile.files.add(addFile);
     	   
                     //go back to input list
-                    Intent intent = new Intent(getApplicationContext(), 
-                        InputFile.class);
+//                    Intent intent = new Intent(getApplicationContext(), 
+//                        InputFile.class);
+                    Intent intent = getIntent();
                     intent.putExtra("FromFile", 4);
-                    startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    //startActivity(intent);
                 }
             }).show();
             }
