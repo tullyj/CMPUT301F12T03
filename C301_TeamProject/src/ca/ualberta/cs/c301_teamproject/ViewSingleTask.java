@@ -114,24 +114,5 @@ public class ViewSingleTask extends Activity {
 				return new String[]{"Videos", "VIDEO"};
     	}
     	return new String[]{"",""};
-    }
-    
-    @Override
-	/**
-	 * Receives result from adding files to an item.
-	 * @param requestCode		Describes type of intent.
-	 * @param resultCode		Describes status of intent.
-	 * @param data				The intent.
-	 */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-            	Toast.makeText(getApplicationContext(), 
-    				"Task '" + task.getTitle() + 
-    				"'has been modified, uploading to webservice", 
-    				Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-            
+    }            
 }

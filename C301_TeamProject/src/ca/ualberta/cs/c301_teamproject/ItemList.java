@@ -221,7 +221,7 @@ public class ItemList extends Activity {
     	if (requestCode == FILE_INTENT){
     		Task task = new TfTask();
 	        try {
-	            task = TfTaskRepository.getTaskById(data.getStringExtra("Saving Task"));
+	            task = TfTaskRepository.getTaskById(data.getStringExtra("SavingTask"));
 	        } catch (Exception e) {
 	            System.err.println(e.getMessage());
 	            e.printStackTrace();
