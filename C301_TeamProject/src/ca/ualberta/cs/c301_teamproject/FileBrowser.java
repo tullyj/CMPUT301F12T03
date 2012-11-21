@@ -127,15 +127,8 @@ final private List<String> videoExtensions =
                         Intent intent = new Intent(getApplicationContext(), 
                             InputFile.class);
                         intent.putExtra("FromFile", 4);
-                    	startActivity(intent);
-                    	finish();
-                    	/*
-                    	Intent intent = getIntent();
-                    	intent.putExtra("FromFile", 4);
                     	setResult(RESULT_OK, intent);
                     	finish();
-                    	*/
-                        
                     }
                     else
                 		Toast.makeText(getApplicationContext(), 
