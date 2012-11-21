@@ -21,7 +21,7 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
  * Shows items for a task in a list, click item to view. Click "+" button
- * to add files to task/item (fullfilling the task).
+ * to add files to task/item (fulfilling the task).
  *
  */
 public class ViewSingleTask extends Activity {
@@ -109,6 +109,10 @@ public class ViewSingleTask extends Activity {
     	return new String[]{"",""};
     }  
     
+    /**
+     * Async task for loading of a single task
+     *
+     */
     private class loadSingleTask extends AsyncTask<String, String, String>{
     	
     	Dialog load = new Dialog(ViewSingleTask.this);
