@@ -10,6 +10,7 @@ import java.util.List;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
@@ -111,6 +112,15 @@ public class ItemList extends Activity {
 		return null;
     }
     
+    public static TaskItem getItem(Task task, String itemType) {
+    	List<TfTaskItem> itemList = task.getAllItems();
+        for(int i = 0; i < itemList.size(); i++){
+        	if(itemList.get(i).getType().toString().equals(itemType))
+        		return itemList.get(i);
+        }
+        return null;
+    }
+    
     /**
      * Looks through the current item within a task for the list of files.
      */
@@ -124,12 +134,7 @@ public class ItemList extends Activity {
             e.printStackTrace();
         }
         
-        
-        List<TfTaskItem> itemList = task.getAllItems();
-        for(int i = 0; i < itemList.size(); i++){
-        	if(itemList.get(i).getType() == itemType)
-        		item = itemList.get(i);
-        }
+        item = getItem(task, itemType.toString());
     	
         // Total is the target total number for this item.
         int total = item.getNumber();
@@ -163,7 +168,8 @@ public class ItemList extends Activity {
 	    	intent = new Intent(this, InputFile.class);
     	else
     		intent = new Intent(this, InputText.class);
-    	intent.putExtra("ItemType", num);
+    	intent.putExtra("ItemArgs", new String[]{String.valueOf(num), 
+    		taskId, itemType.toString()});
     	
         startActivityForResult(intent, FILE_INTENT);
     }
@@ -212,7 +218,19 @@ public class ItemList extends Activity {
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (requestCode == FILE_INTENT) 
+    	if (requestCode == FILE_INTENT){
+    		Task task = new TfTask();
+	        try {
+	            task = TfTaskRepository.getTaskById(data.getStringExtra("Saving Task"));
+	        } catch (Exception e) {
+	            System.err.println(e.getMessage());
+	            e.printStackTrace();
+	        }
+	        
+	        if(task.isModified())
+	        	TfTaskRepository.addTask(task);
+    		
     		finish();
+    	}
     }
 }
