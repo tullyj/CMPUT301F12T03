@@ -3,8 +3,11 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,9 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -73,9 +76,49 @@ public class CreateTask extends Activity {
 	      			updateItemList(position);
      							
 	      		}
-	      			
+	      	      			
 	      	});
-           
+        
+        //setting the on long click listener - this is used for deleting
+        items.setOnItemLongClickListener(new OnItemLongClickListener(){
+      	
+        	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+	      		
+        		editPosition = position;
+        		final AlertDialog.Builder eraseItem = new AlertDialog.Builder(CreateTask.this);
+        		//eraseItem.setContentView(R.layout.confirm_remove_dialog);
+        		eraseItem.setTitle("Erase item?");
+        		
+        		//setting the confirm buttong
+        		eraseItem.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+
+        			//we know to remove the task here
+					public void onClick(DialogInterface arg0, int arg1) {
+						
+						currentTaskItems.remove(editPosition);
+						updateListViewAndCount();
+						
+						}
+        			    			
+        		});//end of confirm button
+        		
+        		eraseItem.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+
+        			//cancel was clicked -- do nothiing
+					public void onClick(DialogInterface dialog, int which) {
+						
+						
+						}
+        				       			
+        		});//end of canel button
+        		    		
+	      		eraseItem.show();
+        		return true;
+      		}
+        	      	
+        });//end of on long click listener 
+        
+          
     }
 
     @Override
@@ -166,9 +209,7 @@ public class CreateTask extends Activity {
     		String[]temp = in[i].split("\\|\\|");
     		String top = temp[0] + " " + temp[1] + " files(s)";
     		String bottom = "Description: " + temp[2];
-    		
-    		
-    	
+    		  	
     		item.add(new ItemListElement(android.R.drawable.ic_input_get, top, bottom));
     	}
     	
