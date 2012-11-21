@@ -456,8 +456,6 @@ public class CreateTask extends Activity {
     		finish();
 		}
 
-	
-
     }
 
 }

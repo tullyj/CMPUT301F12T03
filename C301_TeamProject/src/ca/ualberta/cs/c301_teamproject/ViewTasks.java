@@ -110,7 +110,7 @@ public class ViewTasks extends Activity {
 			load.dismiss();
 		
 		}	
-    }
+    }//end of load tasks
     
    public void updateListView(){
     	
