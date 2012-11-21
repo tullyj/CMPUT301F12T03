@@ -128,6 +128,7 @@ final private List<String> videoExtensions =
                             InputFile.class);
                         intent.putExtra("FromFile", 4);
                     	startActivity(intent);
+                    	finish();
                     	/*
                     	Intent intent = getIntent();
                     	intent.putExtra("FromFile", 4);
