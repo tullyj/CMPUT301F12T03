@@ -122,20 +122,14 @@ final private List<String> videoExtensions =
                 public void onClick(DialogInterface dialog, int which) {
                     File addFile = file.getAbsoluteFile();
                     if(checkExt(addFile.getName())){
-                    	InputFile.files.add(addFile);
+                    	//InputFile.files.add(addFile);
                         //go back to input list
-                        Intent intent = new Intent(getApplicationContext(), 
-                            InputFile.class);
-                        intent.putExtra("FromFile", 4);
-                    	startActivity(intent);
-                    	finish();
-                    	/*
-                    	Intent intent = getIntent();
-                    	intent.putExtra("FromFile", 4);
+                        //Intent intent = new Intent(getApplicationContext(), 
+                         //   InputFile.class);
+                        Intent intent = getIntent();
+                        intent.putExtra("FromFile", addFile.getAbsolutePath());
                     	setResult(RESULT_OK, intent);
                     	finish();
-                    	*/
-                        
                     }
                     else
                 		Toast.makeText(getApplicationContext(), 

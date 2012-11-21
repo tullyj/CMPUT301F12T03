@@ -2,6 +2,10 @@ package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import ca.ualberta.cs.c301_interfaces.Task;
+import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_repository.TfTaskRepository;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,26 +35,42 @@ public class InputFile extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int DIALOG_FILE = 4;
 	static int itemType;
-	static boolean fromFile = false;
+	private Task task;
+	private TaskItem item;
+	//static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 	private static final int CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE = 300;
 	private static final int FILE_ACTIVITY_REQUEST_CODE = 400;
-	static public ArrayList<File> files = new ArrayList<File>();
+	public ArrayList<File> files = new ArrayList<File>();
+	public ArrayList<File> newFiles = new ArrayList<File>();
+	
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_file);
-        if(getIntent().getIntExtra("ItemType", 0) > 0)
-        	itemType = getIntent().getIntExtra("ItemType", 0);
         
-        if(getIntent().getIntExtra("FromFile", 0) == 4)
-        	fromFile = true;
-        else{
-        	importFile((View) findViewById(R.layout.input_file));
-        	fromFile = false;
+        String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
+        		
+        //if(Integer.parseInt(inArgs[0]) > 0)
+        // Get item type in regards to final int representations.
+        itemType = Integer.parseInt(inArgs[0]);
+        task = null;
+        try {
+            task = TfTaskRepository.getTaskById(inArgs[1]);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
+        item = ItemList.getItem(task, inArgs[2]);
+//        if(getIntent().getIntExtra("FromFile", 0) == 4)
+//        	fromFile = true;
+//        else{
+        	importFile((View) findViewById(R.layout.input_file));
+//        	fromFile = false;
+//        }
         updateList();
         
     }
@@ -99,7 +119,10 @@ public class InputFile extends Activity {
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
-	    	//Intent itemIntent = getIntent();
+	    	task.setModified(true);
+	    	Intent intent = getIntent();
+	    	intent.putExtra("SavingTask", task.getTaskId());
+	    	item.addFiles(newFiles);
 	    	finish();
     	}else{
     		Toast.makeText(getApplicationContext(), 
@@ -205,6 +228,7 @@ public class InputFile extends Activity {
             if (resultCode == RESULT_OK) {
             	try{
             		files.add(new File(data.getData().getPath()));
+            		newFiles.add(new File(data.getData().getPath()));
             	}catch(Exception e){
             		try{
             			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -232,7 +256,10 @@ public class InputFile extends Activity {
             			
             			Uri uriImage = Uri.withAppendedPath(
             					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(iID));
+            			
             			files.add(new File(uriImage.getPath()));
+            			newFiles.add(new File(data.getData().getPath()));
+            			
             			myCursor.close();
             			}else throw new Exception();
             			
@@ -252,6 +279,7 @@ public class InputFile extends Activity {
         	if (resultCode == RESULT_OK) {
         		try{
         			files.add(new File(data.getData().getPath()));
+        			newFiles.add(new File(data.getData().getPath()));
         			updateList();
         		} catch(Exception ex){
         			// capture failed, advise user
@@ -260,8 +288,11 @@ public class InputFile extends Activity {
         	}
         	
         } else if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
-        	if (resultCode == RESULT_OK)
+        	if (resultCode == RESULT_OK){
+        		files.add(new File(data.getStringExtra("FromFile")));
+        		newFiles.add(new File(data.getStringExtra("FromFile")));
         		updateList();
+        	}
         }
     }
     

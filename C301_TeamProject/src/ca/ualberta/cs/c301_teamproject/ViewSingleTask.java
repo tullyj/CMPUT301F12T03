@@ -3,24 +3,25 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
-import ca.ualberta.cs.c301_interfaces.ItemType;
 
 /**
  * Shows items for a task in a list, click item to view. Click "+" button
- * to add files to task/item (fullfilling the task).
+ * to add files to task/item (fulfilling the task).
  *
  */
 public class ViewSingleTask extends Activity {
@@ -37,18 +38,10 @@ public class ViewSingleTask extends Activity {
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
         
-        task = null;
-        try {
-            task = TfTaskRepository.getTaskById(taskId);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
+        //load the single task async style
+        new loadSingleTask().execute();
         
-        TextView title = (TextView) findViewById(R.id.showTaskTitle);
-        title.setText(task.getTitle());
         
-        updateList(task);
     }
 
     @Override
@@ -114,24 +107,52 @@ public class ViewSingleTask extends Activity {
 				return new String[]{"Videos", "VIDEO"};
     	}
     	return new String[]{"",""};
-    }
+    }  
     
-    @Override
-	/**
-	 * Receives result from adding files to an item.
-	 * @param requestCode		Describes type of intent.
-	 * @param resultCode		Describes status of intent.
-	 * @param data				The intent.
-	 */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-            	Toast.makeText(getApplicationContext(), 
-    				"Task '" + task.getTitle() + 
-    				"'has been modified, uploading to webservice", 
-    				Toast.LENGTH_LONG).show();
-            }
-        }
+    /**
+     * Async task for loading of a single task
+     *
+     */
+    private class loadSingleTask extends AsyncTask<String, String, String>{
+    	
+    	Dialog load = new Dialog(ViewSingleTask.this);
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			
+			task = null;
+	        try {
+	            task = TfTaskRepository.getTaskById(taskId);
+	        } catch (Exception e) {
+	            System.err.println(e.getMessage());
+	            e.printStackTrace();
+	        }
+	        
+			return null;
+		}
+    	
+    	protected void onPreExecute(){
+    		
+    		load.setContentView(R.layout.save_load_dialog);
+    		load.setTitle("Loading task");
+    		load.show();
+    		
+    	}
+    	
+    	@Override
+    	protected void onPostExecute(String result){
+    		
+    		super.onPostExecute(result);
+    		
+    		TextView title = (TextView) findViewById(R.id.showTaskTitle);
+            title.setText(task.getTitle());
+            updateList(task);
+    		
+    		load.dismiss();
+
+    	}
+	
     }
-            
+  
 }
