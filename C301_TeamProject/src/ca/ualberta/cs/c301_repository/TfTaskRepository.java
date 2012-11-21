@@ -28,8 +28,9 @@ public class TfTaskRepository {
      * Adds a task to the webservice or updates an existing one. Updating is
      * dependent on the task id already existing or not.
      * @param task object to add/update
+     * @return TaskId if success, empty string otherwise.
      */
-    public static void addTask(Task task) {
+    public static String addTask(Task task) {
         try {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             // We set the device id into the summary
@@ -37,15 +38,31 @@ public class TfTaskRepository {
             entry.setDescription(task.getDeviceId());
             entry.setContent((TfTask) task);
 
-            String taskId = task.getTaskId();
-            if (taskId.isEmpty()) {
-                crowdClient.insertEntry(entry);                
-            } else {
-                entry.setId(taskId);
-                crowdClient.updateEntry(entry);
-            }
+            CrowdSourcerEntry returnedEntry = crowdClient.insertEntry(entry);
+            return returnedEntry.getId();
         } catch (Exception e) {
             System.err.println("<<<Error adding the task>>>");
+            e.printStackTrace(System.err);
+        }
+        return "";
+    }
+    
+    public static void updateTask(Task task) throws Exception {
+        if (task.getTaskId().isEmpty()) {
+            throw new Exception("Task id is empty in " +
+            		"TfTaskRepository.updateTask()");
+        }
+        try {
+            CrowdSourcerEntry entry = new CrowdSourcerEntry();
+            entry.setId(task.getTaskId());
+            entry.setSummary(task.getTitle());
+            // We set the device id into the description
+            // Right now description is not being saved in webservice
+            entry.setDescription(task.getDeviceId());
+            entry.setContent((TfTask) task);
+
+            crowdClient.updateEntry(entry);
+        } catch (Exception e) {
             e.printStackTrace(System.err);
         }
     }
@@ -56,7 +73,8 @@ public class TfTaskRepository {
      * @return A list of tasks.
      * @throws Exception
      */
-    public static List<Task> getTasksByDeviceId(String deviceId) throws Exception {
+    public static List<Task> getTasksByDeviceId(String deviceId) 
+            throws Exception {
         List<Task> taskList = getAllTasks();
         for (Task task : taskList) {
             if (task.getDeviceId() == deviceId) {

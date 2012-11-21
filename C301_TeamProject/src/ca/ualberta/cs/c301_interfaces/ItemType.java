@@ -6,8 +6,28 @@ package ca.ualberta.cs.c301_interfaces;
  *
  */
 public enum ItemType {
-    TEXT,
-    PHOTO,
-    AUDIO,
-    VIDEO
+    TEXT {
+        @Override
+        public String toString() {
+            return "Text";
+        }
+    },
+    PHOTO {
+        @Override
+        public String toString() {
+            return "Photo";
+        }
+    },
+    AUDIO {
+        @Override
+        public String toString() {
+            return "Audio";
+        }
+    },
+    VIDEO {
+        @Override
+        public String toString() {
+            return "Video";
+        }
+    };    
 }
