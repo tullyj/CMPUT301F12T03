@@ -26,7 +26,7 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
  */
 public class ViewSingleTask extends Activity {
 
-	private Task task;
+	public static Task task;
 	private String taskId;
 	
 	
@@ -86,8 +86,8 @@ public class ViewSingleTask extends Activity {
 				// Pass TaskId, and Item Number
 				String[] infoT = getTypeInfo(items.get(position).getType());
 				
-				intent.putExtra("SendItem", new String[]{taskId, infoT[1], 
-					infoT[0], items.get(position).getDescription()});
+				intent.putExtra("SendItem", new String[]{infoT[1], 
+						infoT[0], items.get(position).getDescription()});
 				startActivity(intent);
 			}	
         });
