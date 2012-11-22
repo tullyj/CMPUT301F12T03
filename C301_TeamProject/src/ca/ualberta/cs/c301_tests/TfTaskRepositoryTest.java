@@ -1,10 +1,10 @@
 package ca.ualberta.cs.c301_tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -26,22 +26,47 @@ public class TfTaskRepositoryTest {
         Task task = new TfTask();
         task.setDescription("Test task");
         task.setTitle(taskTitle);
-        TfTaskRepository.addTask(task);
+        String taskId = TfTaskRepository.addTask(task);
         Boolean success = false;
+        Task gottenTask = null;
         try {
-            List<Map<String,String>> mapList = TfTaskRepository.getShallowEntries();
-            for (Map<String,String> map : mapList) {
-                if (map.get("summary") == taskTitle) {
-                    success = true;
-                    break;
-                }
-            }
+            gottenTask = TfTaskRepository.getTaskById(taskId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             fail("Exception occurred");
         }
-        assertTrue(success);
+        assertNotNull(gottenTask);
+        assertEquals(gottenTask.getTitle(), taskTitle);
+    }
+    
+    @Test
+    public void testUpdateTask() {
+        String taskTitle = UUID.randomUUID().toString();
+        String taskTitle2 = UUID.randomUUID().toString();
+        Task task = new TfTask();
+        task.setDescription("Test for update task");
+        task.setTitle(taskTitle);
+        String taskId = TfTaskRepository.addTask(task);
+        
+        task.setTaskId(taskId);
+        task.setTitle(taskTitle2);
+        
+        try {
+            TfTaskRepository.updateTask(task);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Task gottenTask = null;
+        try {
+            gottenTask = TfTaskRepository.getTaskById(taskId);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        assertNotNull(gottenTask);
+        assertEquals(gottenTask.getTitle(), taskTitle2);
     }
 
     @Test

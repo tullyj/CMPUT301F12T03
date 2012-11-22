@@ -94,7 +94,7 @@ public class CrowdClient {
 	    }
 	    
 	    // and ensure it is fully consumed
-	    //EntityUtils.consume(entity); //causes method not found error
+        entity.consumeContent();
 	    return jsonStringVersion;
 	}
 	
@@ -124,7 +124,7 @@ public class CrowdClient {
 	        Type entryType = CrowdSourcerEntry.class;     
 	        responseEntry = gson.fromJson(jsonStringVersion, entryType);
 	    }
-	    //EntityUtils.consume(entity); //causes method not found error
+        entity.consumeContent();
         return responseEntry;
 	    
 	}
@@ -134,7 +134,7 @@ public class CrowdClient {
 	 * @return JSON representation of the entry created
 	 * @throws Exception
 	 */
-	public void insertEntry(CrowdSourcerEntry entryP) throws Exception {
+	public CrowdSourcerEntry insertEntry(CrowdSourcerEntry entryP) throws Exception {
 		
 		//CrowdSourcerEntry newEntry = new CrowdSourcerEntry();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
@@ -152,14 +152,16 @@ public class CrowdClient {
 	    
 	    System.out.println(status);
 	    
-//	    if (entity != null) {
-//	        InputStream is = entity.getContent();
-//	        String jsonStringVersion = convertStreamToString(is);
-//	        Type entryType = CrowdSourcerEntry.class;     
-//	        newEntry = gson.fromJson(jsonStringVersion, entryType);
-//	    }
-	    //EntityUtils.consume(entity); //causes method not found error
-        //return newEntry;
+	    	    
+	    CrowdSourcerEntry newEntry = null;
+        if (entity != null) {
+	        InputStream is = entity.getContent();
+	        String jsonStringVersion = convertStreamToString(is);
+	        Type entryType = CrowdSourcerEntry.class;     
+	        newEntry = gson.fromJson(jsonStringVersion, entryType);
+	    }
+	    entity.consumeContent();
+        return newEntry;
 	}
 	
 	/** 
@@ -168,7 +170,6 @@ public class CrowdClient {
 	 * @throws Exception
 	 */
 	public void updateEntry(CrowdSourcerEntry entry) throws Exception {
-	    // TODO Auto-generated method stub
         List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
         nvps.add(new BasicNameValuePair("action", "update"));
         nvps.add(new BasicNameValuePair("summary", entry.getSummary()));
@@ -176,6 +177,35 @@ public class CrowdClient {
                 "content", gson.toJson(entry.getContent()))
         );
         nvps.add(new BasicNameValuePair("id", entry.getId()));
+//        System.out.println(entry.getSummary());
+//        System.out.println(nvps.get(1).getValue());
+
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+        System.out.println(convertStreamToString(httpPost.getEntity().getContent()));
+        HttpResponse response = httpclient.execute(httpPost);
+
+        String status = response.getStatusLine().toString();
+        HttpEntity entity = response.getEntity();
+
+        System.out.println(status);
+        if (entity != null) {
+            InputStream is = entity.getContent();
+            String jsonStringVersion = convertStreamToString(is);
+            System.out.println(jsonStringVersion);
+        }
+
+        entity.consumeContent();
+	}
+	
+	/** 
+     * Consumes the REMOVE operation of the service
+     * @param entryId to update
+     * @throws Exception
+     */
+    public void removeEntry(String entryId) throws Exception {
+        List<BasicNameValuePair> nvps = new ArrayList<BasicNameValuePair>();
+        nvps.add(new BasicNameValuePair("action", "remove"));
+        nvps.add(new BasicNameValuePair("id", entryId));
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
         HttpResponse response = httpclient.execute(httpPost);
@@ -184,7 +214,10 @@ public class CrowdClient {
         HttpEntity entity = response.getEntity();
 
         System.out.println(status);
-	}
+        
+        entity.consumeContent();
+    }
+
 	
 	/**
 	 * Gets the list of entries by using the GET operation of the service
