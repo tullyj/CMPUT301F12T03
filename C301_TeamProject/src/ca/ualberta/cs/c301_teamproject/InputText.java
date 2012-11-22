@@ -3,6 +3,11 @@ package ca.ualberta.cs.c301_teamproject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import ca.ualberta.cs.c301_interfaces.TaskItem;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -76,6 +81,7 @@ public class InputText extends Activity {
     		//call method to add to the item list
     		addToList(myTextFile);
     		
+    		//item.addFiles(List<File> list = new List<File>(){add(myTextFile)});
     	} catch (Exception e) {
     		Toast.makeText(getBaseContext(), e.getMessage(), 
     				Toast.LENGTH_SHORT).show();
@@ -89,6 +95,11 @@ public class InputText extends Activity {
      * @param myTextFile			text file to be added
      */
     public void addToList(File myTextFile){
-    	//implement add to the list of text files in the task
+    	String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
+		TaskItem item = ItemList.getItem(ViewSingleTask.task, inArgs[1]);
+		
+		ArrayList<File> files = new ArrayList<File>();
+		files.add(myTextFile);
+		item.addFiles(files);
     }
 }

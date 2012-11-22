@@ -35,7 +35,7 @@ public class InputFile extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int DIALOG_FILE = 4;
 	static int itemType;
-	private Task task;
+	//private Task task;
 	private TaskItem item;
 	//static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -53,22 +53,17 @@ public class InputFile extends Activity {
         setContentView(R.layout.input_file);
         
         String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
-        		
+
+        //String taskId = inArgs[1];
         //if(Integer.parseInt(inArgs[0]) > 0)
         // Get item type in regards to final int representations.
         itemType = Integer.parseInt(inArgs[0]);
-        task = null;
-        try {
-            task = TfTaskRepository.getTaskById(inArgs[1]);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
-        item = ItemList.getItem(task, inArgs[2]);
+         
+        item = ItemList.getItem(ViewSingleTask.task, inArgs[1]);
 //        if(getIntent().getIntExtra("FromFile", 0) == 4)
 //        	fromFile = true;
 //        else{
-        	importFile((View) findViewById(R.layout.input_file));
+        importFile((View) findViewById(R.layout.input_file));
 //        	fromFile = false;
 //        }
         updateList();
@@ -119,9 +114,9 @@ public class InputFile extends Activity {
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
-	    	task.setModified(true);
+	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
-	    	intent.putExtra("SavingTask", task.getTaskId());
+	    	setResult(RESULT_OK, intent);
 	    	item.addFiles(newFiles);
 	    	finish();
     	}else{
@@ -149,9 +144,14 @@ public class InputFile extends Activity {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()));
-				    	   Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
-				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+				    	   String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
+//				    	   File folder = new File(directory);
+//				    	   folder.mkdirs();
+				    	   Uri mUri = Uri.fromFile(new File(directory));
+//				    	   Uri mUri = Uri.fromFile(new File(
+//				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
+				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp/"));
+				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, (Uri) mUri);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
@@ -165,8 +165,8 @@ public class InputFile extends Activity {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()));
-				    	   Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
+				    	   Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
+				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
@@ -233,39 +233,39 @@ public class InputFile extends Activity {
             		try{
             			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
-            			String[] projection = {
-            					MediaStore.Images.Thumbnails._ID,
-            					 MediaStore.Images.Thumbnails.IMAGE_ID,
-            					 MediaStore.Images.Thumbnails.KIND,
-            					 MediaStore.Images.Thumbnails.DATA};
-            			
-            			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-            			String selection = MediaStore.Images.Thumbnails.KIND + "="  
-            				+ MediaStore.Images.Thumbnails.MINI_KIND;
-            			
-            			long iID = 0l;
-
-            			@SuppressWarnings("deprecation")
-						Cursor myCursor = this.managedQuery( 
-            				MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
-            					projection, selection, null, sort);
-            			myCursor.moveToFirst();
-            			iID = myCursor.getLong(myCursor.getColumnIndexOrThrow(
-            					MediaStore.Images.Thumbnails.IMAGE_ID));
-            			myCursor.close();
-            			
-            			Uri uriImage = Uri.withAppendedPath(
-            					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(iID));
-            			
-            			files.add(new File(uriImage.getPath()));
-            			newFiles.add(new File(data.getData().getPath()));
-            			
-            			myCursor.close();
-            			}else throw new Exception();
+	            			String[] projection = {
+	            					MediaStore.Images.Thumbnails._ID,
+	            					 MediaStore.Images.Thumbnails.IMAGE_ID,
+	            					 MediaStore.Images.Thumbnails.KIND,
+	            					 MediaStore.Images.Thumbnails.DATA};
+	            			
+	            			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
+	            			String selection = MediaStore.Images.Thumbnails.KIND + "="  
+	            				+ MediaStore.Images.Thumbnails.MINI_KIND;
+	            			
+	            			long iID = 0l;
+	
+	            			@SuppressWarnings("deprecation")
+							Cursor myCursor = this.managedQuery( 
+	            				MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
+	            					projection, selection, null, sort);
+	            			myCursor.moveToFirst();
+	            			iID = myCursor.getLong(myCursor.getColumnIndexOrThrow(
+	            					MediaStore.Images.Thumbnails.IMAGE_ID));
+	            			myCursor.close();
+	            			
+	            			Uri uriImage = Uri.withAppendedPath(
+	            				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
+	            					String.valueOf(iID));
+	            			
+	            			files.add(new File(uriImage.getPath()));
+	            			newFiles.add(new File(uriImage.getPath()));
+            			} else 
+            				throw new Exception();
             			
             		} catch(Exception ex){
-            			// capture failed, advise user
-                    	Toast.makeText(this, "Unable to find image file", Toast.LENGTH_LONG).show();
+            			// prompt user that file was not found
+                    	Toast.makeText(this, "Unable to find file", Toast.LENGTH_LONG).show();
             		}
             	}
             	updateList();

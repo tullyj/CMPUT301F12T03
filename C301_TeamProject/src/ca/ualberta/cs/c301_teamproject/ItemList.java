@@ -40,7 +40,7 @@ public class ItemList extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int TEXT_INTENT = 6;
 	static final int FILE_INTENT = 7;
-	private String taskId;
+	//private String taskId;
 	private ItemType itemType;
 	private TaskItem item;
 	
@@ -56,15 +56,15 @@ public class ItemList extends Activity {
         String[] inArgs = getIntent().getStringArrayExtra("SendItem");
         
         // When item type is known from passing of intent with extra containing item type.
-        taskId = inArgs[0];
+        //taskId = inArgs[0];
         // Set title of Type of list
-        ((TextView) findViewById(R.id.listTitle)).setText(inArgs[2] + " List");
+        ((TextView) findViewById(R.id.listTitle)).setText(inArgs[1] + " List");
         // Set Description from item.getDescription()
-        ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[3]);
+        ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[2]);
         
-        if(inArgs[1].equals("TEXT")) itemType = ItemType.TEXT;
-        else if(inArgs[1].equals("PHOTO")) itemType = ItemType.PHOTO;
-        else if(inArgs[1].equals("VIDEO")) itemType = ItemType.VIDEO;
+        if(inArgs[0].equals("TEXT")) itemType = ItemType.TEXT;
+        else if(inArgs[0].equals("PHOTO")) itemType = ItemType.PHOTO;
+        else if(inArgs[0].equals("VIDEO")) itemType = ItemType.VIDEO;
         else itemType = ItemType.AUDIO;
         
         // Set the progress bar and textview listItemFraction.
@@ -124,17 +124,8 @@ public class ItemList extends Activity {
     /**
      * Looks through the current item within a task for the list of files.
      */
-    private int[] populateList(){        
-    	Task task = null;
-        try {
-            task = TfTaskRepository.getTaskById(taskId);
-            
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
-        
-        item = getItem(task, itemType.toString());
+    private int[] populateList(){                
+        item = getItem(ViewSingleTask.task, itemType.toString());
     	
         // Total is the target total number for this item.
         int total = item.getNumber();
@@ -169,7 +160,7 @@ public class ItemList extends Activity {
     	else
     		intent = new Intent(this, InputText.class);
     	intent.putExtra("ItemArgs", new String[]{String.valueOf(num), 
-    		taskId, itemType.toString()});
+    		itemType.toString()});
     	
         startActivityForResult(intent, FILE_INTENT);
     }
@@ -219,18 +210,16 @@ public class ItemList extends Activity {
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == FILE_INTENT){
-    		Task task = new TfTask();
-	        try {
-	            task = TfTaskRepository.getTaskById(data.getStringExtra("SavingTask"));
-	        } catch (Exception e) {
-	            System.err.println(e.getMessage());
-	            e.printStackTrace();
-	        }
-	        
-	        if(task.isModified())
-	        	TfTaskRepository.addTask(task);
-    		
-    		finish();
+    		if(resultCode == RESULT_OK){
+		        if(ViewSingleTask.task.isModified()) {
+		        	TfTaskRepository.addTask(ViewSingleTask.task);
+		        	
+		        	Toast.makeText(getApplicationContext(), 
+		    			"Uploaded == Success!", Toast.LENGTH_LONG).show();
+		        }
+	    		
+	    		finish();
+    		}
     	}
     }
 }
