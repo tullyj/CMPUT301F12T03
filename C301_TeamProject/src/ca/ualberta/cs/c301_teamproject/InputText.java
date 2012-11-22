@@ -12,6 +12,7 @@ import ca.ualberta.cs.c301_interfaces.TaskItem;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -101,5 +102,8 @@ public class InputText extends Activity {
 		ArrayList<File> files = new ArrayList<File>();
 		files.add(myTextFile);
 		item.addFiles(files);
+		
+		Intent intent = getIntent();
+    	setResult(RESULT_OK, intent);
     }
 }
