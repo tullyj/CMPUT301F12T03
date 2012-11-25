@@ -91,7 +91,7 @@
         </activity>
         <activity
             android:name=".ItemList"
-            android:label="@string/title_list_item"
+            android:label="@string/title_list_item" 
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,8 +100,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ca.ualberta.cs.c301_preview.PreviewPicture"
-            android:label="@string/title_activity_preview_picture" >
+            android:name=".PreviewAudio"
+            android:label="@string/title_list_item" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PreviewPhoto"
+            android:label="@string/title_list_item" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PreviewText"
+            android:label="@string/title_list_item" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PreviewVideo"
+            android:label="@string/title_list_item" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

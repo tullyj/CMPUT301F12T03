@@ -10,11 +10,15 @@ import java.util.List;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_preview.*;
 import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -204,8 +208,28 @@ public class ItemList extends Activity {
 				Toast.makeText(getApplicationContext(), 
 					"Opening Item: " + listElements.get(position).getTitle(), 
 						Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(getApplicationContext(), getPreviewClass());
+				// Get the file the user selected and save the uri to file.
+				Uri mUri = Uri.fromFile(item.getAllFiles().get(position));
+		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+				startActivity(intent);
 			}	
         });
+    }
+    
+    private Class<?> getPreviewClass() {
+    	switch(itemType){
+    	case TEXT:
+			return PreviewText.class;
+    	case PHOTO:
+			return PreviewPhoto.class;
+		case AUDIO:
+			return PreviewAudio.class;
+		case VIDEO:
+			return PreviewVideo.class;
+		default:
+			return null;
+    	}
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
