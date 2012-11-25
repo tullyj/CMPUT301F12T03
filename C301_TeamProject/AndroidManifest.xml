@@ -52,12 +52,12 @@
                 android:value="ca.ualberta.cs.c301_teamproject.CreateTask" />
         </activity>
         <activity
-        	android:name=".TaskProperties"
-        	android:label="@string/task_properties"
-        	android:windowSoftInputMode="adjustPan" >
-        	<meta-data 
-        	    android:name="android.support.PARENT_ACTIVITY"
-        	    android:value="ca.ualberta.cs.c301_teamproject.CreateTask"/>
+            android:name=".TaskProperties"
+            android:label="@string/task_properties"
+            android:windowSoftInputMode="adjustPan" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.cs.c301_teamproject.CreateTask" />
         </activity>
         <activity
             android:name=".ViewTasks"
@@ -152,6 +152,15 @@
         <activity
             android:name=".Test"
             android:label="@string/title_activity_test" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LocalTaskList"
+            android:label="@string/title_activity_local_task_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -73,4 +73,10 @@ public class MainPage extends Activity {
         // need to send parameters to filter into all tasks
         startActivity(intent);
     }
+    
+    // temporary button to list local tasks for testing
+    public void localTasks(View view) {
+        Intent intent = new Intent(this, LocalTaskList.class);
+        startActivity(intent);
+    }
 }

@@ -55,8 +55,7 @@
         <item>Photo</item>
         <item>Video</item>
     </string-array>
-    
-     <string-array name="response_choices">
+    <string-array name="response_choices">
         <item>E-mail</item>
         <item>Text</item>
         <item>Twitter</item>
@@ -68,5 +67,6 @@
     <string name="no_data">No Data</string>
     <string name="title_activity_file_browser">File Browser</string>
     <string name="title_activity_test">Test</string>
+    <string name="title_activity_local_task_list">LocalTaskList</string>
 
 </resources>

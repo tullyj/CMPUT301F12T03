@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/white_bkg" >
+    android:background="@drawable/white_bkg"
+    android:onClick="localTasks" >
 
     <Button
         android:id="@+id/button1"
@@ -43,5 +44,14 @@
         android:onClick="goToInputText"
         android:text="Input Text"
         tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/buttonLocalTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="localTasks"
+        android:text="Local Tasks" />
 
 </RelativeLayout>

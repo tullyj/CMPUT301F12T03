@@ -49,7 +49,7 @@ public class TfTaskRepository {
                             crowdClient.insertEntry(entry);
                     return returnedEntry.getId();                    
                 case PRIVATE:
-                    localRepo.insertEntry(entry, c);
+                    localRepo.insertTask(task, c);
                     break;
                 default:
                     throw new Exception("Unhandled Visibility "
@@ -145,6 +145,10 @@ public class TfTaskRepository {
                     + "getTaskById() with id=" + taskId);
         }
         return task;
+    }
+
+    public static List<TfTask> getLocalTasks(Context c) {
+        return localRepo.getTaskList(c);
     }
 
 }
