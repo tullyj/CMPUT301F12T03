@@ -40,14 +40,27 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 public class CreateTask extends Activity {
 	
-	private ArrayList<String> currentTaskItems;
+	private ArrayList<String[]> currentTaskItems;
 	private int editPosition;
 	public static String EDIT = "edit";
+	public static String SEND = "send";
+	public static String ITEM = "item";
+	public static String PROPERTIES = "properties";
+	private String taskVisibility = "";
+	private String taskResponseType = "";
+	private String taskResponseString = "";
+	private String taskDescription = "";
+	private String taskTitle = "";
+	private boolean propertiesGrabbed;
+
+	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task);
+        
+        propertiesGrabbed = false;
         
         // Need to do this to avoid network on main thread exception
         //http://stackoverflow.com/questions/6343166/android-os-networkonmainthreadexception
@@ -55,11 +68,11 @@ public class CreateTask extends Activity {
         StrictMode.setThreadPolicy(policy);
         
         //setting the default radio button to public
-        RadioGroup vis = (RadioGroup)findViewById(R.id.visibiltyChoice);
-        vis.check(R.id.publicRadioButton);
+        //RadioGroup vis = (RadioGroup)findViewById(R.id.visibiltyChoice);
+        //vis.check(R.id.publicRadioButton);
         
         //only create this list on create, does not get re-created when it returns from adding a item
-        currentTaskItems = new ArrayList<String>();
+        currentTaskItems = new ArrayList<String[]>();
         
         //create listener for list
         ListView items = (ListView)findViewById(R.id.showAttachedItems);
@@ -110,7 +123,7 @@ public class CreateTask extends Activity {
 						
 						}
         				       			
-        		});//end of canel button
+        		});//end of cancel button
         		    		
 	      		eraseItem.show();
         		return true;
@@ -131,28 +144,6 @@ public class CreateTask extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-    
-    /**
-     * This method adds an item to the current tasks ArrayList
-     * @param Item	item to be added to the task
-     */
-    public void addItemToList(String item){
-    	
-    	currentTaskItems.add(item);
-    }
-    
-    
-    /**
-     * This method will return an array of strings, which is the item list for the
-     * current task
-     * @return	A string array containing the item list for the current task
-     */
-    public String[] getItemList(){
-    	
-    	return currentTaskItems.toArray(new String[currentTaskItems.size()]);
-    }
-    
-    
     /**
      * When a item is clicked on the list view. Grabs the information for the item and
      * then passes that off to CreateItem for editing. When it returns to this activity
@@ -161,11 +152,11 @@ public class CreateTask extends Activity {
      */
     public void updateItemList(int position){
     	
-    	String temp[] = getItemList();
-    	String value = temp[position];
+    	String temp[] = currentTaskItems.get(position);
     	
     	Intent intent = new Intent(this, CreateItem.class);
-    	intent.putExtra(EDIT, value);
+    	intent.putExtra(ITEM, temp);
+    	intent.putExtra(EDIT, "yes");
     	startActivityForResult(intent, 2);
     	   					
     }
@@ -178,9 +169,8 @@ public class CreateTask extends Activity {
     	
     	//updating the currentTaskItems then getting a array of the list
     	ListView items = (ListView)findViewById(R.id.showAttachedItems);
-    	String[] result = getItemList();
     	
-    	ArrayList<ItemListElement> item = formatOutputForList(result);
+    	ArrayList<ItemListElement> item = formatOutputForList();
     	ItemListElement[] elm = new ItemListElement[item.size()];
     	item.toArray(elm);
     	
@@ -190,7 +180,7 @@ public class CreateTask extends Activity {
     	
     	//update the item count
     	EditText num = (EditText)findViewById(R.id.showCurrentItemNum);
-    	int value = result.length;
+    	int value = currentTaskItems.size();
     	String val = Integer.toString(value);
     	num.setText(val);
 	
@@ -201,14 +191,20 @@ public class CreateTask extends Activity {
    * @param in		Array containing all the elements
    * @return		Returns an ArrayList<ItemListElement>
    */
-    public ArrayList<ItemListElement> formatOutputForList(String[] in){
+    public ArrayList<ItemListElement> formatOutputForList(){
     	
     	ArrayList<ItemListElement> item = new ArrayList<ItemListElement>();
     	
-    	for(int i = 0;i<in.length;i++){
-    		String[]temp = in[i].split("\\|\\|");
-    		String top = temp[0] + " " + temp[1] + " files(s)";
-    		String bottom = "Description: " + temp[2];
+    	for(int i = 0;i<currentTaskItems.size();i++){
+    		
+    		//map for item
+    		//0 -> number of item
+    		//1 -> item type
+    		//2 -> description
+    		String[] s = currentTaskItems.get(i);
+    		String top = s[0] + " " + s[1] + " file(s)";
+    		String bottom = "Description: " + s[2];
+    		
     		  	
     		item.add(new ItemListElement(android.R.drawable.ic_input_get, top, bottom));
     	}
@@ -228,9 +224,51 @@ public class CreateTask extends Activity {
         intent.putExtra(EDIT, "no");
         startActivityForResult(intent, 1);
     }
-     
-
     
+    public void createTaskProperties(View view){
+    	
+    	Intent intent = new Intent(this, TaskProperties.class);
+    	
+    	//dont have any task properties at this point
+    	if(!propertiesGrabbed){
+    
+    		intent.putExtra(EDIT, "no");
+    		startActivityForResult(intent, 3);
+    		
+    		
+    		
+    	//we have properties so need to populate the next page	
+    	}else{
+    		
+    		//creating the values to pass
+			//0 -> where to send the notification
+	    	//1 -> visibility
+	    	//2 -> description
+	    	//3 -> type
+    		String[] send = new String[TaskProperties.propertyCount];
+    		send[0] = taskResponseString;
+    		send[1] = taskVisibility;
+    		send[3] = taskResponseType;
+    		send [2] = taskDescription;  
+    		
+    		intent.putExtra(EDIT, "yes");
+    		intent.putExtra(PROPERTIES, send);
+    		startActivityForResult(intent, 3);
+    			
+    	}
+    	
+    }
+    
+    /**
+     * This method adds an item to the current tasks ArrayList
+     * @param Item	item to be added to the task
+     */
+    public void addItemToList(String[] item){
+    	
+    	currentTaskItems.add(item);
+    }
+
+         
     /**
      * This method is called back when startActivityForResult is finished
      *   this link below was used for this portion: 
@@ -246,10 +284,18 @@ public class CreateTask extends Activity {
     	if(requestCode  == 1){
     		
     		if(resultCode == RESULT_OK){
-    		//grab the results and update the item list then update the listview and number of items
-    		String result = data.getStringExtra("result");
-    		addItemToList(result);
-    		updateListViewAndCount();
+	    		//grab the results and update the item list then update the listview and number of items
+	    		
+	    		//map for result
+				//0 -> number of item
+	    		//1 -> item type
+	    		//2 -> description	
+	    		String result[] = data.getStringArrayExtra("result");
+	    		
+	    		//add item to list and update the views
+	    		addItemToList(result);
+	    		updateListViewAndCount();
+	    	
     		}
     		
     	}
@@ -260,13 +306,41 @@ public class CreateTask extends Activity {
     		
 		
     		if(resultCode == RESULT_OK){
-    		String result = data.getStringExtra("result");
+    		String result[] = data.getStringArrayExtra("result");
     		currentTaskItems.set(editPosition, result);
     		updateListViewAndCount();
     		}
     		   		
-    	}  	
+    	}
+    	
+    	//request code = 3 -> we are coming back from task properties for the
+    	//first time aka we are just grabbing the properties
+    	if(requestCode == 3){
+    		
+    		if(resultCode == RESULT_OK){
+    			
+    			String[] result = data.getStringArrayExtra("result");
+    			
+    			//result map from TaskProperties
+    			//0 -> where to send the notification
+    	    	//1 -> visibility
+    	    	//2 -> description
+    	    	//3 -> type
+    			
+				taskVisibility = result[1];
+				taskResponseType = result[3];
+				taskResponseString = result[0];
+				taskDescription = result[2];
+				propertiesGrabbed = true;
+
+    			
+    		}
+	
+    	}
+ 	
     }
+    
+    
     
     
     /**
@@ -276,44 +350,34 @@ public class CreateTask extends Activity {
      */
     public Task gatherTaskInfo(){
     	
-    	String title, numItem, visibility;
-    	RadioButton visChoice;
+    	String title, numItem;
+
     	
     	EditText getTitle = (EditText)findViewById(R.id.titleTextBox);
     	EditText itemNum = (EditText)findViewById(R.id.showCurrentItemNum);
-    	RadioGroup getVisibilty = (RadioGroup)findViewById(R.id.visibiltyChoice);
     	
     	
-    	//getting the selection from the radio buttons aka the visibilty
-    	int choice = getVisibilty.getCheckedRadioButtonId();
-    	visChoice = (RadioButton)findViewById(choice);
-    	
-    	//all the task items to string
+    	//gathering the task information
     	title = getTitle.getText().toString();
     	numItem = itemNum.getText().toString();
-    	visibility = visChoice.getText().toString();
-    	String[] items = getItemList();
+
+
+    	//validate input 
+    	boolean valid = validateInput(title);
     	
-    	//validate input
-    	boolean valid = validateInput(title, visibility, items);
-    	
-    	//if valid input create a task and return it
-    	if(valid){
+    	//if valid input and we have the properties create a task and return it
+    	if(valid && propertiesGrabbed){
+    		
 	    	//creating a task
 	    	Task t = new TfTask();
 	    	t.setTitle(title);
 	    	
-	
 	    	//setting the visibility enum
-	    	if(visibility == "Public"){
-	    		
-	    		t.setVisibility(Visibility.PUBLIC);
-	  		
+	    	if(taskVisibility.equals("Public")){   		
+	    		t.setVisibility(Visibility.PUBLIC);  		
 	    	}else{
-	 		
 	    		t.setVisibility(Visibility.PRIVATE);  		
 	    	}
-	    	
 	    	
 	    	//creating each individual item
 	    	addItemsToTask(t);
@@ -333,23 +397,22 @@ public class CreateTask extends Activity {
     /**
      * This method just validates the input for the task
      * @param title			The task title
-     * @param visibility	The visibility
      * @param items			An array of items
      * @return	true if valid, toast then false otherwise
      */
-    public boolean validateInput(String title, String visibility, String[] items){
+    public boolean validateInput(String title){
     	
     	boolean valid = true;
     	String error = "";
     	
     	if(title.equals("")){
-    		error += "Invalid title\n";
+    		error += "Invalid title";
     		valid = false;
-    	}else if(visibility.equals("")){
-    		error += "Select either Public or Private\n";
+    	}else if(currentTaskItems.size() == 0){
+    		error += "Please attach an item to your task";
     		valid = false;
-    	}else if(items.length == 0){
-    		error += "Please attach an item to your task\n";
+    	}else if(!propertiesGrabbed){
+    		error += "Please enter the tasks properties";
     		valid = false;
     	}
     	
@@ -370,18 +433,21 @@ public class CreateTask extends Activity {
      * @param task	The task to add the items to
      */
     public void addItemsToTask(Task task){
-    	
-    	
-    	String[] temp = getItemList();
+
     	String n, t, description;
+		ItemType type;
     	
-    	for(int i = 0;i<temp.length;i++){
+    	for(int i = 0;i<currentTaskItems.size();i++){
     		
-    		String[] temp2 = temp[i].split("\\|\\|");
-    		n = temp2[0];
-    		t = temp2[1];
-    		description = temp2[2];
-    		ItemType type;
+    		String temp[] = currentTaskItems.get(i);
+    		
+    		//map for item
+    		//0 -> number of item
+    		//1 -> item type
+    		//2 -> description
+    		n = temp[0];
+    		t = temp[1];
+    		description = temp[2];
     		
     		Integer num = Integer.valueOf(n);
     		

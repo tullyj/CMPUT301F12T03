@@ -37,17 +37,27 @@
         </activity>
         <activity
             android:name=".CreateTask"
-            android:label="@string/create_task" >
+            android:label="@string/create_task"
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.cs.c301_teamproject.MainPage" />
         </activity>
         <activity
             android:name=".CreateItem"
-            android:label="@string/create_item" >
+            android:label="@string/create_item"
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.cs.c301_teamproject.CreateTask" />
+        </activity>
+        <activity
+        	android:name=".TaskProperties"
+        	android:label="@string/task_properties"
+        	android:windowSoftInputMode="adjustPan" >
+        	<meta-data 
+        	    android:name="android.support.PARENT_ACTIVITY"
+        	    android:value="ca.ualberta.cs.c301_teamproject.CreateTask"/>
         </activity>
         <activity
             android:name=".ViewTasks"
