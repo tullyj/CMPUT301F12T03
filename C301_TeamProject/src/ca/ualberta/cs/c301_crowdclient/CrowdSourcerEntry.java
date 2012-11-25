@@ -55,4 +55,10 @@ public class CrowdSourcerEntry {
 	public String toString(){
 		return summary;
 	}
+	
+	public Boolean equals(CrowdSourcerEntry other) {
+        return summary.equals(other.summary) 
+            && id.equals(other.id) 
+            && description.equals(other.description);
+	}
 }

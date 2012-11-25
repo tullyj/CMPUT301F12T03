@@ -44,12 +44,6 @@ public class CrowdClientTest extends TestCase {
     public void testUpdateEntry() {
         String entrySummary = "TestSummary";
         String changedSummary = "ChangedSummary";
-//        try {
-//            crowdClient.removeEntry(entryDescr);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fail("Exception removing the test entry before");
-//        }
         
         CrowdSourcerEntry entry = new CrowdSourcerEntry();
         CrowdSourcerEntry returnedEntry = new CrowdSourcerEntry();
@@ -67,7 +61,6 @@ public class CrowdClientTest extends TestCase {
         entry.setSummary(changedSummary);
       
         entry.setId(returnedEntry.getId());
-//        entry.setSummary("IS_THIS_WORKING");
         // Have to set some content because update sets content or we get null
         // errors from the webservice
         Task task = new TfTask();
@@ -88,6 +81,49 @@ public class CrowdClientTest extends TestCase {
         
         assertEquals(gottenEntry.getId(), returnedEntry.getId());
         assertEquals(gottenEntry.getSummary(), changedSummary);
+        
+        //cleanup
+        try {
+            crowdClient.removeEntry(returnedEntry.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception removing the test entry after");
+        }
+    }
+    
+    public void testGetEntryException() {
+        String fakeId = "Non-existant_Task_ID";
+        try {
+            crowdClient.getEntry(fakeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
+    }
+    
+    public void testUpdateEntryException() {
+        String entrySummary = "TestSummary";
+        CrowdSourcerEntry entry = new CrowdSourcerEntry();
+        CrowdSourcerEntry returnedEntry = new CrowdSourcerEntry();
+        entry.setSummary(entrySummary);
+        
+        try {
+            returnedEntry = crowdClient.insertEntry(entry);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception on inserting entry");
+        }
+        assertEquals(returnedEntry.getSummary(), entrySummary);
+        
+        // This should throw because we did not set content when updating,
+        // so the update entry will set the content to null and CrowdSource
+        // will return a null error.
+        try {
+            crowdClient.updateEntry(entry);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
         
         //cleanup
         try {

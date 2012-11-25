@@ -124,6 +124,12 @@ public class CrowdClient {
 	        Type entryType = CrowdSourcerEntry.class;     
 	        responseEntry = gson.fromJson(jsonStringVersion, entryType);
 	    }
+	    
+	    if (responseEntry.getId() == null) {
+	        throw new Exception("Error retreiving entry for entry ID: "
+	                + idP + ". (Maybe the entry does not exist)");
+	    }
+	    
         entity.consumeContent();
         return responseEntry;
 	    
@@ -188,12 +194,30 @@ public class CrowdClient {
         HttpEntity entity = response.getEntity();
 
         System.out.println(status);
+        
+        CrowdSourcerEntry updatedEntry = null;
         if (entity != null) {
             InputStream is = entity.getContent();
             String jsonStringVersion = convertStreamToString(is);
-            System.out.println(jsonStringVersion);
+            Type entryType = CrowdSourcerEntry.class;     
+            try {
+                updatedEntry = gson.fromJson(jsonStringVersion, entryType);
+            } catch (Exception e) {
+                // Know there was a problem deserializing the entry so there
+                // should be a CrowdSource error returned. Throw the error
+                // to the calling method.
+                Exception myException = new Exception(
+                        "There was an error " 
+                        + "getting the entry from JSON. Here is the "
+                        + "httpPost entity content: " 
+                        + convertStreamToString(httpPost.getEntity()
+                                .getContent()) + "\n"
+                        + "CrowdSource response:\n" + jsonStringVersion
+                );
+                myException.setStackTrace(e.getStackTrace());
+                throw myException;
+            }
         }
-
         entity.consumeContent();
 	}
 	
