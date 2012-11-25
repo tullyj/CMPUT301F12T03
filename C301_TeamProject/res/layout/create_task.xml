@@ -63,8 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.66"
             android:clickable="false"
-            android:focusable="false"
             android:ems="10"
+            android:focusable="false"
             android:gravity="center_horizontal"
             android:hint="@string/number_sign"
             android:inputType="none"
@@ -87,35 +87,24 @@
     <ListView
         android:id="@+id/showAttachedItems"
         android:layout_width="match_parent"
-        android:layout_height="204dp" >
+        android:layout_height="0dip"
+        android:layout_weight="0.12" >
     </ListView>
- 
- 		<RadioGroup
- 		    android:id="@+id/visibiltyChoice"
- 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-		        <RadioButton
-		            android:id="@+id/publicRadioButton"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_gravity="center_horizontal|center_vertical"
-		            android:gravity="center"
-		            android:text="@string/public_string" />	
-		        <RadioButton
-		            android:id="@+id/privateRadioButton"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_gravity="center_horizontal|center_vertical"
-		            android:gravity="center"
-		            android:text="@string/private_string" />
-       	</RadioGroup>
-       	
-    	<Button
+
+
+	    <Button
+	        android:id="@+id/taskProperties"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:onClick="createTaskProperties"
+	        android:text="@string/task_properties" />
+
+	    <Button
 	        android:id="@+id/saveTask"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/save_task"
-	        android:onClick="saveTask" />
+	        android:onClick="saveTask"
+	        android:text="@string/save_task" />
+
 
 </LinearLayout>

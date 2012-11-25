@@ -44,6 +44,10 @@
     <string name="single_task_item_desc">(click to fullfill)</string>
     <string name="prompt_confirm">Confirm</string>
     <string name="prompt_cancel">Cancel</string>
+    <string name="fulfill_response_type">Task fulfillment notification type</string>
+    <string name="task_properties">Task Properties</string>
+    <string name="email">E-mail</string>
+    <string name="continue_string">Continue</string>
 
     <string-array name="item_choices">
         <item>Text</item>
@@ -51,11 +55,18 @@
         <item>Photo</item>
         <item>Video</item>
     </string-array>
+    
+     <string-array name="response_choices">
+        <item>E-mail</item>
+        <item>Text</item>
+        <item>Twitter</item>
+    </string-array>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_input_text">Enter Text</string>
     <string name="text_instructions">Please enter your text:</string>
     <string name="no_data">No Data</string>
     <string name="title_activity_file_browser">File Browser</string>
+    <string name="title_activity_test">Test</string>
 
 </resources>

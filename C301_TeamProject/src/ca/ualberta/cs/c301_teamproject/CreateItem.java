@@ -20,6 +20,8 @@ import android.widget.Toast;
  */
 public class CreateItem extends Activity {
 	
+	public static int itemCount = 3;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
@@ -44,9 +46,12 @@ public class CreateItem extends Activity {
     		
     	}else{
     		//if we get into here the return code will be 2 and we need to populate the fields with info
-    		String temp[];
-    		temp = edit.split("\\|\\|");
+    		String[] temp = intent.getStringArrayExtra("item");
     		
+    		//map for item
+    		//0 -> number of item
+    		//1 -> item type
+    		//2 -> description
     		String type = temp[1];
     		String num = temp[0];
     		String desc = temp[2];
@@ -90,9 +95,9 @@ public class CreateItem extends Activity {
      * @return	A string that represents the item
      */
     //up to be returned to CreateTask
-    public String gatherItemInformation(){
+    public String[] gatherItemInformation(){
     	
-    	String info;
+    	String[] info = new String[itemCount];
     	Spinner itemType = (Spinner)findViewById(R.id.itemType);
     	EditText num = (EditText)findViewById(R.id.desiredNum);
     	EditText desc = (EditText)findViewById(R.id.description);
@@ -104,7 +109,15 @@ public class CreateItem extends Activity {
     	boolean valid = validateInput(numItem, description);
     	
     	if(valid){
-	    	info = numItem + "||" + type + "||" + description; 	
+    		
+    		//map for info
+    		//0 -> number of item
+    		//1 -> item type
+    		//2 -> description
+	    	info[0] = numItem;
+	    	info[1] = type;
+	    	info[2] = description;
+	    	
 	    	return info;
     	}else{
     		return null;
@@ -160,7 +173,7 @@ public class CreateItem extends Activity {
      */
     public void saveItem(View view){
     	
-    	String info = gatherItemInformation();
+    	String info[] = gatherItemInformation();
     	if(info != null){
 	    	Intent returnIntent = new Intent();
 	    	returnIntent.putExtra("result",info);
