@@ -499,7 +499,7 @@ public class CreateTask extends Activity {
 		protected String doInBackground(Task... arg0) {
 			
 			//add the task to the repository
-			TfTaskRepository.addTask(arg0[0]);
+			TfTaskRepository.addTask(arg0[0], getApplicationContext());
 			return null;
 		}
     	

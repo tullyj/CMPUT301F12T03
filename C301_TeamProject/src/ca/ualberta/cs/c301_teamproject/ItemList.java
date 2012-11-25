@@ -236,7 +236,7 @@ public class ItemList extends Activity {
     	if (requestCode == FILE_INTENT){
     		if(resultCode == RESULT_OK){
 		        if(ViewSingleTask.task.isModified()) {
-		        	TfTaskRepository.addTask(ViewSingleTask.task);
+		        	TfTaskRepository.addTask(ViewSingleTask.task, getApplicationContext());
 		        	
 		        	Toast.makeText(getApplicationContext(), 
 		    			"Uploaded == Success!", Toast.LENGTH_LONG).show();
