@@ -1,11 +1,13 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * This class just has the buttons for the main page.
@@ -42,6 +44,14 @@ public class MainPage extends Activity {
         Intent intent = new Intent(this, ViewTasks.class);
 
         // need to send parameters to filter into your tasks
+        
+        //grabbing all of the local task ids
+        MyLocalTasks lt = new MyLocalTasks();
+        String[] ids = lt.loadMyTaskIds(getApplicationContext());
+        
+        //send the local IDs as intent
+        
+        
         startActivity(intent);
 
     }
@@ -50,7 +60,10 @@ public class MainPage extends Activity {
 
         Intent intent = new Intent(this, ViewTasks.class);
 
-        // need to send parameters to filter into all tasks
+        //grab all of the task IDs
+        
+        
+        
         startActivity(intent);
 
     }

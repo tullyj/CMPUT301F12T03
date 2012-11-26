@@ -493,13 +493,20 @@ public class CreateTask extends Activity {
     private class saveTask extends AsyncTask<Task, String, String>{
     	
     	Dialog save = new Dialog(CreateTask.this);
-        
+        MyLocalTasks lt = new MyLocalTasks();
 
 		@Override
 		protected String doInBackground(Task... arg0) {
 			
 			//add the task to the repository
-			TfTaskRepository.addTask(arg0[0], getApplicationContext());
+			String taskID = TfTaskRepository.addTask(arg0[0], getApplicationContext());
+			
+			taskID = taskID + "\n";
+			
+			//saving the ID local
+			lt.saveTaskId(taskID, getApplicationContext());
+			
+			
 			return null;
 		}
     	
