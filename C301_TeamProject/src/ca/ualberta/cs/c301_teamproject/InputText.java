@@ -66,9 +66,9 @@ public class InputText extends Activity {
     		}
     	}
     	//Toast if not created
-    	else
-    		Toast.makeText(getBaseContext(), "folder not Created", 
-    				Toast.LENGTH_SHORT).show();
+//    	else
+//    		Toast.makeText(getBaseContext(), "folder not Created", 
+//    				Toast.LENGTH_SHORT).show();
     	//create and write the text into the saved file
     	try {
     		File myTextFile = new File(directory + fileName + ".txt");
