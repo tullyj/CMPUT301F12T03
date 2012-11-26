@@ -7,6 +7,7 @@ import java.io.InputStream;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_teamproject.ItemList;
+import ca.ualberta.cs.c301_teamproject.R;
 import ca.ualberta.cs.c301_teamproject.ViewSingleTask;
 import android.app.Activity;
 import android.content.Intent;

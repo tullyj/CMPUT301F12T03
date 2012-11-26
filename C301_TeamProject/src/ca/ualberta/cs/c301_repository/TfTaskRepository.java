@@ -22,7 +22,7 @@ public class TfTaskRepository {
 
     private static CrowdClient crowdClient = new CrowdClient();
     private static TfLocalRepository localRepo = new TfLocalRepository();
-
+    private static Task currentTask = null;
     // TODO Can we keep this list up-to-date and then save internally onPause?
     // Then just check if can connect to server, if not, return this list
     private List<Task> taskList = new ArrayList<Task>();
@@ -144,11 +144,16 @@ public class TfTaskRepository {
             throw new Exception("TfTaskRepository got a null task in "
                     + "getTaskById() with id=" + taskId);
         }
+        if (task.getTaskId() == null) {
+            throw new Exception("TfTaskRepository got an empty task with id ="
+                    + taskId);
+        }
+        currentTask = task;
         return task;
     }
 
     public static List<TfTask> getLocalTasks(Context c) {
         return localRepo.getTaskList(c);
     }
-
+    
 }
