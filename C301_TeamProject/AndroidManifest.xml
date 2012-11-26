@@ -131,8 +131,7 @@
         </activity>
         <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewVideo"
-            android:label="@string/title_list_item"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_list_item" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

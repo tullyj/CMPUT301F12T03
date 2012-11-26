@@ -257,7 +257,12 @@ public class ItemList extends Activity {
 			// TODO Auto-generated method stub
 			
     		if(ViewSingleTask.task.isModified()) {
-	        	TfTaskRepository.addTask(ViewSingleTask.task, getApplicationContext());
+	        	try {
+					TfTaskRepository.updateTask(ViewSingleTask.task);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        }
 	        
 			return null;

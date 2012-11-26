@@ -36,8 +36,8 @@ public class PreviewAudio extends Activity {
     private String filePath;
     private Uri mUri;
     
-    private PlayButton   mPlayButton = null;
-    private MediaPlayer   mPlayer = null;
+    private PlayButton mPlayButton = null;
+    private MediaPlayer mPlayer = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
