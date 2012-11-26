@@ -7,17 +7,30 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This class is just used to gather the task properties
+ * @author topched
+ *
+ */
 public class TaskProperties extends Activity{
 	
 	public String edit = "";
 	public static int propertyCount = 4;
+	public String TWITTER = "Twitter";
+	public String TEXT = "Text";
+	public String T_HANDLE = "Twitter handle";
+	public String T_NUM = "Phone #";
+	public String EMAIL = "E-mail";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -35,11 +48,31 @@ public class TaskProperties extends Activity{
 	        	R.array.response_choices, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
+    	
+    	
+    	spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				String type = (String) parent.getItemAtPosition(position);
+				
+				//show some future plans stuff here
+				updateTypeField(type);
+				
+				
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		
+    	});
         
         //edit = no first time properties was clicked
         if(edit.equals("no")){
         	
-	        //setting the default visibilty to public        
+	        //setting the default visibility to public        
 			vis.check(R.id.public_button);
    	
 	    //we have properties already just fill in the fields	
@@ -74,6 +107,49 @@ public class TaskProperties extends Activity{
         	
     	
         }
+		
+	}
+	
+	public void updateTypeField(String type){
+		
+		//here is where future plans show
+		TextView showType = (TextView)findViewById(R.id.showNotificationType);
+		EditText hint = (EditText)findViewById(R.id.notificationResponse);
+		
+		String h = "@TaskForce";
+		String e = "NoReply@TaskForce.com";
+		String n = "555-382-5968";
+		//
+		if(type.equals(TWITTER)){
+			
+			showType.setText(T_HANDLE);
+			hint.setHint(h);
+			hint.setFocusable(false);
+			
+		}else if(type.equals(TEXT)){
+			
+			showType.setText(T_NUM);
+			hint.setHint(n);
+			hint.setFocusable(false);
+			
+		}else if(type.equals(EMAIL)){
+			
+			showType.setText(EMAIL);
+			hint.setHint(e);
+		}
+		
+		//toast for future plans
+		if(type.equals(TWITTER) || type.equals(TEXT)){
+			
+			
+			Context context = getApplicationContext();
+			CharSequence text = "Feature not yet available!\nComing Soon!";
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		
 		
 	}
 	
@@ -148,10 +224,7 @@ public class TaskProperties extends Activity{
     	boolean valid = true;
     	String error = "";
     	
-    	if(properties[0].equals("")){
-    		error += "Please enter an email address";
-    		valid = false;
-    	}else if(properties[1].equals("")){
+    	if(properties[1].equals("")){
     		error += "Please select a visibility";
     		valid = false;
     	}else if(properties[2].equals("")){
@@ -160,7 +233,16 @@ public class TaskProperties extends Activity{
     	}else if(properties[3].equals("")){
     		error += "Please select a type";
     		valid = false;
-    	}
+    	}else if(properties[3].equals(TWITTER)){
+    		error += "Twitter response not yet available.\nPlease make another selection.";
+    		valid = false;
+    	}else if(properties[3].equals(TEXT)){
+    		error += "Text response not yet available.\nPlease make another selection";
+    		valid = false;
+    	}else if(properties[0].equals("")){
+    		error += "Please enter an email address";
+    		valid = false;
+    	} 
     	
     	
     	if(valid){
