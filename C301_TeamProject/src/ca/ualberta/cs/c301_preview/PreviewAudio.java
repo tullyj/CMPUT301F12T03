@@ -1,7 +1,9 @@
 package ca.ualberta.cs.c301_preview;
 
 import android.app.Activity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,23 +14,63 @@ import android.view.View;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.media.MediaRecorder;
+import android.media.MediaPlayer.OnPreparedListener;
+//import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import ca.ualberta.cs.c301_teamproject.ItemList;
+import ca.ualberta.cs.c301_teamproject.R;
 
 /* http://developer.android.com/guide/topics/media/audio-capture.html */
 public class PreviewAudio extends Activity {
 	
 	private static final String LOG_TAG = "PreviewAudio";
     //private static String mFileName = null;
+	private static final int VERTICAL = 1;
     
-    private static File file;
-
+    //private static File file;
+    private String filePath;
+    private Uri mUri;
+    
     private PlayButton   mPlayButton = null;
     private MediaPlayer   mPlayer = null;
 	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        Intent intent = getIntent();
+//        mUri = getIntent().getData();
+        mUri = Uri.fromFile(ItemList.currFile);
+        //filePath = intent.getStringExtra("PreviewItem");
+        filePath = ItemList.currFile.getAbsolutePath();
+        //file = new File(intent.getData().getPath());
+        
+        mPlayButton = new PlayButton(this);
+        ImageView speakerImage = new ImageView(this);
+        speakerImage.setImageResource(R.drawable.speaker);
+        
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(VERTICAL);
+        ll.addView(mPlayButton,
+            new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+        ll.addView(speakerImage,
+        	new LinearLayout.LayoutParams(
+        			ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT, 2));
+        setContentView(ll);
+
+        Toast.makeText(getApplicationContext(), 
+    			"Starting preview with: " + filePath, Toast.LENGTH_LONG).show();
+        
+    }
+    
 	private void onPlay(boolean start) {
 		if (start) startPlaying();
 		else stopPlaying();
@@ -37,9 +79,16 @@ public class PreviewAudio extends Activity {
 	private void startPlaying() {
 		mPlayer = new MediaPlayer();
 		try {
-			mPlayer.setDataSource(file.getAbsolutePath());
+			//mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			FileInputStream fis = new FileInputStream(ItemList.currFile);
+	        mPlayer.setDataSource(fis.getFD());
+			//mPlayer.setDataSource(this, mUri);
+			mPlayer.setOnPreparedListener((OnPreparedListener) this);
 			mPlayer.prepare();
 			mPlayer.start();
+			fis.close();
+			Toast.makeText(getApplicationContext(), 
+	    			filePath, Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "prepare() failed");
 		}
@@ -71,29 +120,4 @@ public class PreviewAudio extends Activity {
             setOnClickListener(clicker);
         }
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        LinearLayout ll = new LinearLayout(this);
-        mPlayButton = new PlayButton(this);
-        ll.addView(mPlayButton,
-            new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-        setContentView(ll);
-
-        Intent intent = getIntent();
-        file = new File(intent.getData().getPath());
-    }
-	
-//    private void onSave() {
-//    	//Intent mIntent = parseUri(Uri.fromFile(new File(mFileName)), 0);
-//    	//Intent mIntent = getIntent();
-//    	//mIntent.putExtra("AudioExtra", Uri.fromFile(new File(mFileName)));
-//    	
-//    	//setResult(RESULT_OK, mIntent);
-//    	finish();
-//    }
 }

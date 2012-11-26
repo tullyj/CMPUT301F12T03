@@ -16,6 +16,7 @@ import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -47,6 +48,8 @@ public class ItemList extends Activity {
 	//private String taskId;
 	private ItemType itemType;
 	private TaskItem item;
+	public static File currFile;
+	private updateTask updateT;
 	
 	public ArrayList<ItemListElement> listElements = new ArrayList<ItemListElement>();
 	
@@ -82,6 +85,7 @@ public class ItemList extends Activity {
         String frac = Integer.toString(progress[0]) + "/" + Integer.toString(progress[1]); 
         ((TextView) findViewById(R.id.listItemFraction)).setText(frac);
         
+        updateT = new updateTask();
         
         updateList();
     }
@@ -212,6 +216,7 @@ public class ItemList extends Activity {
 				// Get the file the user selected and save the uri to file.
 				Uri mUri = Uri.fromFile(item.getAllFiles().get(position));
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+		    	currFile = item.getAllFiles().get(position);
 				startActivity(intent);
 			}	
         });
@@ -235,15 +240,44 @@ public class ItemList extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == FILE_INTENT){
     		if(resultCode == RESULT_OK){
-		        if(ViewSingleTask.task.isModified()) {
-		        	TfTaskRepository.addTask(ViewSingleTask.task, getApplicationContext());
-		        	
-		        	Toast.makeText(getApplicationContext(), 
-		    			"Uploaded == Success!", Toast.LENGTH_LONG).show();
-		        }
-	    		
-	    		finish();
+		        updateT.execute();
     		}
     	}
+    }
+    
+    /**
+     * Displays dialog to show the file/item of task is being saved.
+     */
+    private class updateTask extends AsyncTask<String, String, String>{
+    	
+    	Dialog load = new Dialog(ItemList.this);
+
+    	@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			
+    		if(ViewSingleTask.task.isModified()) {
+	        	TfTaskRepository.addTask(ViewSingleTask.task, getApplicationContext());
+	        }
+	        
+			return null;
+		}
+    	
+		protected void onPreExecute(){
+			
+			//show this loading spinner
+            load.setContentView(R.layout.save_load_dialog);
+            load.setTitle("Saving Changes to Task");
+    		load.show();
+    		
+    	}
+    	
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			load.dismiss();
+			finish();
+		}	
     }
 }
