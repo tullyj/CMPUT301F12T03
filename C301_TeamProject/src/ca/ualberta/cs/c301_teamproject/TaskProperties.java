@@ -127,19 +127,23 @@ public class TaskProperties extends Activity{
 			
 			showType.setText(TWITTER_HANDLE);
 			hint.setHint(handle);
-			hint.setFocusable(false);
+//			hint.setFocusable(false);
+//			hint.setClickable(false);
 			
 		}else if(type.equals(TEXT)){
 			
 			showType.setText(TELE_NUM);
 			hint.setHint(num);
-			hint.setFocusable(false);
+//			hint.setFocusable(false);
+//			hint.setClickable(false);
 			
 		}else if(type.equals(EMAIL)){
 			
 			showType.setText(EMAIL);
 			hint.setHint(email);
-			hint.setFocusable(true);
+//			hint.setFocusable(true);
+//			hint.setClickable(true);
+//			hint.requestFocus();
 		}
 		
 		//toast for future plans

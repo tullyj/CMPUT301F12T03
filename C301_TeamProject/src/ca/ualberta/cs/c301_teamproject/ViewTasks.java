@@ -1,11 +1,13 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
@@ -31,6 +34,9 @@ public class ViewTasks extends Activity {
     ArrayAdapter<CrowdSourcerEntry> adapter;
     private List<Map<String,String>> mapList;
     private List<CrowdSourcerEntry> shallowEntryList = new ArrayList<CrowdSourcerEntry>();
+    private boolean allTasks = false;
+    private boolean myTasks = false;
+    private String[] localTaskIds;
 
 
     @Override
@@ -41,22 +47,66 @@ public class ViewTasks extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
-      
-        	//starting the loading of the tasks
-        	new loadTasks().execute();
-        	
+        //grab the intent to see which filter we are using
+        Intent intent = getIntent();
+        String local = intent.getStringExtra(MainPage.LOCAL);
+
+        localTaskIds = intent.getStringArrayExtra(MainPage.IDS);
         
-        	//creating the list view click listener
-            ListView listView = (ListView) findViewById(R.id.taskList);
-            listView.setOnItemClickListener(new OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    viewTask(position, shallowEntryList);
-                }
-            });
+        //we know we want local tasks only
+        if(local.equals("yes")){
+        	myTasks = true;
+        	allTasks = false;
+        }
+        
+        //we know we want all tasks here
+        if(local.equals("no")){
+        	allTasks = true;
+        	myTasks = false;
+        }
+        
+      
+    	//starting the loading of the tasks
+    	new loadTasks().execute();
+    	
+    
+    	//creating the list view click listener
+        ListView listView = (ListView) findViewById(R.id.taskList);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                viewTask(position, shallowEntryList);
+            }
+        });
            
     }
-       
+    
+    //used to remove specific entries
+    public void removeEntries(){
+    	
+    	//iterate over the list
+    	Iterator<CrowdSourcerEntry> it = shallowEntryList.iterator();
+    	List<CrowdSourcerEntry> temp = new ArrayList<CrowdSourcerEntry>();
+    	
+    	//looping through the entries and grabbing
+    	while(it.hasNext()){
+    		
+    		CrowdSourcerEntry entry = it.next();
+    		String id = entry.getId();
+    		
+    		for(int i = 0;i<localTaskIds.length;i++){
+    			
+    			if(localTaskIds[i].equals(id)){
+    				temp.add(entry);
+    			}
+    			
+    		}
+	
+    	}
+    	
+    	shallowEntryList = temp;
+   	
+    }
     
     /**
      * 
@@ -87,7 +137,11 @@ public class ViewTasks extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	            
+	        
+			//if we only want to view local tasks only
+			if(myTasks){
+				removeEntries();
+			}
 			return null;
 		}
 		
@@ -108,6 +162,7 @@ public class ViewTasks extends Activity {
 			//update the list view and then dismiss the loading spinner
 			updateListView();
 			load.dismiss();
+
 		
 		}	
     }//end of load tasks

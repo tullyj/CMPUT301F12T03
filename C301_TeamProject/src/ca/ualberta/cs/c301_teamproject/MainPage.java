@@ -15,6 +15,9 @@ import android.widget.Toast;
  *
  */
 public class MainPage extends Activity {
+	
+	public static String LOCAL = "local";
+	public static String IDS = "ids";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,8 @@ public class MainPage extends Activity {
         String[] ids = lt.loadMyTaskIds(getApplicationContext());
         
         //send the local IDs as intent
-        
-        
+        intent.putExtra(LOCAL, "yes");
+        intent.putExtra(IDS, ids);
         startActivity(intent);
 
     }
@@ -61,7 +64,7 @@ public class MainPage extends Activity {
         Intent intent = new Intent(this, ViewTasks.class);
 
         //grab all of the task IDs
-        
+        intent.putExtra(LOCAL, "no");
         
         
         startActivity(intent);
