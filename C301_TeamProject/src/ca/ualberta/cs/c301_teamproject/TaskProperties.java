@@ -28,8 +28,8 @@ public class TaskProperties extends Activity{
 	public static int propertyCount = 4;
 	public String TWITTER = "Twitter";
 	public String TEXT = "Text";
-	public String T_HANDLE = "Twitter handle";
-	public String T_NUM = "Phone #";
+	public String TWITTER_HANDLE = "Twitter handle";
+	public String TELE_NUM = "Phone #";
 	public String EMAIL = "E-mail";
 	
 	@Override
@@ -50,10 +50,13 @@ public class TaskProperties extends Activity{
     	spinner.setAdapter(adapter);
     	
     	
+    	//setting the spinner listener
+    	//this is here mainly for show and so she doesnt break
     	spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
+
+				//grabbing the type selected
 				String type = (String) parent.getItemAtPosition(position);
 				
 				//show some future plans stuff here
@@ -116,26 +119,27 @@ public class TaskProperties extends Activity{
 		TextView showType = (TextView)findViewById(R.id.showNotificationType);
 		EditText hint = (EditText)findViewById(R.id.notificationResponse);
 		
-		String h = "@TaskForce";
-		String e = "NoReply@TaskForce.com";
-		String n = "555-382-5968";
+		String handle = "@TaskForce";
+		String email = "NoReply@TaskForce.com";
+		String num = "555-382-5968";
 		//
 		if(type.equals(TWITTER)){
 			
-			showType.setText(T_HANDLE);
-			hint.setHint(h);
+			showType.setText(TWITTER_HANDLE);
+			hint.setHint(handle);
 			hint.setFocusable(false);
 			
 		}else if(type.equals(TEXT)){
 			
-			showType.setText(T_NUM);
-			hint.setHint(n);
+			showType.setText(TELE_NUM);
+			hint.setHint(num);
 			hint.setFocusable(false);
 			
 		}else if(type.equals(EMAIL)){
 			
 			showType.setText(EMAIL);
-			hint.setHint(e);
+			hint.setHint(email);
+			hint.setFocusable(true);
 		}
 		
 		//toast for future plans

@@ -88,8 +88,34 @@ public class MainPage extends Activity {
     }
     
     // temporary button to list local tasks for testing
+    //sends a test email right now
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
-        startActivity(intent);
+        //startActivity(intent);
+        
+        //sending a test email - you have to manually send email
+        //for send automatic email here would be the solution - link split between lines
+        //http://stackoverflow.com/questions/2020088/sending-email-in-
+        //android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124
+//        String to = "test@test.ca";
+//        String subject = "Task Force Notification";
+//        String message = "This is task force informing you that ";
+//        message += "your task appears to be fulfilled!";
+//
+//        Intent email = new Intent(Intent.ACTION_SEND);
+//        email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
+//        // email.putExtra(Intent.EXTRA_CC, new String[]{ to});
+//        // email.putExtra(Intent.EXTRA_BCC, new String[]{to});
+//        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+//        email.putExtra(Intent.EXTRA_TEXT, message);
+//        
+//
+//        // need this to prompts email client only
+//        email.setType("message/rfc822");
+//
+//        startActivity(Intent.createChooser(email, "Choose an Email client :"));
+//        
+     
+        
     }
 }
