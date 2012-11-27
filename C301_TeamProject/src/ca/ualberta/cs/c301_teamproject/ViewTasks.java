@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
+import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
@@ -142,6 +144,26 @@ public class ViewTasks extends Activity {
 			if(myTasks){
 				removeEntries();
 			}
+			
+			//SENDING A TEST AUTO EMAIL BELOW
+//			String body = "This is Task Force";
+//	        String sub = "Task Force Notification";
+//	        String us = "taskforcenotification@gmail.com";
+//	        String pass = "taskforcefuckyeah";
+//	        
+//	        //testing the auto email
+//	        try{
+//	        	GmailSender sender = new GmailSender(us, pass);
+//	        	sender.sendMail(sub, body, us, "kkushnir@ualberta.ca");
+//	        	
+//	        }catch(Exception e){
+//	        	Log.e("SendMail", e.getMessage(), e);
+//	        }
+//		
+			//END OF SENDING TEST EMAIL
+			
+			
+			
 			return null;
 		}
 		

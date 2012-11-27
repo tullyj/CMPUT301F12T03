@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="ca/ualberta/cs/c301_tests/TfTaskRepositoryTest.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry excluding="ca/ualberta/cs/c301_tests/TfTaskRepositoryTest.java" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/Users/topched/Downloads/activation.jar"/>
+	<classpathentry kind="lib" path="/Users/topched/Downloads/additionnal.jar"/>
+	<classpathentry kind="lib" path="/Users/topched/Downloads/mail.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
