@@ -7,7 +7,7 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import ca.ualberta.cs.c301_emailClient.GmailSender;
+
 
 /**
  * This class just has the buttons for the main page.
