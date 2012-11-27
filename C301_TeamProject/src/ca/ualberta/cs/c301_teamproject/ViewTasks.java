@@ -144,7 +144,7 @@ public class ViewTasks extends Activity {
 				removeEntries();
 			}
 			
-			//send a automatic test email
+			//send a automatic test email/
 			
 //			String us = "taskforcenotification@gmail.com";
 //			String pass = "taskforcefuckyeah";
