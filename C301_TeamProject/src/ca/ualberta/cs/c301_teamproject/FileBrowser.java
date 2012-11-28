@@ -29,7 +29,7 @@ final private List<String> imageExtensions =
 final private List<String> audioExtensions =
 		 Arrays.asList("wav", "mid", "mp3", "wma", "flac", "ogg");
 final private List<String> videoExtensions =
-		 Arrays.asList("avi", "mp4", "wmv");
+		 Arrays.asList("avi", "mp4", "wmv", "mkv");
 
     /**
      * This class is a modified version of the code given by Androider+ in the
