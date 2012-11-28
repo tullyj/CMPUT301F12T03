@@ -144,9 +144,8 @@ public class TfTaskRepository {
             throw new Exception("TfTaskRepository got a null task in "
                     + "getTaskById() with id=" + taskId);
         }
-        if (task.getTaskId() == null) {
-            throw new Exception("TfTaskRepository got an empty task with id ="
-                    + taskId);
+        if (task.getTaskId() != entry.getId()) {
+            task.setTaskId(entry.getId());
         }
         currentTask = task;
         return task;

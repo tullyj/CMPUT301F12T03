@@ -251,7 +251,7 @@ public class ItemList extends Activity {
     	@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			ViewSingleTask.task.setTitle("Tully Test Mod");
+			//ViewSingleTask.task.setTitle("Tully Test Mod");
     		if(ViewSingleTask.task.isModified()) {
 	        	try {
 					TfTaskRepository.updateTask(ViewSingleTask.task);
