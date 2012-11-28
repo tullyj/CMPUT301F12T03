@@ -59,7 +59,7 @@ public class InputFile extends Activity {
         // Get item type in regards to final int representations.
         itemType = Integer.parseInt(inArgs[0]);
          
-        item = ItemList.getItem(ViewSingleTask.task, inArgs[1]);
+        item = ViewSingleTask.task.getItemByType(inArgs[1]);
 //        if(getIntent().getIntExtra("FromFile", 0) == 4)
 //        	fromFile = true;
 //        else{
@@ -139,12 +139,15 @@ public class InputFile extends Activity {
 	    		builder.setTitle("Import Photo");
 				builder.setMessage("How would you like to add a photo?");				
 				// Add "Take a Photo" button
-				builder.setPositiveButton(R.string.import_capturepic, new DialogInterface.OnClickListener() {
-				       public void onClick(DialogInterface dialog, int id) {
+				builder.setPositiveButton(R.string.import_capturepic, 
+				        new DialogInterface.OnClickListener() {
+				    public void onClick(DialogInterface dialog, int id) {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
-				    	   Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    	   String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
+				    	   Intent photoIntent = 
+				    	           new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				    	   String directory = 
+				    	           Environment.getExternalStorageDirectory().getAbsolutePath();
 //				    	   File folder = new File(directory);
 //				    	   folder.mkdirs();
 				    	   Uri mUri = Uri.fromFile(new File(directory));
@@ -234,10 +237,10 @@ public class InputFile extends Activity {
             			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
 	            			String[] projection = {
-	            					MediaStore.Images.Thumbnails._ID,
-	            					 MediaStore.Images.Thumbnails.IMAGE_ID,
-	            					 MediaStore.Images.Thumbnails.KIND,
-	            					 MediaStore.Images.Thumbnails.DATA};
+	            			    MediaStore.Images.Thumbnails._ID,
+	            			    MediaStore.Images.Thumbnails.IMAGE_ID,
+	            				MediaStore.Images.Thumbnails.KIND,
+	            				MediaStore.Images.Thumbnails.DATA};
 	            			
 	            			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
 	            			String selection = MediaStore.Images.Thumbnails.KIND + "="  

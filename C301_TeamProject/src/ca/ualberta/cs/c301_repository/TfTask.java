@@ -121,4 +121,12 @@ public class TfTask implements Task {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public TaskItem getItemByType(String itemType) {
+        for(int i = 0; i < itemList.size(); i++){
+            if(itemList.get(i).getType().toString().equals(itemType))
+                return itemList.get(i);
+        }
+        return null;
+    }
 }

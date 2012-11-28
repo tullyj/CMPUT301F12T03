@@ -120,20 +120,11 @@ public class ItemList extends Activity {
 		return null;
     }
     
-    public static TaskItem getItem(Task task, String itemType) {
-    	List<TfTaskItem> itemList = task.getAllItems();
-        for(int i = 0; i < itemList.size(); i++){
-        	if(itemList.get(i).getType().toString().equals(itemType))
-        		return itemList.get(i);
-        }
-        return null;
-    }
-    
     /**
      * Looks through the current item within a task for the list of files.
      */
     private int[] populateList(){                
-        item = getItem(ViewSingleTask.task, itemType.toString());
+        item = ViewSingleTask.task.getItemByType(itemType.toString());
     	
         // Total is the target total number for this item.
         int total = item.getNumber();
@@ -240,6 +231,11 @@ public class ItemList extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == FILE_INTENT){
     		if(resultCode == RESULT_OK){
+    			
+    			Toast.makeText(getApplicationContext(), 
+    					ViewSingleTask.task.getTaskId(), 
+    						Toast.LENGTH_LONG).show();
+    			
 		        updateT.execute();
     		}
     	}
@@ -255,7 +251,7 @@ public class ItemList extends Activity {
     	@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			
+			ViewSingleTask.task.setTitle("Tully Test Mod");
     		if(ViewSingleTask.task.isModified()) {
 	        	try {
 					TfTaskRepository.updateTask(ViewSingleTask.task);

@@ -48,4 +48,6 @@ public interface Task {
     public String getEmail();
 
     public void setEmail(String email);
+
+    public TaskItem getItemByType(String itemType);
 }

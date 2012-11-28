@@ -97,7 +97,7 @@ public class InputText extends Activity {
      */
     public void addToList(File myTextFile){
     	String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
-		TaskItem item = ItemList.getItem(ViewSingleTask.task, inArgs[1]);
+		TaskItem item = ViewSingleTask.task.getItemByType(inArgs[1]);
 		
 		ArrayList<File> files = new ArrayList<File>();
 		files.add(myTextFile);

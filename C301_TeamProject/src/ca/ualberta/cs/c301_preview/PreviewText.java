@@ -24,8 +24,7 @@ public class PreviewText extends Activity {
             int position = intent.getIntExtra("position", 9999);
             
             TaskItem item =
-            		ItemList.getItem(ViewSingleTask.task, 
-            						ItemType.TEXT.toString());
+                ViewSingleTask.task.getItemByType(ItemType.TEXT.toString());
             
             File file = item.getAllFiles().get(position);
             TextView tv = (TextView) findViewById(R.id.textView1);

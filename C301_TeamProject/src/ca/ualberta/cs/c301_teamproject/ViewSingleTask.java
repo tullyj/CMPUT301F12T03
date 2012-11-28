@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
@@ -26,7 +27,7 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
  */
 public class ViewSingleTask extends Activity {
 
-	public static Task task;
+	public static Task task = null;
 	private String taskId;
 	
 	
@@ -37,6 +38,8 @@ public class ViewSingleTask extends Activity {
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
+        
+
         
         //load the single task async style
         new loadSingleTask().execute();
@@ -58,6 +61,12 @@ public class ViewSingleTask extends Activity {
 	 * Refreshes, or recreates, the listview on the ItemList screen.
 	 */
     public void updateList(final Task task){   	
+    	
+        Toast.makeText(getApplicationContext(), 
+        		task.getTaskId(), 
+					Toast.LENGTH_LONG).show();
+    	
+    	
     	final List<TfTaskItem> items = task.getAllItems();
     	ItemListElement[] elements = new ItemListElement[items.size()];
     	String title = "";
@@ -88,6 +97,13 @@ public class ViewSingleTask extends Activity {
 				
 				intent.putExtra("SendItem", new String[]{infoT[1], 
 						infoT[0], items.get(position).getDescription()});
+				
+				
+				Toast.makeText(getApplicationContext(), 
+    					task.getTaskId(), 
+    						Toast.LENGTH_LONG).show();
+				
+				
 				startActivity(intent);
 			}	
         });
@@ -116,14 +132,15 @@ public class ViewSingleTask extends Activity {
     private class loadSingleTask extends AsyncTask<String, String, String>{
     	
     	Dialog load = new Dialog(ViewSingleTask.this);
+    	//private Task sTask = null;
 
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
-			task = null;
+			//task = null;
 	        try {
-	            task = TfTaskRepository.getTaskById(taskId);
+	        	task = TfTaskRepository.getTaskById(taskId);
 	        } catch (Exception e) {
 	            System.err.println(e.getMessage());
 	            e.printStackTrace();
