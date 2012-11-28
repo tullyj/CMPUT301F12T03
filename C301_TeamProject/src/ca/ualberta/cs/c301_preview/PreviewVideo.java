@@ -42,7 +42,7 @@ public class PreviewVideo extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.preview_video);
+//        setContentView(R.layout.preview_video);
 //        Intent intent = getIntent();
 //        mUri = getIntent().getData();
         mUri = Uri.fromFile(ItemList.currFile);
@@ -52,12 +52,12 @@ public class PreviewVideo extends Activity {
         
         //mPlayButton = new PlayButton(this);
         //mSurfaceView = (SurfaceView) findViewById(R.id.surfaceVideo);
-        
-        
-        mVideo = (VideoView) findViewById(R.id.previewvid);
-        mVideo.setVideoPath("/mnt/extSdCard/DCIM/Camera/20121121_171024.mp4");
-        mVideo.start();
-        
+//        
+//        
+//        mVideo = (VideoView) findViewById(R.id.previewvid);
+//        mVideo.setVideoPath("/mnt/extSdCard/DCIM/Camera/20121121_171024.mp4");
+//        mVideo.start();
+//        
         
         
 //        LinearLayout ll = new LinearLayout(this);

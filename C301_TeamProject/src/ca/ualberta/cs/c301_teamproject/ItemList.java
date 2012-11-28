@@ -5,33 +5,34 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
-import ca.ualberta.cs.c301_interfaces.ItemType;
-import ca.ualberta.cs.c301_interfaces.Task;
-import ca.ualberta.cs.c301_interfaces.TaskItem;
-import ca.ualberta.cs.c301_preview.*;
-import ca.ualberta.cs.c301_repository.TfTask;
-import ca.ualberta.cs.c301_repository.TfTaskItem;
-import ca.ualberta.cs.c301_repository.TfTaskRepository;
-
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import ca.ualberta.cs.c301_interfaces.ItemType;
+import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_preview.PreviewAudio;
+import ca.ualberta.cs.c301_preview.PreviewPhoto;
+import ca.ualberta.cs.c301_preview.PreviewText;
+import ca.ualberta.cs.c301_preview.PreviewVideo;
+import ca.ualberta.cs.c301_repository.TfTaskItem;
+import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
  * Displays a listview of files for a given item in a task.
@@ -50,6 +51,7 @@ public class ItemList extends Activity {
 	private TaskItem item;
 	public static File currFile;
 	private updateTask updateT;
+	private boolean fulfilled = true;
 	
 	public ArrayList<ItemListElement> listElements = new ArrayList<ItemListElement>();
 	
@@ -260,6 +262,34 @@ public class ItemList extends Activity {
 					e.printStackTrace();
 				}
 	        }
+    		
+    		
+    		//check if the task was fulfilled
+            List<TfTaskItem> tasks = ViewSingleTask.task.getAllItems();
+            
+            Iterator<TfTaskItem> it = tasks.iterator();
+            
+            while(it.hasNext()){
+                
+                TfTaskItem task = (TfTaskItem) it.next();
+                List<File> files = task.getAllFiles();
+                
+                
+                int desiredNum = task.getNumber();
+                int actualNum = files.size();
+                
+                
+                
+                System.out.println("desired = " + desiredNum);
+                System.out.println("actual = " + actualNum);
+                
+                if(actualNum<desiredNum){
+                    fulfilled = false;
+                    break;
+                }
+               
+                
+            }
 	        
 			return null;
 		}
@@ -278,6 +308,20 @@ public class ItemList extends Activity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			load.dismiss();
+			
+			
+			//right here we know that we need to send an email for fulfilling task
+			if(fulfilled){
+			    
+			    Context context = getApplicationContext();
+			    CharSequence text = "Task complete!";
+			    int duration = Toast.LENGTH_SHORT;
+
+			    Toast toast = Toast.makeText(context, text, duration);
+			    toast.show();
+			}
+			
+			
 			finish();
 		}	
     }
