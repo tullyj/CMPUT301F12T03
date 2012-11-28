@@ -22,7 +22,7 @@ public class CreateItem extends Activity {
 	
 	public static int itemCount = 3;
 	private String[] currentItemTypes;
-	private String currentType = "";
+	private boolean currentType = false;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class CreateItem extends Activity {
     		String num = temp[0];
     		String desc = temp[2];
     		
-    		currentType = type;
+    		currentType = true;
     		
     		EditText n = (EditText)findViewById(R.id.desiredNum);
     		EditText d = (EditText)findViewById(R.id.description);
@@ -141,13 +141,16 @@ public class CreateItem extends Activity {
     	String error = "";
     	
     	//checking the current item types
-    	for(int i = 0;i<currentItemTypes.length;i++){
-    	    
-    	    if(currentItemTypes[i].equals(type)){
-    	        valid = false;
-    	        error += "You already have an item of this type.";
-    	    }
-    	    
+    	//only want to check if we are NOT editing an entry
+    	if(!currentType){
+        	for(int i = 0;i<currentItemTypes.length;i++){
+        	    
+        	    if(currentItemTypes[i].equals(type)){
+        	        valid = false;
+        	        error += "You already have an item of this type.";
+        	    }
+        	    
+        	}
     	}
 
     	if(num.length()>0){
