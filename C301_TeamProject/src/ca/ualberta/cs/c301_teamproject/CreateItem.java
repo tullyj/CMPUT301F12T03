@@ -60,6 +60,7 @@ public class CreateItem extends Activity {
     		String num = temp[0];
     		String desc = temp[2];
     		
+    		//we have a type selected already
     		currentType = true;
     		
     		EditText n = (EditText)findViewById(R.id.desiredNum);
@@ -132,6 +133,7 @@ public class CreateItem extends Activity {
      * This method just validates the input
      * @param num		The number of the item
      * @param desc		The description of the item
+     * @param type      The type of the spinner
      * @return		A string representing the item
      */
     public boolean validateInput(String num, String desc, String type){
