@@ -1,5 +1,8 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -192,6 +195,7 @@ public class TaskProperties extends Activity{
     	String description = desc.getText().toString();
     	String type = notificationType.getSelectedItem().toString();
     	
+    	
     	//putting the properties into the return array
     	//0 -> where to send the notification
     	//1 -> visibility
@@ -231,6 +235,13 @@ public class TaskProperties extends Activity{
     	
     	boolean valid = true;
     	String error = "";
+    	boolean validEmail = false;
+    	
+    	//check for a valid email
+    	Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+    	Matcher m = p.matcher(properties[0]);
+    	validEmail = m.matches();
+    	
     	
     	if(properties[1].equals("")){
     		error += "Please select a visibility";
@@ -247,6 +258,9 @@ public class TaskProperties extends Activity{
     	}else if(properties[3].equals(TEXT)){
     		error += "Text response not yet available.\nPlease make another selection";
     		valid = false;
+    	}else if(!validEmail){
+    	    error += "Please enter a valid email address.";
+    	    valid = false;
     	}else if(properties[0].equals("")){
     		error += "Please enter an email address";
     		valid = false;

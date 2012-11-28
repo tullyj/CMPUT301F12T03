@@ -95,13 +95,19 @@
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/description"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="0.98"
-        android:ems="10"
-        android:inputType="textMultiLine" />
+        android:layout_weight="1"
+        android:gravity="bottom|center_vertical"
+        android:orientation="vertical" >
+	    <EditText
+	        android:id="@+id/description"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="textMultiLine" />
+	</LinearLayout>
 
     <Button
         android:id="@+id/returnToTask"
