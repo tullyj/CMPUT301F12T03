@@ -383,8 +383,15 @@ public class CreateTask extends Activity {
 	    	//creating each individual item
 	    	addItemsToTask(t);
 	    	
-	    	// TODO need to add the device id to the task
-	    	//put link in git wiki reference page -- need to decide route
+	    	//need to add the rest of the data to the task
+	    	
+	    	//set the description
+	    	t.setDescription(taskDescription);
+	    	
+	    	//set the email to respond to
+	    	t.setEmail(taskResponseString);
+	    	
+	    	
 	    	
 	    	return t;
     	}else{
