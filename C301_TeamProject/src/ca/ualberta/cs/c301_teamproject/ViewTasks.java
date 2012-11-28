@@ -5,22 +5,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
+import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
@@ -142,6 +143,27 @@ public class ViewTasks extends Activity {
 			if(myTasks){
 				removeEntries();
 			}
+			
+			//send a automatic test email/
+			
+//			String us = "taskforcenotification@gmail.com";
+//			String pass = "taskforcefuckyeah";
+//			String sub = "Task Force Notification";
+//			String body = "This is task force automatic email";
+//			
+//			
+//			try {   
+//                GmailSender sender = new GmailSender(us, pass);
+//                sender.sendMail(sub, body, us, "colin@ualberta.ca");   
+//            } catch (Exception e) {   
+//                Log.e("SendMail", e.getMessage(), e);   
+//            } 
+//			
+//			
+			
+			//end sending automatic email
+			
+					
 			return null;
 		}
 		

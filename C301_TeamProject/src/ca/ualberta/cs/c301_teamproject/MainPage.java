@@ -1,13 +1,13 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 
 /**
  * This class just has the buttons for the main page.
@@ -95,29 +95,11 @@ public class MainPage extends Activity {
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
         //startActivity(intent);
-        
-        //sending a test email - you have to manually send email
-        //for send automatic email here would be the solution - link split between lines
+
         //http://stackoverflow.com/questions/2020088/sending-email-in-
-        //android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124
-//        String to = "test@test.ca";
-//        String subject = "Task Force Notification";
-//        String message = "This is task force informing you that ";
-//        message += "your task appears to be fulfilled!";
-//
-//        Intent email = new Intent(Intent.ACTION_SEND);
-//        email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-//        // email.putExtra(Intent.EXTRA_CC, new String[]{ to});
-//        // email.putExtra(Intent.EXTRA_BCC, new String[]{to});
-//        email.putExtra(Intent.EXTRA_SUBJECT, subject);
-//        email.putExtra(Intent.EXTRA_TEXT, message);
-//        
-//
-//        // need this to prompts email client only
-//        email.setType("message/rfc822");
-//
-//        startActivity(Intent.createChooser(email, "Choose an Email client :"));
-//        
+        //android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124       
+        
+       
      
         
     }

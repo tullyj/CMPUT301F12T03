@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -505,7 +506,6 @@ public class CreateTask extends Activity {
 			
 			//saving the ID local
 			lt.saveTaskId(taskID, getApplicationContext());
-			
 			
 			return null;
 		}
