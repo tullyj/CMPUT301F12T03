@@ -9,8 +9,7 @@ import ca.ualberta.cs.c301_repository.TfTaskItem;
  * @author colinhunt
  *
  */
-public interface Task 
-        /* extends CrowdSourcerContent */ {
+public interface Task {
     
     public Boolean addItem(TaskItem item);
     
@@ -45,4 +44,8 @@ public interface Task
     public String getTaskId();
     
     public void setTaskId(String id);
+    
+    public String getEmail();
+
+    public void setEmail(String email);
 }

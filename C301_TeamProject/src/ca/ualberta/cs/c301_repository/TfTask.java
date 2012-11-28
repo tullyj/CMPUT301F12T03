@@ -33,6 +33,8 @@ public class TfTask extends CrowdSourcerContent implements Task {
 
     private String taskId = "";
     
+    private String email = "";
+    
     public TfTask() {}
     
     public Boolean addItem(TaskItem item) {
@@ -111,5 +113,13 @@ public class TfTask extends CrowdSourcerContent implements Task {
     @Override
     public String toString() {
         return "Task " + title + ", " + description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
