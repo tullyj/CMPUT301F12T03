@@ -255,10 +255,17 @@ public class ItemList extends Activity {
         String us = "taskforcenotification@gmail.com";
         String pass = "taskforcefuckyeah";
         String sub = "Task Force Notification";
-        String body = "This is task force automatic email";
-        String to = "";
         
-        to = ViewSingleTask.task.getEmail();
+        String to = ViewSingleTask.task.getEmail();
+        String title = ViewSingleTask.task.getTitle();
+        String desc = ViewSingleTask.task.getDescription();
+        
+        String body1 = "This is task force automatic notification.\n\n" + 
+                "Your task: " + title + " appears to be fulfilled\n\n";
+        
+        String body2 = "Please visit TaskForce to view the progress.";
+        
+        String body = body1 + body2;
         
         try {   
             GmailSender sender = new GmailSender(us, pass);
