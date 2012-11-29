@@ -207,7 +207,7 @@ public class ItemList extends Activity {
 						Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(getApplicationContext(), getPreviewClass());
 				// Get the file the user selected and save the uri to file.
-				Uri mUri = Uri.fromFile(item.getAllFiles().get(position));
+				Uri mUri = Uri.fromFile(item.getFile(position));
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		    	currFile = item.getAllFiles().get(position);
 				startActivity(intent);

@@ -83,6 +83,7 @@ public class PreviewAudio extends Activity {
 			FileInputStream fis = new FileInputStream(ItemList.currFile);
 	        mPlayer.setDataSource(fis.getFD());
 			//mPlayer.setDataSource(this, mUri);
+			//mPlayer.setDataSource("/mnt/sdCard/Music/Test.mp3");
 			mPlayer.setOnPreparedListener((OnPreparedListener) this);
 			mPlayer.prepare();
 			mPlayer.start();

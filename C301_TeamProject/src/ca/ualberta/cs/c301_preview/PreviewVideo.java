@@ -43,6 +43,8 @@ public class PreviewVideo extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preview_video);
+        //View view = findViewById(R.layout.preview_video);
+        //view.setBackgroundColor(0x00000000);
 //        Intent intent = getIntent();
 //        mUri = getIntent().getData();
         mUri = Uri.fromFile(ItemList.currFile);
