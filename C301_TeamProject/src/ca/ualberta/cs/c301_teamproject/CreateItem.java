@@ -21,6 +21,8 @@ import android.widget.Toast;
 public class CreateItem extends Activity {
 	
 	public static int itemCount = 3;
+	private String[] currentItemTypes;
+	private boolean currentType = false;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class CreateItem extends Activity {
     	
     	Intent intent = getIntent();
     	String edit = intent.getStringExtra(CreateTask.EDIT);
+    	
+    	currentItemTypes = intent.getStringArrayExtra(CreateTask.TYPES);
     	
     	//if edit = no then it is a fresh task not an edit
     	if(edit.equals("no")){
@@ -56,6 +60,9 @@ public class CreateItem extends Activity {
     		String num = temp[0];
     		String desc = temp[2];
     		
+    		//we have a type selected already
+    		currentType = true;
+    		
     		EditText n = (EditText)findViewById(R.id.desiredNum);
     		EditText d = (EditText)findViewById(R.id.description);
     		Spinner t = (Spinner)findViewById(R.id.itemType);
@@ -71,12 +78,10 @@ public class CreateItem extends Activity {
         	
         	int i = adapter.getPosition(type);
         	t.setSelection(i);
-    		
-    		
+        	t.setClickable(false);
+   		
     	}
-        
-    	
-             
+         
     }
 
     @Override
@@ -106,7 +111,7 @@ public class CreateItem extends Activity {
     	String numItem = num.getText().toString();
     	String description = desc.getText().toString();
     	
-    	boolean valid = validateInput(numItem, description);
+    	boolean valid = validateInput(numItem, description, type);
     	
     	if(valid){
     		
@@ -128,14 +133,28 @@ public class CreateItem extends Activity {
      * This method just validates the input
      * @param num		The number of the item
      * @param desc		The description of the item
+     * @param type      The type of the spinner
      * @return		A string representing the item
      */
-    public boolean validateInput(String num, String desc){
+    public boolean validateInput(String num, String desc, String type){
     	
     	boolean valid = true;
     	int number = 0;
     	String error = "";
     	
+    	//checking the current item types
+    	//only want to check if we are NOT editing an entry
+    	if(!currentType){
+        	for(int i = 0;i<currentItemTypes.length;i++){
+        	    
+        	    if(currentItemTypes[i].equals(type)){
+        	        valid = false;
+        	        error += "You already have an item of this type.";
+        	    }
+        	    
+        	}
+    	}
+
     	if(num.length()>0){
     		number = Integer.parseInt(num);
     	}else{

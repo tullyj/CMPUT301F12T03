@@ -150,10 +150,10 @@ public class InputFile extends Activity {
 				    	           Environment.getExternalStorageDirectory().getAbsolutePath();
 //				    	   File folder = new File(directory);
 //				    	   folder.mkdirs();
-				    	   Uri mUri = Uri.fromFile(new File(directory));
+//				    	   Uri mUri = Uri.fromFile(new File(directory));
 //				    	   Uri mUri = Uri.fromFile(new File(
 //				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp/"));
+				    	   Uri mUri = Uri.fromFile(new File("/sdcard/temp/"));
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, (Uri) mUri);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);

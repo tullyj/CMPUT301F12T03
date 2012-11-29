@@ -46,6 +46,7 @@ public class CreateTask extends Activity {
 	public static String EDIT = "edit";
 	public static String SEND = "send";
 	public static String ITEM = "item";
+	public static String TYPES = "types";
 	public static String PROPERTIES = "properties";
 	private String taskVisibility = "";
 	private String taskResponseType = "";
@@ -154,9 +155,11 @@ public class CreateTask extends Activity {
     public void updateItemList(int position){
     	
     	String temp[] = currentTaskItems.get(position);
+    	String[] temp2 = getCurrentItemTypes();
     	
     	Intent intent = new Intent(this, CreateItem.class);
     	intent.putExtra(ITEM, temp);
+    	intent.putExtra(TYPES, temp2);
     	intent.putExtra(EDIT, "yes");
     	startActivityForResult(intent, 2);
     	   					
@@ -214,6 +217,20 @@ public class CreateTask extends Activity {
     	
     }
     
+    public String[] getCurrentItemTypes(){
+        
+        String[] send = new String[currentTaskItems.size()];
+        
+        for(int i = 0;i<currentTaskItems.size();i++){
+            
+            String[] temp = currentTaskItems.get(i);
+            send[i] = temp[1];
+            
+        }
+
+        return send;
+    }
+    
     /**
      * This method is called when the "+" button is clicked. When it returns to this activity onActivityResult
      * will be called with requestCode = 1
@@ -221,8 +238,11 @@ public class CreateTask extends Activity {
      */
     public void createItem(View view) {
     	
+        String[] temp = getCurrentItemTypes();
+        
         Intent intent = new Intent(this, CreateItem.class);
         intent.putExtra(EDIT, "no");
+        intent.putExtra(TYPES, temp);
         startActivityForResult(intent, 1);
     }
     
