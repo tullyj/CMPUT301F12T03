@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_preview.PreviewAudio;
@@ -244,6 +246,69 @@ public class ItemList extends Activity {
     }
     
     /**
+     * The sending of the email works. Need to build a better notification
+     * email though for sure
+     */
+    public void sendAutoEmail(){
+        
+        
+        String us = "taskforcenotification@gmail.com";
+        String pass = "taskforcefuckyeah";
+        String sub = "Task Force Notification";
+        String body = "This is task force automatic email";
+        String to = "";
+        
+        to = ViewSingleTask.task.getEmail();
+        
+        try {   
+            GmailSender sender = new GmailSender(us, pass);
+            sender.sendMail(sub, body, us, to);   
+        } catch (Exception e) {   
+            Log.e("SendMail", e.getMessage(), e);   
+        }       
+    }
+    
+    /**
+     * This method check is a task has been fulfilled. It is called right
+     * after a task has been updated
+     * @return  True iff the task is fulfilled
+     */
+    public boolean checkFulfillment(){
+        
+        //getting all the task items and setting the iterator
+        List<TfTaskItem> tasks = ViewSingleTask.task.getAllItems();            
+        Iterator<TfTaskItem> it = tasks.iterator();
+        
+        //checking if the task is fulfilled. The task is fulfilled iff
+        //every items desired number is met
+        while(it.hasNext()){
+            
+            //grab a single item 
+            TfTaskItem task = (TfTaskItem) it.next();
+            
+            //grab the list of files for the item
+            List<File> files = task.getAllFiles();
+            
+            //count of each
+            int desiredNum = task.getNumber();
+            int actualNum = files.size();
+        
+            //System.out.println("desired = " + desiredNum);
+            //System.out.println("actual = " + actualNum);
+            
+            //if we have actualNum < desiredNum item not fulfilled
+            //therefore task is not fulfilled
+            if(actualNum<desiredNum){
+                //fulfilled = false;
+                //break;
+                return false;
+            }            
+        }
+        
+        return true;
+    }
+    
+    /**
      * Displays dialog to show the file/item of task is being saved.
      */
     private class updateTask extends AsyncTask<String, String, String>{
@@ -263,33 +328,12 @@ public class ItemList extends Activity {
 				}
 	        }
     		
-    		
-    		//check if the task was fulfilled
-            List<TfTaskItem> tasks = ViewSingleTask.task.getAllItems();
-            
-            Iterator<TfTaskItem> it = tasks.iterator();
-            
-            while(it.hasNext()){
-                
-                TfTaskItem task = (TfTaskItem) it.next();
-                List<File> files = task.getAllFiles();
-                
-                
-                int desiredNum = task.getNumber();
-                int actualNum = files.size();
-                
-                
-                
-                System.out.println("desired = " + desiredNum);
-                System.out.println("actual = " + actualNum);
-                
-                if(actualNum<desiredNum){
-                    fulfilled = false;
-                    break;
-                }
-               
-                
-            }
+    		//check is a task is fulfilled
+    		fulfilled = checkFulfillment();
+    		        
+            //fulfilled task - send notification email
+            if(fulfilled)             
+                sendAutoEmail();
 	        
 			return null;
 		}
@@ -308,20 +352,6 @@ public class ItemList extends Activity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			load.dismiss();
-			
-			
-			//right here we know that we need to send an email for fulfilling task
-			if(fulfilled){
-			    
-			    Context context = getApplicationContext();
-			    CharSequence text = "Task complete!";
-			    int duration = Toast.LENGTH_SHORT;
-
-			    Toast toast = Toast.makeText(context, text, duration);
-			    toast.show();
-			}
-			
-			
 			finish();
 		}	
     }
