@@ -13,7 +13,7 @@ import android.util.Base64;
 public class Utility {
 
     /* http://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-in-java */
-    public String fileToBase64(File file) throws Exception {
+    public static String fileToBase64(File file) throws Exception {
         byte[] mByte = new byte[(int)file.length()];
         DataInputStream dataIs = new DataInputStream(new FileInputStream(file));
         dataIs.readFully(mByte);
@@ -21,7 +21,7 @@ public class Utility {
         return Base64.encodeToString(mByte, Base64.DEFAULT);
     }
     
-    public File base64ToFile(String input, String fileName) {
+    public static File base64ToFile(String input, String fileName) {
         String directory = 
                 Environment.getExternalStorageDirectory().getAbsolutePath();
         fileName = directory + fileName;

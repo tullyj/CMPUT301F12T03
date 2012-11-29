@@ -62,11 +62,29 @@ public class TfTaskRepository {
         return "";
     }
 
-    public static void updateTask(Task task) throws Exception {
+    public static void updateTask(Task task, Context c) throws Exception {
         if (task.getTaskId().isEmpty()) {
             throw new Exception("Task id is empty in "
                     + "TfTaskRepository.updateTask()");
         }
+        switch (task.getVisibility()) {
+            case PUBLIC:
+                updatePublicTask(task);
+                break;
+            case PRIVATE:
+                updatePrivateTask(task, c);
+                break;
+            default:
+                throw new Exception("Unhandled Visibility "
+                        + task.getVisibility().toString());
+        }
+    }
+
+    private static void updatePrivateTask(Task task, Context c) {
+        localRepo.update(task, c);
+    }
+
+    private static void updatePublicTask(Task task) {
         try {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             entry.setId(task.getTaskId());
@@ -130,7 +148,7 @@ public class TfTaskRepository {
     }
 
     /**
-     * Gets a single task associated with a given a task id.
+     * Gets a single task associated with a given a task id from the webservice.
      * 
      * @param taskId
      *            of the task to be returned.
@@ -144,7 +162,7 @@ public class TfTaskRepository {
             throw new Exception("TfTaskRepository got a null task in "
                     + "getTaskById() with id=" + taskId);
         }
-        if (task.getTaskId() != entry.getId()) {
+        if (!task.getTaskId().equals(entry.getId())) {
             task.setTaskId(entry.getId());
         }
         currentTask = task;

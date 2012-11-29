@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import android.content.Context;
 import ca.ualberta.cs.c301_interfaces.Task;
@@ -48,11 +49,18 @@ public class TfLocalRepository /* extends Activity */ {
 //        }
 //    }
     
-    public Boolean insertTask(Task task, Context c) {
+    public String insertTask(Task task, Context c) {
         loadLocalList(c);
+        String taskId = UUID.randomUUID().toString();
+        task.setTaskId(taskId);
         Boolean success = entryList.add((TfTask) task);
         saveLocalList(c);
-        return success;
+        
+        if (success) {
+            return taskId;
+        } else {
+            return "";
+        }
     }
 
     public List<TfTask> getTaskList(Context c) {
@@ -91,5 +99,15 @@ public class TfLocalRepository /* extends Activity */ {
           e.printStackTrace();
       }
 
+    }
+
+    public void update(Task changedTask, Context c) {
+        loadLocalList(c);
+        for (Task oldTask : entryList) {
+            if (oldTask.getTaskId().equals(changedTask.getTaskId())) {
+                oldTask = changedTask;
+                break;
+            }
+        }
     }
 }

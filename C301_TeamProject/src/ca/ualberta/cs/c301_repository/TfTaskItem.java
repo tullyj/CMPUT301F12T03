@@ -6,6 +6,7 @@ import java.util.List;
 
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_utils.Utility;
 
 /**
  * TfTaskItem encapsulates an item requirement in a task. Example: user can
@@ -16,7 +17,7 @@ import ca.ualberta.cs.c301_interfaces.TaskItem;
  */
 public class TfTaskItem implements TaskItem {
 
-    private List<File> fileList = new ArrayList<File>();
+    private List<String> fileList = new ArrayList<String>();
     
     private ItemType type;
     
@@ -32,12 +33,23 @@ public class TfTaskItem implements TaskItem {
     }
 
     public List<File> getAllFiles() {
-        return fileList;
+        List<File> filePtrList = new ArrayList<File>();
+        for (int i = 0; i < fileList.size(); ++i) {
+            filePtrList.add(Utility.base64ToFile(fileList.get(i), 
+                    type.toString() + i));
+        }
+        return filePtrList;
     }
 
-    public Boolean addFiles(List<File> files) {
-        Boolean success = fileList.addAll(files);
-        return success;
+    public void addFiles(List<File> files) throws Exception {
+        for (File f : files) {
+            fileList.add(Utility.fileToBase64(f));
+        }
+    }
+    
+    public File getFile(int index) {
+        return Utility.base64ToFile(fileList.get(index), 
+                type.toString() + index);
     }
 
     public ItemType getType() {

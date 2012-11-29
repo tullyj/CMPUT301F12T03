@@ -12,7 +12,9 @@ public interface TaskItem {
     
     public List<File> getAllFiles();
     
-    public Boolean addFiles(List<File> files);
+    public void addFiles(List<File> files) throws Exception;
+    
+    public File getFile(int index);
     
     public ItemType getType();
     
