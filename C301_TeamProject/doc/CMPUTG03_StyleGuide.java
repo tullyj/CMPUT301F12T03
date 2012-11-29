@@ -20,7 +20,7 @@ public class ClassName {
      * Also, note the space before the brace.
      */
 	public static void main(String[] args) {
-    {
+    
         // Method variables are declared and initialized at the beginning of the 
         // method. Declared variables should always be initialized. If this 
         // variable may not be needed, then initialize when needed.

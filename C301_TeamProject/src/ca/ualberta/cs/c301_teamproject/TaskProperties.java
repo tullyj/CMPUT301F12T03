@@ -21,11 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * This class is just used to gather the task properties
+ * This class is just used to gather the task properties. The properties are
+ * returned to CreateTask in a string array. The input is validated as well.
  * @author topched
- *
  */
-public class TaskProperties extends Activity{
+public class TaskProperties extends Activity {
 	
 	public String edit = "";
 	public static int propertyCount = 4;
@@ -36,7 +36,7 @@ public class TaskProperties extends Activity{
 	public String EMAIL = "E-mail";
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.task_properties);
@@ -45,38 +45,37 @@ public class TaskProperties extends Activity{
         Intent intent = getIntent();
         edit = intent.getStringExtra(CreateTask.EDIT);
         
+        //looks weird with 80 character limit
         RadioGroup vis = (RadioGroup)findViewById(R.id.visibilityRadioGroup);
         Spinner spinner = (Spinner) findViewById(R.id.responseType);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-	        	R.array.response_choices, android.R.layout.simple_spinner_item);
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter = 
+                ArrayAdapter.createFromResource(this,R.array.response_choices, 
+                android.R.layout.simple_spinner_item);
+	    adapter.setDropDownViewResource
+	    (android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
     	
     	
     	//setting the spinner listener
-    	//this is here mainly for show and so she doesnt break
-    	spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+    	spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view, 
+			        int position, long id) {
 
 				//grabbing the type selected
 				String type = (String) parent.getItemAtPosition(position);
 				
 				//show some future plans stuff here
-				updateTypeField(type);
-				
-				
+				updateTypeField(type);			
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		
+				//Do nothing when nothing selected				
+			}		
     	});
         
         //edit = no first time properties was clicked
-        if(edit.equals("no")){
+        if(edit.equals("no")) {
         	
 	        //setting the default visibility to public        
 			vis.check(R.id.public_button);
@@ -84,6 +83,7 @@ public class TaskProperties extends Activity{
 	    //we have properties already just fill in the fields	
         }else{
         	
+            //grabbing properties passed from CreateTask
         	String[] p = intent.getStringArrayExtra(CreateTask.PROPERTIES);
         	
         	//map for properties
@@ -96,6 +96,7 @@ public class TaskProperties extends Activity{
         	String desc = p[2];
         	String send = p[0];
         	
+        	//setting the text fields and visibility 
         	EditText d = (EditText)findViewById(R.id.description);
         	d.setText(desc);
         	
@@ -109,49 +110,51 @@ public class TaskProperties extends Activity{
         		vis.check(R.id.public_button);
         	}else{
         		vis.check(R.id.private_button);
-        	}
-        	
-    	
-        }
-		
+        	} 	
+        }		
 	}
 	
-	public void updateTypeField(String type){
+	/**
+	 * This method is called when the spinner listener is called back. We 
+	 * update the field accordingly. This method also shows off some future
+	 * plans that could be implemented but dont break the code
+	 * @param type     The type selected from the spinner
+	 */
+	public void updateTypeField(String type) {
+	    
+	    String handle = "@TaskForce";
+        String email = "NoReply@TaskForce.com";
+        String num = "555-382-5968";
 		
-		//here is where future plans show
 		TextView showType = (TextView)findViewById(R.id.showNotificationType);
 		EditText hint = (EditText)findViewById(R.id.notificationResponse);
-		
-		String handle = "@TaskForce";
-		String email = "NoReply@TaskForce.com";
-		String num = "555-382-5968";
-		//
-		if(type.equals(TWITTER)){
+			
+		//NOTE the unfocusing doesnt work
+		if(type.equals(TWITTER)) {
 			
 			showType.setText(TWITTER_HANDLE);
 			hint.setHint(handle);
-//			hint.setFocusable(false);
-//			hint.setClickable(false);
+			//hint.setFocusable(false);
+			//hint.setClickable(false);
 			
-		}else if(type.equals(TEXT)){
+		}else if(type.equals(TEXT)) {
 			
 			showType.setText(TELE_NUM);
 			hint.setHint(num);
-//			hint.setFocusable(false);
-//			hint.setClickable(false);
+			//hint.setFocusable(false);
+            //hint.setClickable(false);
 			
-		}else if(type.equals(EMAIL)){
+		}else if(type.equals(EMAIL)) {
 			
 			showType.setText(EMAIL);
 			hint.setHint(email);
-//			hint.setFocusable(true);
-//			hint.setClickable(true);
-//			hint.requestFocus();
+			//hint.setFocusable(true);
+			//hint.setClickable(true);
+			//hint.requestFocus();
 		}
 		
 		//toast for future plans
-		if(type.equals(TWITTER) || type.equals(TEXT)){
-			
+		if(type.equals(TWITTER) || type.equals(TEXT)) {
 			
 			Context context = getApplicationContext();
 			CharSequence text = "Feature not yet available!\nComing Soon!";
@@ -159,9 +162,7 @@ public class TaskProperties extends Activity{
 
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
-		}
-		
-		
+		}		
 	}
 	
     @Override
@@ -174,28 +175,30 @@ public class TaskProperties extends Activity{
         return super.onOptionsItemSelected(item);
     }
     
-    
-    public String[] gatherProperties(){
+    /**
+     * This method gathers all of the information for the UI.
+     * @return      Returns a string array containing the properties
+     */
+    public String[] gatherProperties() {
     	
     	String[] send = new String[propertyCount];
     	
     	Spinner notificationType = (Spinner)findViewById(R.id.responseType);
     	EditText sendTo = (EditText)findViewById(R.id.notificationResponse);
     	EditText desc = (EditText)findViewById(R.id.description);
+    	RadioGroup getVisibilty = 
+    	        (RadioGroup)findViewById(R.id.visibilityRadioGroup);
     	
-    	RadioGroup getVisibilty = (RadioGroup)findViewById(R.id.visibilityRadioGroup);
     	//getting the selection from the radio buttons aka the visibilty
     	int choice = getVisibilty.getCheckedRadioButtonId();
     	RadioButton visChoice = (RadioButton)findViewById(choice);
-    	
-    	
+    	   	
     	//grabbing the properties
     	String reply = sendTo.getText().toString();
     	String visibility = visChoice.getText().toString();
     	String description = desc.getText().toString();
     	String type = notificationType.getSelectedItem().toString();
-    	
-    	
+    	    	
     	//putting the properties into the return array
     	//0 -> where to send the notification
     	//1 -> visibility
@@ -205,33 +208,40 @@ public class TaskProperties extends Activity{
     	send[1] = visibility;
     	send[2] = description;
     	send[3] = type;
-    	
-    	
+    	    	
     	return send;
     }
 	
-	
-    public void returnTaskProperties(View view){
+	/**
+	 * This method is called when "continue" is clicked
+	 * @param view
+	 */
+    public void returnTaskProperties(View view) {
     	
     	Intent returnIntent = new Intent();
-    	
-    	
+    	    	
     	//grabbing the properties
     	String[] properties = gatherProperties();
     	
+    	//validate the input
     	boolean validInput = validateInput(properties);
     
-    	if(validInput){
-	    	returnIntent.putExtra("result",properties);
-	    	
+    	//if valid input 
+    	if(validInput) {
+    	    
+    	    //return the properties and RESULT_OK
+	    	returnIntent.putExtra("result",properties);	
 	    	setResult(RESULT_OK,returnIntent);
 	    	finish();
-    	}
-    	
-    	
+    	}  	
     }
     
-    public boolean validateInput(String[] properties){
+    /**
+     * This method validates the properties gathered from the UI
+     * @param properties        String array with the properties
+     * @return      True iff the properties are valid
+     */
+    public boolean validateInput(String[] properties) {
     	
     	boolean valid = true;
     	String error = "";
@@ -242,32 +252,34 @@ public class TaskProperties extends Activity{
     	Matcher m = p.matcher(properties[0]);
     	validEmail = m.matches();
     	
-    	
-    	if(properties[1].equals("")){
+    	//just some other checks. The order of these matters 
+    	if(properties[1].equals("")) {
     		error += "Please select a visibility";
     		valid = false;
-    	}else if(properties[2].equals("")){
+    	}else if(properties[2].equals("")) {
     		error += "Please enter a description";
     		valid = false;
-    	}else if(properties[3].equals("")){
+    	}else if(properties[3].equals("")) {
     		error += "Please select a type";
     		valid = false;
-    	}else if(properties[3].equals(TWITTER)){
-    		error += "Twitter response not yet available.\nPlease make another selection.";
+    	}else if(properties[3].equals(TWITTER)) {
+    		error += "Twitter response not yet available.\n" + 
+    		        "Please make another selection.";
     		valid = false;
-    	}else if(properties[3].equals(TEXT)){
-    		error += "Text response not yet available.\nPlease make another selection";
+    	}else if(properties[3].equals(TEXT)) {
+    		error += "Text response not yet available.\n" + 
+    		        "Please make another selection";
     		valid = false;
-    	}else if(!validEmail){
+    	}else if(!validEmail) {
     	    error += "Please enter a valid email address.";
     	    valid = false;
-    	}else if(properties[0].equals("")){
+    	}else if(properties[0].equals("")) {
     		error += "Please enter an email address";
     		valid = false;
     	} 
     	
-    	
-    	if(valid){
+    	//only return true if valid input, else toast errors
+    	if(valid) {
     		return true;
     	}else{
     		Context context = getApplicationContext();
@@ -276,7 +288,4 @@ public class TaskProperties extends Activity{
     		return false;
     	}
     }
-	
-	
-
 }
