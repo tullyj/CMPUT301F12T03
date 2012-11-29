@@ -117,7 +117,11 @@ public class InputFile extends Activity {
 	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
 	    	setResult(RESULT_OK, intent);
-	    	item.addFiles(newFiles);
+	    	try {
+                item.addFiles(newFiles);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 	    	finish();
     	}else{
     		Toast.makeText(getApplicationContext(), 

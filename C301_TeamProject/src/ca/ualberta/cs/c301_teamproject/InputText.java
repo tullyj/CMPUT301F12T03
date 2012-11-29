@@ -101,7 +101,11 @@ public class InputText extends Activity {
 		
 		ArrayList<File> files = new ArrayList<File>();
 		files.add(myTextFile);
-		item.addFiles(files);
+		try {
+            item.addFiles(files);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 		
 		Intent intent = getIntent();
     	setResult(RESULT_OK, intent);

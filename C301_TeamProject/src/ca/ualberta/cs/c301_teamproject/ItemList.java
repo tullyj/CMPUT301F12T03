@@ -256,9 +256,9 @@ public class ItemList extends Activity {
 			//ViewSingleTask.task.setTitle("Tully Test Mod");
     		if(ViewSingleTask.task.isModified()) {
 	        	try {
-					TfTaskRepository.updateTask(ViewSingleTask.task);
+					TfTaskRepository.updateTask(ViewSingleTask.task, 
+					        getApplicationContext());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	        }
