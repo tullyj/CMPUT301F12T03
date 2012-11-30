@@ -49,7 +49,7 @@ public class MainPage extends Activity {
         // need to send parameters to filter into your tasks
         
         //grabbing all of the local task ids
-        MyLocalTasks lt = new MyLocalTasks();
+        MyLocalTaskInformation lt = new MyLocalTaskInformation();
         String[] ids = lt.loadMyTaskIds(getApplicationContext());
         
         //send the local IDs as intent

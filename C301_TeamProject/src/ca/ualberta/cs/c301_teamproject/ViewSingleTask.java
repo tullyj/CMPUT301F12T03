@@ -1,5 +1,7 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -29,12 +31,15 @@ public class ViewSingleTask extends Activity {
 
 	public static Task task = null;
 	private String taskId;
+	public ArrayList<String> myLikedIds;
 	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_single_task);
+        
+        myLikedIds = new ArrayList<String>();
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
@@ -123,7 +128,92 @@ public class ViewSingleTask extends Activity {
 				return new String[]{"Videos", "VIDEO"};
     	}
     	return new String[]{"",""};
-    }  
+    }
+    
+    /**
+     * Called when the like/unlike button clicked
+     */
+    public void likeTaskAction(View view){
+        
+        boolean like = doILikeThisTask();
+        MyLocalTaskInformation save = new MyLocalTaskInformation();
+        
+        //if we already like the task we now want to unlike it
+        if(like){
+        
+            //remove the value from the list
+            save.removeLikedTask(taskId, getApplicationContext());
+            
+            //set the text on the button to like again
+            
+            
+            
+        //if we dont like the task add it to the list
+        }else{
+            save.saveLikedTasks(taskId, getApplicationContext());
+        }
+        
+        //deleteFile("myLikes.sav");
+        
+    }
+    
+    public boolean doILikeThisTask(){
+        
+        //re grab the arraylist incase an item was added
+        MyLocalTaskInformation lti = new MyLocalTaskInformation();
+        myLikedIds = lti.getLikedTasks(getApplicationContext());
+        
+        Iterator<String> it = myLikedIds.iterator();
+        
+        while(it.hasNext()){
+            
+            if(it.next().equals(taskId))
+                return true;
+        }
+        
+        return false;
+        
+    }
+    
+    public void saveTaskLocally(View view){
+        
+        ArrayList<String> ids = new ArrayList<String>();
+        
+        MyLocalTaskInformation save = new MyLocalTaskInformation();
+        ids = save.getLikedTasks(getApplicationContext());
+        
+        Iterator<String> it = ids.iterator();
+        
+        while(it.hasNext()){
+            
+            
+            String text = (String)it.next();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getApplicationContext(), text,
+                    duration);
+            toast.show();
+        }
+        
+        boolean t = doILikeThisTask();
+        
+        //boolean t = myLikedIds.contains(taskId);
+        String text = "";
+        
+        if(t){
+            text = "Yes i like this task";
+        }else{
+            text = "NO I DONT";
+        }
+        
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(getApplicationContext(), text,
+                duration);
+        toast.show();
+        
+      
+    }
     
     /**
      * Async task for loading of a single task
@@ -132,7 +222,9 @@ public class ViewSingleTask extends Activity {
     private class loadSingleTask extends AsyncTask<String, String, String>{
     	
     	Dialog load = new Dialog(ViewSingleTask.this);
+    	MyLocalTaskInformation lti = new MyLocalTaskInformation();
     	//private Task sTask = null;
+    	
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -146,11 +238,18 @@ public class ViewSingleTask extends Activity {
 	            e.printStackTrace();
 	        }
 	        
+	        //grabbing the likedIDS
+	        
+	        myLikedIds = lti.getLikedTasks(getApplicationContext());
+	        
+	        
+	        
 			return null;
 		}
     	
     	protected void onPreExecute(){
     		
+    	    
     		load.setContentView(R.layout.save_load_dialog);
     		load.setTitle("Loading task");
     		load.show();

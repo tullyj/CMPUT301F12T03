@@ -495,7 +495,7 @@ public class CreateTask extends Activity {
     private class saveTask extends AsyncTask<Task, String, String>{
     	
     	Dialog save = new Dialog(CreateTask.this);
-        MyLocalTasks lt = new MyLocalTasks();
+        MyLocalTaskInformation lt = new MyLocalTaskInformation();
 
 		@Override
 		protected String doInBackground(Task... arg0) {
