@@ -81,7 +81,11 @@ public class MyLocalTaskInformation extends Activity{
 	    }	    	    
 	}
 	
-	
+	/**
+	 * Testing
+	 * @param c
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
     public ArrayList<String> getLikedTasks(Context c) {
 	    
