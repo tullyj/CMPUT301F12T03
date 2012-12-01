@@ -34,6 +34,9 @@ public class TfTaskItem implements TaskItem {
 
     public List<File> getAllFiles() {
         List<File> filePtrList = new ArrayList<File>();
+        if (base64FileList == null) {
+            System.err.println(">>>FILE LIST IS NULL!!!<<<<");
+        }
         for (int i = 0; i < base64FileList.size(); ++i) {
             filePtrList.add(Utility.base64ToFile(base64FileList.get(i), 
                     type.toString() + (i + 1)));
