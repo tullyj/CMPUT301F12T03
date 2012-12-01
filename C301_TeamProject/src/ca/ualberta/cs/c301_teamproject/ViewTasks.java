@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,6 +47,10 @@ public class ViewTasks extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_tasks);
         
+        String showMy = "<u>Your Tasks<u>";
+        String showAll = "<u>All Tasks<u>";
+        String showLike = "<u>Your Liked Tasks<u>";
+        
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
@@ -57,13 +62,15 @@ public class ViewTasks extends Activity {
         
         TextView showType = (TextView)findViewById(R.id.showCurrentTaskType);
         
+        
+        
         //we know we want local tasks only
         if(type.equals("my")){
         	myTasks = true;
         	allTasks = false;
         	likedTasks = false;
         	
-        	showType.setText(R.string.your_tasks);
+        	showType.setText(Html.fromHtml(showMy));
         }
         
         //we know we want all tasks here
@@ -72,7 +79,7 @@ public class ViewTasks extends Activity {
         	myTasks = false;
         	likedTasks = false;
         	
-        	showType.setText(R.string.all_tasks);
+        	showType.setText(Html.fromHtml(showAll));
         }
         
         if(type.equals("liked")){
@@ -80,7 +87,7 @@ public class ViewTasks extends Activity {
             myTasks = false;
             likedTasks = true;
             
-            showType.setText(R.string.liked_tasks);
+            showType.setText(Html.fromHtml(showLike));
         }
         
       
