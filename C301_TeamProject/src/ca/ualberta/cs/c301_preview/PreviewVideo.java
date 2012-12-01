@@ -23,7 +23,7 @@ public class PreviewVideo extends Activity {
         mUri = Uri.fromFile(ItemList.currFile);
         filePath = ItemList.currFile.getAbsolutePath();
         mVideo = (VideoView) findViewById(R.id.previewvid);
-        mVideo.setVideoPath("/mnt/extSdCard/DCIM/Camera/20121121_171024.mp4");
+        mVideo.setVideoURI(mUri);
         mVideo.start();
 
         Toast.makeText(getApplicationContext(), 
