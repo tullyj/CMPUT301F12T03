@@ -25,13 +25,23 @@ public class TfTaskItem implements TaskItem {
     
     private String description;
 
+    /**
+     * Constructs an item with options.
+     * @param type        Type of item to create.
+     * @param number      Number of desired files.
+     * @param description Description of the item.
+     */
     public TfTaskItem(ItemType type, Integer number, String description) {
         super();
         this.type = type;
         this.number = number;
         this.description = description;
     }
-
+    
+    /**
+     * Gets returns a list of the files stored in this item.
+     * @return List of all files in the item.
+     */
     public List<File> getAllFiles() {
         List<File> filePtrList = new ArrayList<File>();
         if (base64FileList == null) {
@@ -44,12 +54,21 @@ public class TfTaskItem implements TaskItem {
         return filePtrList;
     }
 
+    /**
+     * Adds the given files to the current files in the item.
+     * @param files The files to be added.
+     */
     public void addFiles(List<File> files) throws Exception {
         for (File f : files) {
             base64FileList.add(Utility.fileToBase64(f));
         }
     }
     
+    /**
+     * Gets a file at a given index.
+     * @param index Index of the file to get.
+     * @return The file at the given index.
+     */
     public File getFile(int index) {
         return Utility.base64ToFile(base64FileList.get(index), 
                 type.toString() + (index + 1));
