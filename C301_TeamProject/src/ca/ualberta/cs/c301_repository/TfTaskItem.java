@@ -17,7 +17,7 @@ import ca.ualberta.cs.c301_utils.Utility;
  */
 public class TfTaskItem implements TaskItem {
 
-    private List<String> fileList = new ArrayList<String>();
+    private List<String> base64FileList = new ArrayList<String>();
     
     private ItemType type;
     
@@ -34,22 +34,22 @@ public class TfTaskItem implements TaskItem {
 
     public List<File> getAllFiles() {
         List<File> filePtrList = new ArrayList<File>();
-        for (int i = 0; i < fileList.size(); ++i) {
-            filePtrList.add(Utility.base64ToFile(fileList.get(i), 
-                    type.toString() + i));
+        for (int i = 0; i < base64FileList.size(); ++i) {
+            filePtrList.add(Utility.base64ToFile(base64FileList.get(i), 
+                    type.toString() + (i + 1)));
         }
         return filePtrList;
     }
 
     public void addFiles(List<File> files) throws Exception {
         for (File f : files) {
-            fileList.add(Utility.fileToBase64(f));
+            base64FileList.add(Utility.fileToBase64(f));
         }
     }
     
     public File getFile(int index) {
-        return Utility.base64ToFile(fileList.get(index), 
-                type.toString() + index);
+        return Utility.base64ToFile(base64FileList.get(index), 
+                type.toString() + (index + 1));
     }
 
     public ItemType getType() {
