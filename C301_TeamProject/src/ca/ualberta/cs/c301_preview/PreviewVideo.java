@@ -1,80 +1,33 @@
 package ca.ualberta.cs.c301_preview;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import ca.ualberta.cs.c301_preview.PreviewAudio.PlayButton;
-import ca.ualberta.cs.c301_teamproject.ItemList;
-import ca.ualberta.cs.c301_teamproject.R;
 import android.app.Activity;
-import android.content.Context;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
+import ca.ualberta.cs.c301_teamproject.ItemList;
+import ca.ualberta.cs.c301_teamproject.R;
 
 public class PreviewVideo extends Activity {
-	
-	private static final String LOG_TAG = "PreviewVideo";
-    //private static String mFileName = null;
-//	private static final int VERTICAL = 1;
     
-    //private static File file;
     private String filePath;
     private Uri mUri;
-//    private SurfaceView mSurfaceView;
     private VideoView mVideo;
-    
-    //private PlayButton mPlayButton = null;
-    private MediaPlayer mPlayer = null;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preview_video);
-//        Intent intent = getIntent();
-//        mUri = getIntent().getData();
+
         mUri = Uri.fromFile(ItemList.currFile);
-        //filePath = intent.getStringExtra("PreviewItem");
         filePath = ItemList.currFile.getAbsolutePath();
-        //file = new File(intent.getData().getPath());
-        
-        //mPlayButton = new PlayButton(this);
-        //mSurfaceView = (SurfaceView) findViewById(R.id.surfaceVideo);
-        
-        
         mVideo = (VideoView) findViewById(R.id.previewvid);
         mVideo.setVideoPath("/mnt/extSdCard/DCIM/Camera/20121121_171024.mp4");
         mVideo.start();
-        
-        
-        
-//        LinearLayout ll = new LinearLayout(this);
-//        //ll.setOrientation(VERTICAL);
-////        ll.addView(mPlayButton,
-////            new LinearLayout.LayoutParams(
-////                ViewGroup.LayoutParams.MATCH_PARENT,
-////                ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-//        ll.addView(mSurfaceView,
-//        	new LinearLayout.LayoutParams(
-//        			ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.MATCH_PARENT, 2));
-//        setContentView(ll);
 
         Toast.makeText(getApplicationContext(), 
-    			"Starting preview with: " + filePath, Toast.LENGTH_LONG).show();
-        
+                "Starting preview with: " + filePath, Toast.LENGTH_LONG).show();
     }
     
 //	private void onPlay(boolean start) {

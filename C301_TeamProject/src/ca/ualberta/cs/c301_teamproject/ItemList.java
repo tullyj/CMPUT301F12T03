@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_preview.PreviewAudio;
@@ -36,7 +36,6 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
  * Displays a listview of files for a given item in a task.
- * @author tullyj
  */
 public class ItemList extends Activity {
 
@@ -46,7 +45,6 @@ public class ItemList extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int TEXT_INTENT = 6;
 	static final int FILE_INTENT = 7;
-	//private String taskId;
 	private ItemType itemType;
 	private TaskItem item;
 	public static File currFile;
@@ -59,22 +57,22 @@ public class ItemList extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);        
-        
-        
+
         // Get Task and Item
         String[] inArgs = getIntent().getStringArrayExtra("SendItem");
-        
-        // When item type is known from passing of intent with extra containing item type.
-        //taskId = inArgs[0];
         // Set title of Type of list
         ((TextView) findViewById(R.id.listTitle)).setText(inArgs[1] + " List");
         // Set Description from item.getDescription()
         ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[2]);
         
-        if(inArgs[0].equals("TEXT")) itemType = ItemType.TEXT;
-        else if(inArgs[0].equals("PHOTO")) itemType = ItemType.PHOTO;
-        else if(inArgs[0].equals("VIDEO")) itemType = ItemType.VIDEO;
-        else itemType = ItemType.AUDIO;
+        if (inArgs[0].equals("TEXT")) 
+            itemType = ItemType.TEXT;
+        else if (inArgs[0].equals("PHOTO")) 
+            itemType = ItemType.PHOTO;
+        else if (inArgs[0].equals("VIDEO")) 
+            itemType = ItemType.VIDEO;
+        else 
+            itemType = ItemType.AUDIO;
         
         // Set the progress bar and textview listItemFraction.
         int[] progress = populateList();
@@ -207,7 +205,7 @@ public class ItemList extends Activity {
 						Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(getApplicationContext(), getPreviewClass());
 				// Get the file the user selected and save the uri to file.
-				Uri mUri = Uri.fromFile(item.getAllFiles().get(position));
+				Uri mUri = Uri.fromFile(item.getFile(position));
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		    	currFile = item.getAllFiles().get(position);
 				startActivity(intent);
@@ -244,6 +242,76 @@ public class ItemList extends Activity {
     }
     
     /**
+     * The sending of the email works. Need to build a better notification
+     * email though for sure
+     */
+    public void sendAutoEmail(){
+        
+        
+        String us = "taskforcenotification@gmail.com";
+        String pass = "taskforcefuckyeah";
+        String sub = "Task Force Notification";
+        
+        String to = ViewSingleTask.task.getEmail();
+        String title = ViewSingleTask.task.getTitle();
+        String desc = ViewSingleTask.task.getDescription();
+        
+        String body1 = "This is task force automatic notification.\n\n" + 
+                "Your task: " + title + " appears to be fulfilled\n\n";
+        
+        String body2 = "Please visit TaskForce to view the progress.";
+        
+        String body = body1 + body2;
+        
+        try {   
+            GmailSender sender = new GmailSender(us, pass);
+            sender.sendMail(sub, body, us, to);   
+        } catch (Exception e) {   
+            Log.e("SendMail", e.getMessage(), e);   
+        }       
+    }
+    
+    /**
+     * This method check is a task has been fulfilled. It is called right
+     * after a task has been updated
+     * @return  True iff the task is fulfilled
+     */
+    public boolean checkFulfillment(){
+        
+        //getting all the task items and setting the iterator
+        List<TfTaskItem> tasks = ViewSingleTask.task.getAllItems();            
+        Iterator<TfTaskItem> it = tasks.iterator();
+        
+        //checking if the task is fulfilled. The task is fulfilled iff
+        //every items desired number is met
+        while(it.hasNext()){
+            
+            //grab a single item 
+            TfTaskItem task = (TfTaskItem) it.next();
+            
+            //grab the list of files for the item
+            List<File> files = task.getAllFiles();
+            
+            //count of each
+            int desiredNum = task.getNumber();
+            int actualNum = files.size();
+        
+            //System.out.println("desired = " + desiredNum);
+            //System.out.println("actual = " + actualNum);
+            
+            //if we have actualNum < desiredNum item not fulfilled
+            //therefore task is not fulfilled
+            if(actualNum<desiredNum){
+                //fulfilled = false;
+                //break;
+                return false;
+            }            
+        }
+        
+        return true;
+    }
+    
+    /**
      * Displays dialog to show the file/item of task is being saved.
      */
     private class updateTask extends AsyncTask<String, String, String>{
@@ -263,33 +331,12 @@ public class ItemList extends Activity {
 				}
 	        }
     		
-    		
-    		//check if the task was fulfilled
-            List<TfTaskItem> tasks = ViewSingleTask.task.getAllItems();
-            
-            Iterator<TfTaskItem> it = tasks.iterator();
-            
-            while(it.hasNext()){
-                
-                TfTaskItem task = (TfTaskItem) it.next();
-                List<File> files = task.getAllFiles();
-                
-                
-                int desiredNum = task.getNumber();
-                int actualNum = files.size();
-                
-                
-                
-                System.out.println("desired = " + desiredNum);
-                System.out.println("actual = " + actualNum);
-                
-                if(actualNum<desiredNum){
-                    fulfilled = false;
-                    break;
-                }
-               
-                
-            }
+    		//check is a task is fulfilled
+    		fulfilled = checkFulfillment();
+    		        
+            //fulfilled task - send notification email
+            if(fulfilled)             
+                sendAutoEmail();
 	        
 			return null;
 		}
@@ -308,20 +355,6 @@ public class ItemList extends Activity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			load.dismiss();
-			
-			
-			//right here we know that we need to send an email for fulfilling task
-			if(fulfilled){
-			    
-			    Context context = getApplicationContext();
-			    CharSequence text = "Task complete!";
-			    int duration = Toast.LENGTH_SHORT;
-
-			    Toast toast = Toast.makeText(context, text, duration);
-			    toast.show();
-			}
-			
-			
 			finish();
 		}	
     }

@@ -143,27 +143,7 @@ public class ViewTasks extends Activity {
 			if(myTasks){
 				removeEntries();
 			}
-			
-			//send a automatic test email/
-//			
-//			String us = "taskforcenotification@gmail.com";
-//			String pass = "taskforcefuckyeah";
-//			String sub = "Task Force Notification";
-//			String body = "This is task force automatic email";
-//			
-//			
-//			try {   
-//                GmailSender sender = new GmailSender(us, pass);
-//                sender.sendMail(sub, body, us, "tullyj@ualberta.ca");   
-//            } catch (Exception e) {   
-//                Log.e("SendMail", e.getMessage(), e);   
-//            } 
-//			
-//			
-			
-			//end sending automatic email
-			
-					
+							
 			return null;
 		}
 		

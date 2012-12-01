@@ -49,6 +49,10 @@
     <string name="email">E-mail</string>
     <string name="continue_string">Continue</string>
     <string name="email_hint">NoReply@TaskForce.com</string>
+    <string name="like_task">Like this task</string>
+    <string name="save_local">Save task locally</string>
+    <string name="unlike_task">Unlike this task</string>
+    <string name="update_local">Update local task information</string>
 
     <string-array name="item_choices">
         <item>Text</item>
