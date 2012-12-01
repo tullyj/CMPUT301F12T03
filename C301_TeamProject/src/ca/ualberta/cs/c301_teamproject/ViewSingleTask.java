@@ -35,7 +35,7 @@ public class ViewSingleTask extends Activity {
 	public ArrayList<String> myLikedIds;
 	public Button like;
 	private boolean isLocal = false;
-	private String local;
+
 
 	
 	
@@ -49,10 +49,12 @@ public class ViewSingleTask extends Activity {
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
-        local = intent.getExtras().getString(ViewTasks.LOCAL);
+        String localTemp = intent.getExtras().getString(ViewTasks.LOCAL);
         
-        if(local.equals("yes")){
+        if(localTemp.equals("yes")){
             isLocal = true;
+        }else{
+            isLocal = false;
         }
         
         

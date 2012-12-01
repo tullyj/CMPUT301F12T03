@@ -345,7 +345,9 @@ public class ViewTasks extends Activity {
         if(!localTasks){
             CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
             intent.putExtra(TASK_ID, shallowEntry.getId());
+            intent.putExtra(LOCAL, "no");
             startActivity(intent);
+            
             
         //we clicked a private task    
         }else{
