@@ -20,15 +20,10 @@ public class PreviewText extends Activity {
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.preview_text);
-            Intent intent = getIntent();
-            int position = intent.getIntExtra("position", 9999);
+            File file = ItemList.currFile;
             
-            TaskItem item =
-                ViewSingleTask.task.getItemByType(ItemType.TEXT.toString());
-            
-            File file = item.getAllFiles().get(position);
-            TextView tv = (TextView) findViewById(R.id.textView1);
-            //TextView tv = new TextView(getApplicationContext());
+            TextView tv = (TextView) findViewById(R.id.TextPreview);
+
             InputStream fis = null;
 
             try{
@@ -42,7 +37,7 @@ public class PreviewText extends Activity {
             	while((ch = fis.read()) != -1) {
             		strContent.append((char)ch);
             	}
-            	//text = strContent.toString();
+
             	System.out.println("DEBUG: Text = " + strContent);
             	tv.setText(strContent);
             	
