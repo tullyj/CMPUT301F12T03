@@ -32,9 +32,8 @@ public class TfTaskRepository {
      * Adds a task to the webservice or updates an existing one. Updating is
      * dependent on the task id already existing or not.
      * 
-     * @param task
-     *            object to add/update
-     * @return TaskId if success, empty string otherwise.
+     * @param task    Task object to add/update
+     * @return TaskId ID of task added if success, empty string otherwise.
      */
     public static String addTask(Task task, Context c) {
         try {
@@ -62,7 +61,14 @@ public class TfTaskRepository {
         }
         return "";
     }
-
+    
+    /**
+     * Updates the task stored in the webservice or locally with the given task,
+     * depending on the visibility of the task.
+     * @param task The updated version of the task.
+     * @param c    The context of the calling activity.
+     * @throws Exception
+     */
     public static void updateTask(Task task, Context c) throws Exception {
         if (task.getTaskId().isEmpty()) {
             throw new Exception("Task id is empty in "
@@ -80,11 +86,20 @@ public class TfTaskRepository {
                         + task.getVisibility().toString());
         }
     }
-
+    
+    /**
+     * Updates the task stored locally with the given task.
+     * @param task The updated version of the task.
+     * @param c    The context of the calling activity.
+     */
     private static void updatePrivateTask(Task task, Context c) {
         localRepo.update(task, c);
     }
-
+    
+    /**
+     * Updates a public task on the webservice.
+     * @param task The updated version of the task.
+     */
     private static void updatePublicTask(Task task) {
         try {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
@@ -151,8 +166,7 @@ public class TfTaskRepository {
     /**
      * Gets a single task associated with a given a task id from the webservice.
      * 
-     * @param taskId
-     *            of the task to be returned.
+     * @param taskId Task ID of the task to be returned.
      * @return A task.
      * @throws Exception
      */
@@ -169,7 +183,12 @@ public class TfTaskRepository {
         currentTask = task;
         return task;
     }
-
+    
+    /**
+     * Returns a list of all the local tasks stored on the device.
+     * @param c The context of the calling activity.
+     * @return The list of all local tasks.
+     */
     public static List<TfTask> getLocalTasks(Context c) {
         return localRepo.getTaskList(c);
     }

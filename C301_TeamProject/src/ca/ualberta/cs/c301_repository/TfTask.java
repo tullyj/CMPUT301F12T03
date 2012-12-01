@@ -36,6 +36,11 @@ public class TfTask implements Task {
     
     public TfTask() {}
     
+    /**
+     * Adds an item to the task.
+     * @param item Item to add.
+     * @return True if successful, else false.
+     */
     public Boolean addItem(TaskItem item) {
         Boolean success = itemList.add((TfTaskItem) item);
         if (success) {
@@ -43,7 +48,7 @@ public class TfTask implements Task {
         }
         return success;
     }
-
+    
     public List<TfTaskItem> getAllItems() {
         return itemList;
     }
