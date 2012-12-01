@@ -1,6 +1,8 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import ca.ualberta.cs.c301_interfaces.Task;
@@ -43,7 +45,8 @@ public class InputFile extends Activity {
 	private static final int CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE = 300;
 	private static final int FILE_ACTIVITY_REQUEST_CODE = 400;
 	public ArrayList<File> files = new ArrayList<File>();
-	public ArrayList<File> newFiles = new ArrayList<File>();
+	public String filePath = null;
+	//public ArrayList<File> newFiles = new ArrayList<File>();
 	
 	
 	
@@ -118,8 +121,11 @@ public class InputFile extends Activity {
 	    	Intent intent = getIntent();
 	    	setResult(RESULT_OK, intent);
 	    	try {
-                item.addFiles(newFiles);
+                item.addFiles(files);
             } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), 
+                        "Unable to update files of item." , 
+                        Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
 	    	finish();
@@ -157,8 +163,13 @@ public class InputFile extends Activity {
 //				    	   Uri mUri = Uri.fromFile(new File(directory));
 //				    	   Uri mUri = Uri.fromFile(new File(
 //				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   Uri mUri = Uri.fromFile(new File("/sdcard/temp/"));
+				    	   filePath = "/sdcard/temp/";
+				    	   Uri mUri = Uri.fromFile(new File(filePath));
+				    	   //Uri mUri = getOutputMediaFileUri(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+				    	   //File image
+//				    	   photoIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, (Uri) mUri);
+//				    	   photoIntent.putExtra(MediaStore.Images.Media.TITLE, "TFImage");
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
@@ -172,7 +183,11 @@ public class InputFile extends Activity {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-				    	   Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
+				    	   
+				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+				    	           + "/temp/";
+//				    	   filePath = "sdcard/temp/";
+				    	   Uri mUri = Uri.fromFile(new File(filePath));
 				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 				    	   // start the image capture Intent
@@ -188,8 +203,10 @@ public class InputFile extends Activity {
 				           // User clicked "Record Audio" button
 				    	   //Intent intent = new Intent(getApplicationContext(), InputAudio.class);
 				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-				    	   Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
+				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
+				    	   filePath = "/sdcard/temp/";
+				    	   Uri mUri = Uri.fromFile(new File(filePath));
+				    	   
 				    	   intent.putExtra("AudioExtra", mUri);
 				    	   // start the AUDIO capture Intent
 				    	   startActivityForResult(intent, CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
@@ -230,12 +247,25 @@ public class InputFile extends Activity {
 	 * @param data				The intent.
 	 */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    //super.onActivityResult(requestCode, resultCode, data);
+	    
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE ||
         	requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
             	try{
-            		files.add(new File(data.getData().getPath()));
-            		newFiles.add(new File(data.getData().getPath()));
+//            	    String string = data.getData().toString();
+//            	    File file = new File(string);
+//            	    FileInputStream fstream = new FileInputStream(file);
+//            	    DataInputStream dataIs = new DataInputStream(fstream);
+//            	    if (data == null) 
+//                        throw new Exception();
+            		files.add(new File(filePath));
+            	    //if (data == null) 
+            	    //    throw new Exception();
+            		//Object obj = data.getExtras().get("data");
+            		//String str = data.getExtras().get(
+            		//        MediaStore.Images.Media.TITLE).toString();
+            		//newFiles.add(new File(str));
             	}catch(Exception e){
             		try{
             			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -264,15 +294,16 @@ public class InputFile extends Activity {
 	            			Uri uriImage = Uri.withAppendedPath(
 	            				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
 	            					String.valueOf(iID));
-	            			
 	            			files.add(new File(uriImage.getPath()));
-	            			newFiles.add(new File(uriImage.getPath()));
+	            			//newFiles.add(new File(uriImage.getPath()));
+	            			e.printStackTrace();
             			} else 
-            				throw new Exception();
+            			    throw new Exception();
             			
             		} catch(Exception ex){
             			// prompt user that file was not found
                     	Toast.makeText(this, "Unable to find file", Toast.LENGTH_LONG).show();
+                    	e.printStackTrace();
             		}
             	}
             	updateList();
@@ -285,8 +316,8 @@ public class InputFile extends Activity {
         } else if (requestCode == CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE) {
         	if (resultCode == RESULT_OK) {
         		try{
-        			files.add(new File(data.getData().getPath()));
-        			newFiles.add(new File(data.getData().getPath()));
+        			files.add(new File(filePath));
+        			//newFiles.add(new File(data.getData().getPath()));
         			updateList();
         		} catch(Exception ex){
         			// capture failed, advise user
@@ -297,7 +328,7 @@ public class InputFile extends Activity {
         } else if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
         	if (resultCode == RESULT_OK){
         		files.add(new File(data.getStringExtra("FromFile")));
-        		newFiles.add(new File(data.getStringExtra("FromFile")));
+        		//newFiles.add(new File(data.getStringExtra("FromFile")));
         		updateList();
         	}
         }
