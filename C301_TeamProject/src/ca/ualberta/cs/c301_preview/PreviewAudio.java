@@ -13,6 +13,8 @@ import android.content.Context;
 import android.util.Log;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -35,10 +37,11 @@ public class PreviewAudio extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        Intent intent = getIntent();
         mUri = Uri.fromFile(ItemList.currFile);
+//        mUri = Uri.fromFile(new File("/mnt/sdcard/Sounds/Test.3ga"));
         //filePath = intent.getStringExtra("PreviewItem");
-        filePath = ItemList.currFile.getAbsolutePath();
+        //filePath = ItemList.currFile.getAbsolutePath();
         //file = new File(intent.getData().getPath());
         
         mPlayButton = new PlayButton(this);
@@ -68,17 +71,20 @@ public class PreviewAudio extends Activity {
 	private void startPlaying() {
 		mPlayer = new MediaPlayer();
 		try {
+		    Toast.makeText(getApplicationContext(), 
+                    "Path: " + ItemList.currFile.getAbsolutePath() + "\nLength: " + 
+                    ItemList.currFile.length(), Toast.LENGTH_LONG).show();
+		    
 			//mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			FileInputStream fis = new FileInputStream(ItemList.currFile);
 	        mPlayer.setDataSource(fis.getFD());
 			//mPlayer.setDataSource(this, mUri);
 			//mPlayer.setDataSource("/mnt/sdCard/Music/Test.mp3");
-			mPlayer.setOnPreparedListener((OnPreparedListener) this);
+			//mPlayer.setOnPreparedListener((OnPreparedListener) this);
 			mPlayer.prepare();
 			mPlayer.start();
-			fis.close();
-			Toast.makeText(getApplicationContext(), 
-	    			filePath, Toast.LENGTH_LONG).show();
+			//fis.close();
+			
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "prepare() failed");
 		}

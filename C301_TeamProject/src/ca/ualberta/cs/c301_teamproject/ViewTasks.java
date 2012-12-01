@@ -8,6 +8,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,7 +23,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
+import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
@@ -34,11 +37,14 @@ public class ViewTasks extends Activity {
     
     public static final String TASK_ID = "ca.ualberta.cs.c301_teamproject.TASK_ID";
     ArrayAdapter<CrowdSourcerEntry> adapter;
+    ArrayAdapter<TfTask> adapterLocal;
     private List<Map<String,String>> mapList;
     private List<CrowdSourcerEntry> shallowEntryList = new ArrayList<CrowdSourcerEntry>();
+    private List<TfTask> localEntryList = new ArrayList<TfTask>();
     private boolean allTasks = false;
     private boolean myTasks = false;
     private boolean likedTasks = false;
+    private boolean localTasks = false;
     private String[] passedTaskIds;
 
 
@@ -50,6 +56,7 @@ public class ViewTasks extends Activity {
         String showMy = "<u>Your Tasks<u>";
         String showAll = "<u>All Tasks<u>";
         String showLike = "<u>Your Liked Tasks<u>";
+        String showLocal = "<u>Your Local Tasks<u>";
         
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -61,14 +68,13 @@ public class ViewTasks extends Activity {
         passedTaskIds = intent.getStringArrayExtra(MainPage.IDS);
         
         TextView showType = (TextView)findViewById(R.id.showCurrentTaskType);
-        
-        
-        
+ 
         //we know we want local tasks only
         if(type.equals("my")){
         	myTasks = true;
         	allTasks = false;
         	likedTasks = false;
+        	localTasks = false;
         	
         	showType.setText(Html.fromHtml(showMy));
         }
@@ -78,6 +84,7 @@ public class ViewTasks extends Activity {
         	allTasks = true;
         	myTasks = false;
         	likedTasks = false;
+        	localTasks = false;
         	
         	showType.setText(Html.fromHtml(showAll));
         }
@@ -86,15 +93,23 @@ public class ViewTasks extends Activity {
             allTasks = false;
             myTasks = false;
             likedTasks = true;
+            localTasks = false;
             
             showType.setText(Html.fromHtml(showLike));
         }
         
-      
+        if(type.equals("local")){
+            allTasks = false;
+            myTasks = false;
+            likedTasks = false;
+            localTasks = true;
+            
+            showType.setText(Html.fromHtml(showLocal));
+        }
+             
     	//starting the loading of the tasks
     	new loadTasks().execute();
-    	
-    
+    	    
     	//creating the list view click listener
         ListView listView = (ListView) findViewById(R.id.taskList);
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -106,7 +121,10 @@ public class ViewTasks extends Activity {
            
     }
     
-    //used to remove specific entries
+    /**
+     * This method is used to filer the tasks. It simply only grabs
+     * the passedTaskIds
+     */
     public void filterMyTasks(){
     	
     	//iterate over the list
@@ -123,16 +141,20 @@ public class ViewTasks extends Activity {
     			
     			if(passedTaskIds[i].equals(id)){
     				temp.add(entry);
-    			}
-    			
+    			}  			
     		}
-	
     	}
     	
     	shallowEntryList = temp;
    	
     }
     
+    /**
+     * This method is called when the filter button is clicked. Show a dialog
+     * to grab some information from the user then re-load viewTasks with
+     * a new set of parameters
+     * @param view
+     */
     public void filterClicked(View view){
         
         final AlertDialog.Builder filter =
@@ -151,14 +173,18 @@ public class ViewTasks extends Activity {
                 //pass the value to be re-loaded
                 reloadWithNewTasks(type);
                 
-            }
-            
-            
+            }     
         });
    
         filter.show();
     }
     
+    /**
+     * This is called from filterClicked. This simply takes in the "type" of
+     * filter we want to apply to the task list. This methods re-loads
+     * viewTasks with the new parameters
+     * @param type
+     */
     public void reloadWithNewTasks(String type){
         
         Intent intent = new Intent(this, ViewTasks.class);
@@ -195,7 +221,12 @@ public class ViewTasks extends Activity {
             
         }else if(type.equals("View Your Local Tasks")){
             
+            //grab the local task ids
+            ids = TfTaskRepository.getLocalTaskIds(getApplicationContext());
             
+            intent.putExtra(MainPage.TYPE, "local");
+            intent.putExtra(MainPage.IDS, ids);
+            startActivity(intent);
         }
        
     }
@@ -215,23 +246,32 @@ public class ViewTasks extends Activity {
 		protected String doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 			
-				//get the tasks
-			    try {
-			    mapList = TfTaskRepository.getShallowEntries();
-				shallowEntryList = new ArrayList<CrowdSourcerEntry>();
-	            for (Map<String,String> map : mapList) {
-	               CrowdSourcerEntry entry = new CrowdSourcerEntry();
-	               entry.setId(map.get("id"));
-	               entry.setDescription(map.get("description"));
-	               entry.setSummary(map.get("summary"));
-	               shallowEntryList.add(entry);
-	            }
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		    //if we are loading from the repository
+		    if(!localTasks) {
+    		    try {
+    		    mapList = TfTaskRepository.getShallowEntries();
+    			shallowEntryList = new ArrayList<CrowdSourcerEntry>();
+    	            for (Map<String,String> map : mapList) {
+    	               CrowdSourcerEntry entry = new CrowdSourcerEntry();
+    	               entry.setId(map.get("id"));
+    	               entry.setDescription(map.get("description"));
+    	               entry.setSummary(map.get("summary"));
+    	               shallowEntryList.add(entry);
+    	            }
+    	            
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		
+    		//we are loading locally
+		    }else {
+		        
+		        localEntryList = TfTaskRepository.getLocalTasks(getApplicationContext());
+     
+		    }
 	        
-			//if we only want to view local tasks only
+			//if we need to filter some tasks
 			if(myTasks || likedTasks){
 				filterMyTasks();
 			}
@@ -245,7 +285,7 @@ public class ViewTasks extends Activity {
             load.setContentView(R.layout.save_load_dialog);
             load.setTitle("Loading Tasks");
     		load.show();
-    		
+   		
     	}
     	
 		@Override
@@ -262,11 +302,26 @@ public class ViewTasks extends Activity {
     }//end of load tasks
     
    public void updateListView(){
-    	
-    	adapter = new ArrayAdapter<CrowdSourcerEntry>(this, android.R.layout.simple_list_item_1, shallowEntryList);
-    	ListView listView = (ListView)findViewById(R.id.taskList);
-    	listView.setAdapter(adapter);
-	
+       
+       ListView listView = (ListView)findViewById(R.id.taskList);
+    
+       //we have public tasks so print those
+       if(!localTasks){
+        	adapter = new ArrayAdapter<CrowdSourcerEntry>(this, android.R.layout.simple_list_item_1, shallowEntryList);
+        	//ListView listView = (ListView)findViewById(R.id.taskList);
+        	listView.setAdapter(adapter);
+       }
+       
+       //we have local tasks so print those 
+       if(localTasks){
+           
+           List<TfTask> entryList = 
+                   TfTaskRepository.getLocalTasks(getApplicationContext());
+           adapterLocal = new ArrayAdapter<TfTask>(this, 
+                   android.R.layout.simple_list_item_1, entryList);
+           
+           listView.setAdapter(adapterLocal);
+       }	
     }
    
 

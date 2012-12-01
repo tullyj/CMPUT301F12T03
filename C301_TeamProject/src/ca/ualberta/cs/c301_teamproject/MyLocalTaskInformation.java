@@ -13,12 +13,21 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 
-
+/**
+ * This class is used to store taskIDs locally for both myTask and myLikes.
+ * @author topched
+ *
+ */
 public class MyLocalTaskInformation extends Activity{
 	
 	public static final String MYTASKS = "myTasks.sav";
 	public static final String MYLIKES = "myLikes.sav";
 	
+	/**
+	 * This method is called when removing an id from the liked tasks
+	 * @param id   The id to be removed
+	 * @param c    The context from where it was called
+	 */
 	public void removeLikedTask(String id, Context c) {
 	    
 	    ArrayList<String> ids = getLikedTasks(c);
@@ -38,13 +47,17 @@ public class MyLocalTaskInformation extends Activity{
 	    
 	}
 
+	/**
+	 * This method is called when saving an id to the liked tasks
+	 * @param id   The id to be saved
+	 * @param c    The current context
+	 */
 	public void saveLikedTasks(String id, Context c) {
 	    
 	    ArrayList<String> use = new ArrayList<String>();
 	        
 	    ArrayList<String> ids = getLikedTasks(c);
 	  	    
-
 	    //if we dont have a file saved already
 	    if(ids.size()==0){
 	        
@@ -82,9 +95,9 @@ public class MyLocalTaskInformation extends Activity{
 	}
 	
 	/**
-	 * Testing
-	 * @param c
-	 * @return
+	 * This method is called to get an ArrayList of the liked tasks
+	 * @param c    The current context
+	 * @return     ArrayList<String> containing the liked ids
 	 */
 	@SuppressWarnings("unchecked")
     public ArrayList<String> getLikedTasks(Context c) {
@@ -105,12 +118,16 @@ public class MyLocalTaskInformation extends Activity{
 	    } catch (ClassNotFoundException e) {
 	        
 	    }
-	    
-	    
+	       
 	    return myIDS;
 	}
 	
 	
+	/**
+	 * This method just saves a task ID
+	 * @param id   The task ID to be saved
+	 * @param c    The current context
+	 */
 	public void saveTaskId(String id, Context c){
 	        
         try{
@@ -125,6 +142,11 @@ public class MyLocalTaskInformation extends Activity{
 	    	
 	}
 	
+	/**
+	 * This method returns all of "your" task ids
+	 * @param c    The current context
+	 * @return     String[] containg the ids
+	 */
 	public String[] loadMyTaskIds(Context c){
 		
 		ArrayList<String> myIDS = new ArrayList<String>();
@@ -145,8 +167,7 @@ public class MyLocalTaskInformation extends Activity{
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-		
-		
+				
 		return myIDS.toArray(new String[myIDS.size()]);
 	}
 
