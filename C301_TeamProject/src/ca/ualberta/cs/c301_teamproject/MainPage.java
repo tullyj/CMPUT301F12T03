@@ -91,16 +91,9 @@ public class MainPage extends Activity {
     }
     
     // temporary button to list local tasks for testing
-    //sends a test email right now
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
-        //startActivity(intent);
-
-        //http://stackoverflow.com/questions/2020088/sending-email-in-
-        //android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124       
-        
-       
-     
+        startActivity(intent);
         
     }
 }

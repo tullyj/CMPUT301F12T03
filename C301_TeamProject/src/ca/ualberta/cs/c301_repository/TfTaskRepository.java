@@ -1,6 +1,7 @@
 package ca.ualberta.cs.c301_repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -171,6 +172,24 @@ public class TfTaskRepository {
 
     public static List<TfTask> getLocalTasks(Context c) {
         return localRepo.getTaskList(c);
+    }
+    
+    public static String[] getLocalTaskIds(Context c) {
+        
+        List<TfTask> temp = localRepo.getTaskList(c);
+        
+        ArrayList<String> send = new ArrayList<String>();
+        
+        Iterator<TfTask> it = temp.iterator();
+        
+        while(it.hasNext()){
+            
+            TfTask task = it.next();
+            send.add(task.getTaskId());
+            
+        }
+   
+        return send.toArray(new String[send.size()]);
     }
     
 }

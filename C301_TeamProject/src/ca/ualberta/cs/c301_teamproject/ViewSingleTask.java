@@ -34,6 +34,7 @@ public class ViewSingleTask extends Activity {
 	private String taskId;
 	public ArrayList<String> myLikedIds;
 	public Button like;
+	private String local;
 	
 	
     @Override
@@ -56,12 +57,9 @@ public class ViewSingleTask extends Activity {
         }else{
             updateButtonText("like");           
         }
-
         
         //load the single task async style
-        new loadSingleTask().execute();
-        
-        
+        new loadSingleTask().execute();     
     }
 
     @Override
@@ -74,17 +72,19 @@ public class ViewSingleTask extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
+    /**
+     * This method just modifies text on buttons. 
+     * @param val   The flag to know what to update the text to
+     */
     public void updateButtonText(String val){
-        
-        
+    
         if(val.equals("like")){
             like.setText(R.string.like_task);
         }
         
         if(val.equals("unlike")){
             like.setText(R.string.unlike_task);
-        }
-        
+        }      
     }
     
 	/**
@@ -156,7 +156,9 @@ public class ViewSingleTask extends Activity {
     }
     
     /**
-     * Called when the like/unlike button clicked
+     * Called when the like/unlike button clicked. Either add or remove
+     * the id from "you" liked list then update the text on the button to
+     * reflect the change
      */
     public void likeTaskAction(View view){
         
@@ -177,11 +179,13 @@ public class ViewSingleTask extends Activity {
             save.saveLikedTasks(taskId, getApplicationContext());
             updateButtonText("unlike");
         }
-        
-        //deleteFile("myLikes.sav");
-        
+                
     }
     
+    /**
+     * This method simply returns a boolean if "you" like this current task
+     * @return  true iff "you" like this task
+     */
     public boolean doILikeThisTask(){
         
         //re grab the arraylist incase an item was added
@@ -196,47 +200,12 @@ public class ViewSingleTask extends Activity {
                 return true;
         }
         
-        return false;
-        
+        return false;      
     }
     
     public void saveTaskLocally(View view){
         
-//        ArrayList<String> ids = new ArrayList<String>();
-//        
-//        MyLocalTaskInformation save = new MyLocalTaskInformation();
-//        ids = save.getLikedTasks(getApplicationContext());
-//        
-//        Iterator<String> it = ids.iterator();
-//        
-//        while(it.hasNext()){
-//            
-//            
-//            String text = (String)it.next();
-//            int duration = Toast.LENGTH_SHORT;
-//
-//            Toast toast = Toast.makeText(getApplicationContext(), text,
-//                    duration);
-//            toast.show();
-//        }
-//        
-//        boolean t = doILikeThisTask();
-//        
-//        //boolean t = myLikedIds.contains(taskId);
-//        String text = "";
-//        
-//        if(t){
-//            text = "Yes i like this task";
-//        }else{
-//            text = "NO I DONT";
-//        }
-//        
-//        int duration = Toast.LENGTH_SHORT;
-//
-//        Toast toast = Toast.makeText(getApplicationContext(), text,
-//                duration);
-//        toast.show();
-        
+        //need to save or update the task locally
       
     }
     
@@ -255,7 +224,7 @@ public class ViewSingleTask extends Activity {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
-			//task = null;
+			//grabbing the task from the repository
 	        try {
 	        	task = TfTaskRepository.getTaskById(taskId);
 	        } catch (Exception e) {
@@ -263,22 +232,17 @@ public class ViewSingleTask extends Activity {
 	            e.printStackTrace();
 	        }
 	        
-	        //grabbing the likedIDS
-	        
+	        //grabbing the likedIDS	        
 	        myLikedIds = lti.getLikedTasks(getApplicationContext());
-	        
-	        
-	        
+	        	        
 			return null;
 		}
     	
     	protected void onPreExecute(){
     		
-    	    
     		load.setContentView(R.layout.save_load_dialog);
     		load.setTitle("Loading task");
     		load.show();
-    		
     	}
     	
     	@Override
@@ -291,9 +255,6 @@ public class ViewSingleTask extends Activity {
             updateList(task);
     		
     		load.dismiss();
-
     	}
-	
-    }
-  
+    } 
 }
