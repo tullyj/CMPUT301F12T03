@@ -81,5 +81,7 @@
     <string name="title_activity_file_browser">File Browser</string>
     <string name="title_activity_test">Test</string>
     <string name="title_activity_local_task_list">LocalTaskList</string>
+    <string name="no_comment"/>
+    <color name="black">#00000000</color>
 
 </resources>
