@@ -5,8 +5,9 @@
     <string name="title_activity_main">Task Force</string>
     <string name="enter">Enter</string>
     <string name="create_task">Create Task</string>
-    <string name="your_tasks">Your Task(s)</string>
+    <string name="your_tasks">Your Tasks</string>
     <string name="all_tasks">All Tasks</string>
+    <string name="liked_tasks">Your Liked Tasks</string>
     <string name="title">Title:</string>
     <string name="title_hint">Enter title here</string>
     <string name="items_attached">Items Attached:</string>

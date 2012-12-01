@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
@@ -56,11 +55,15 @@ public class ViewTasks extends Activity {
 
         passedTaskIds = intent.getStringArrayExtra(MainPage.IDS);
         
+        TextView showType = (TextView)findViewById(R.id.showCurrentTaskType);
+        
         //we know we want local tasks only
         if(type.equals("my")){
         	myTasks = true;
         	allTasks = false;
         	likedTasks = false;
+        	
+        	showType.setText(R.string.your_tasks);
         }
         
         //we know we want all tasks here
@@ -68,12 +71,16 @@ public class ViewTasks extends Activity {
         	allTasks = true;
         	myTasks = false;
         	likedTasks = false;
+        	
+        	showType.setText(R.string.all_tasks);
         }
         
         if(type.equals("liked")){
             allTasks = false;
             myTasks = false;
             likedTasks = true;
+            
+            showType.setText(R.string.liked_tasks);
         }
         
       

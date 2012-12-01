@@ -1,24 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/white_bkg" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_bkg"
+    android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/showCurrentTaskType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/all_tasks"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
     <ListView
         android:id="@+id/taskList"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_alignParentLeft="true" >
-
+        android:layout_height="0dip"
+        android:layout_weight="0.12" >
     </ListView>
+    
 
     <Button
         android:id="@+id/buttonFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:onClick="filterClicked"
         android:text="@string/filter"
-        android:onClick="filterClicked" />
+        android:layout_gravity="center" />
     
-        </RelativeLayout>
+
+
+</LinearLayout>
