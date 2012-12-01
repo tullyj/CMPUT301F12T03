@@ -22,7 +22,7 @@ public class PreviewText extends Activity {
             setContentView(R.layout.preview_text);
             File file = ItemList.currFile;
             
-            TextView tv = (TextView) findViewById(R.id.TextPreview);
+            TextView tv = (TextView) findViewById(R.id.textPreview);
 
             InputStream fis = null;
 
