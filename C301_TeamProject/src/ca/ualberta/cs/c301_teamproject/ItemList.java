@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,7 +36,6 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
  * Displays a listview of files for a given item in a task.
- * @author tullyj
  */
 public class ItemList extends Activity {
 
@@ -48,7 +45,6 @@ public class ItemList extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int TEXT_INTENT = 6;
 	static final int FILE_INTENT = 7;
-	//private String taskId;
 	private ItemType itemType;
 	private TaskItem item;
 	public static File currFile;
@@ -61,22 +57,22 @@ public class ItemList extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);        
-        
-        
+
         // Get Task and Item
         String[] inArgs = getIntent().getStringArrayExtra("SendItem");
-        
-        // When item type is known from passing of intent with extra containing item type.
-        //taskId = inArgs[0];
         // Set title of Type of list
         ((TextView) findViewById(R.id.listTitle)).setText(inArgs[1] + " List");
         // Set Description from item.getDescription()
         ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[2]);
         
-        if(inArgs[0].equals("TEXT")) itemType = ItemType.TEXT;
-        else if(inArgs[0].equals("PHOTO")) itemType = ItemType.PHOTO;
-        else if(inArgs[0].equals("VIDEO")) itemType = ItemType.VIDEO;
-        else itemType = ItemType.AUDIO;
+        if (inArgs[0].equals("TEXT")) 
+            itemType = ItemType.TEXT;
+        else if (inArgs[0].equals("PHOTO")) 
+            itemType = ItemType.PHOTO;
+        else if (inArgs[0].equals("VIDEO")) 
+            itemType = ItemType.VIDEO;
+        else 
+            itemType = ItemType.AUDIO;
         
         // Set the progress bar and textview listItemFraction.
         int[] progress = populateList();

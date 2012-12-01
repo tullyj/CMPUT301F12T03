@@ -6,26 +6,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View;
-//import android.view.View.OnClickListener;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.media.MediaPlayer.OnPreparedListener;
-//import android.media.MediaRecorder;
 import android.media.MediaPlayer;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import ca.ualberta.cs.c301_teamproject.ItemList;
 import ca.ualberta.cs.c301_teamproject.R;
 
-/* http://developer.android.com/guide/topics/media/audio-capture.html */
 public class PreviewAudio extends Activity {
 	
 	private static final String LOG_TAG = "PreviewAudio";
@@ -43,8 +36,6 @@ public class PreviewAudio extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent intent = getIntent();
-//        mUri = getIntent().getData();
         mUri = Uri.fromFile(ItemList.currFile);
         //filePath = intent.getStringExtra("PreviewItem");
         filePath = ItemList.currFile.getAbsolutePath();
@@ -56,14 +47,12 @@ public class PreviewAudio extends Activity {
         
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(VERTICAL);
-        ll.addView(mPlayButton,
-            new LinearLayout.LayoutParams(
+        ll.addView(mPlayButton, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-        ll.addView(speakerImage,
-        	new LinearLayout.LayoutParams(
-        			ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT, 2));
+        ll.addView(speakerImage, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, 2));
         setContentView(ll);
 
         Toast.makeText(getApplicationContext(), 
