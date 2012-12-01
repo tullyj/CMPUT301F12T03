@@ -67,10 +67,10 @@
         android:onClick="likeTaskAction" />
 
     <Button
-        android:id="@+id/saveTaskLocal"
+        android:id="@+id/emailFiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save_local"
-        android:onClick="saveTaskLocally" />
+        android:onClick="emailFiles"
+        android:text="@string/email_files" />
 	    	
 </LinearLayout>

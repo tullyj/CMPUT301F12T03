@@ -183,6 +183,11 @@ public class TfTaskRepository {
         return task;
     }
     
+    public static Task getLocalTaskById(String taskId, Context c) 
+            throws Exception {
+        return localRepo.getTask(taskId, c);
+    }
+    
     /**
      * Returns a list of all the local tasks stored on the device.
      * @param c The context of the calling activity.

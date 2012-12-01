@@ -117,4 +117,13 @@ public class TfLocalRepository /* extends Activity */ {
       }
 
     }
+
+    public Task getTask(String taskId, Context c) {
+        loadLocalList(c);
+        for (Task task : entryList) {
+            if (task.getTaskId().equals(taskId))
+                return task;
+        }
+        return null;
+    }
 }
