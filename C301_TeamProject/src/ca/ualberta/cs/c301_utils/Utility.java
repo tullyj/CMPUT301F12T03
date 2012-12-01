@@ -24,7 +24,7 @@ public class Utility {
     public static File base64ToFile(String input, String fileName) {
         String directory = 
                 Environment.getExternalStorageDirectory().getAbsolutePath();
-        fileName = directory + fileName;
+        fileName = directory + "/" + fileName;
 
         BufferedOutputStream bs = null;
         File file = new File(fileName);
