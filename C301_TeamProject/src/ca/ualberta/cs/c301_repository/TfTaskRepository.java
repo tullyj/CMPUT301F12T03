@@ -184,6 +184,13 @@ public class TfTaskRepository {
         return task;
     }
     
+    /**
+     * Returns the local task stored with the given taskId.
+     * @param taskId Task ID of task to be retrieved.
+     * @param c      Context of calling activity.
+     * @return The task if found, else returns null.
+     * @throws Exception
+     */
     public static Task getLocalTaskById(String taskId, Context c) 
             throws Exception {
         return localRepo.getTask(taskId, c);
