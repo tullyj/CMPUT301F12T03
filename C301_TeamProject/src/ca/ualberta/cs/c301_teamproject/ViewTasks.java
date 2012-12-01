@@ -46,6 +46,7 @@ public class ViewTasks extends Activity {
     private boolean likedTasks = false;
     private boolean localTasks = false;
     private String[] passedTaskIds;
+    public static final String LOCAL = "local";
 
 
     @Override
@@ -335,12 +336,24 @@ public class ViewTasks extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-    private void viewTask(int position, 
-            List<CrowdSourcerEntry> shallowEntryList) {
-        CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
+    private void viewTask(int position, List<CrowdSourcerEntry> shallowEntryList) {
+        
         Intent intent = new Intent(this, ViewSingleTask.class);
-        intent.putExtra(TASK_ID, shallowEntry.getId());
-        startActivity(intent);
+
+        
+        //if we clicked on a public task
+        if(!localTasks){
+            CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
+            intent.putExtra(TASK_ID, shallowEntry.getId());
+            startActivity(intent);
+            
+        //we clicked a private task    
+        }else{
+            TfTask t = localEntryList.get(position);
+            intent.putExtra(TASK_ID, t.getTaskId());
+            intent.putExtra(LOCAL, "yes");
+            startActivity(intent);
+        }
     }
 
 }

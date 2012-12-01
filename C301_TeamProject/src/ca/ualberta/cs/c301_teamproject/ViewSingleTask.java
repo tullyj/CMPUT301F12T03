@@ -34,7 +34,9 @@ public class ViewSingleTask extends Activity {
 	private String taskId;
 	public ArrayList<String> myLikedIds;
 	public Button like;
+	private boolean isLocal = false;
 	private String local;
+
 	
 	
     @Override
@@ -47,6 +49,12 @@ public class ViewSingleTask extends Activity {
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
+        local = intent.getExtras().getString(ViewTasks.LOCAL);
+        
+        if(local.equals("yes")){
+            isLocal = true;
+        }
+        
         
         boolean likeTask = doILikeThisTask();
         
@@ -224,13 +232,27 @@ public class ViewSingleTask extends Activity {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
-			//grabbing the task from the repository
-	        try {
-	        	task = TfTaskRepository.getTaskById(taskId);
-	        } catch (Exception e) {
-	            System.err.println(e.getMessage());
-	            e.printStackTrace();
-	        }
+		    //we are grabbing from the web service
+		    if(!isLocal){
+    			//grabbing the task from the repository
+    	        try {
+    	        	task = TfTaskRepository.getTaskById(taskId);
+    	        } catch (Exception e) {
+    	            System.err.println(e.getMessage());
+    	            e.printStackTrace();
+    	        }
+    	     
+    	    //we are grabbing a local task
+		    }else{
+		        
+		        try {
+		            task = TfTaskRepository.getLocalTaskById(taskId, getApplicationContext());
+		        } catch (Exception e) {
+		            System.err.println(e.getMessage());
+		            e.printStackTrace();
+		        }
+		        
+		    }
 	        
 	        //grabbing the likedIDS	        
 	        myLikedIds = lti.getLikedTasks(getApplicationContext());
