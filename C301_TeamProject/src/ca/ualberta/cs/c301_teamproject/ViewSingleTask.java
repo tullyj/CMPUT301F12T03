@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class ViewSingleTask extends Activity {
 	public static Task task = null;
 	private String taskId;
 	public ArrayList<String> myLikedIds;
+	public Button like;
 	
 	
     @Override
@@ -40,10 +42,20 @@ public class ViewSingleTask extends Activity {
         setContentView(R.layout.view_single_task);
         
         myLikedIds = new ArrayList<String>();
+        like = (Button)findViewById(R.id.likeTask);
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
         
+        boolean likeTask = doILikeThisTask();
+        
+        //if i already like the task show unlike
+        //else if i dont like it show like
+        if(likeTask){
+            updateButtonText("unlike");
+        }else{
+            updateButtonText("like");           
+        }
 
         
         //load the single task async style
@@ -60,6 +72,19 @@ public class ViewSingleTask extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    public void updateButtonText(String val){
+        
+        
+        if(val.equals("like")){
+            like.setText(R.string.like_task);
+        }
+        
+        if(val.equals("unlike")){
+            like.setText(R.string.unlike_task);
+        }
+        
     }
     
 	/**
@@ -145,12 +170,12 @@ public class ViewSingleTask extends Activity {
             save.removeLikedTask(taskId, getApplicationContext());
             
             //set the text on the button to like again
-            
-            
+            updateButtonText("like");           
             
         //if we dont like the task add it to the list
         }else{
             save.saveLikedTasks(taskId, getApplicationContext());
+            updateButtonText("unlike");
         }
         
         //deleteFile("myLikes.sav");
@@ -177,40 +202,40 @@ public class ViewSingleTask extends Activity {
     
     public void saveTaskLocally(View view){
         
-        ArrayList<String> ids = new ArrayList<String>();
-        
-        MyLocalTaskInformation save = new MyLocalTaskInformation();
-        ids = save.getLikedTasks(getApplicationContext());
-        
-        Iterator<String> it = ids.iterator();
-        
-        while(it.hasNext()){
-            
-            
-            String text = (String)it.next();
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(getApplicationContext(), text,
-                    duration);
-            toast.show();
-        }
-        
-        boolean t = doILikeThisTask();
-        
-        //boolean t = myLikedIds.contains(taskId);
-        String text = "";
-        
-        if(t){
-            text = "Yes i like this task";
-        }else{
-            text = "NO I DONT";
-        }
-        
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(getApplicationContext(), text,
-                duration);
-        toast.show();
+//        ArrayList<String> ids = new ArrayList<String>();
+//        
+//        MyLocalTaskInformation save = new MyLocalTaskInformation();
+//        ids = save.getLikedTasks(getApplicationContext());
+//        
+//        Iterator<String> it = ids.iterator();
+//        
+//        while(it.hasNext()){
+//            
+//            
+//            String text = (String)it.next();
+//            int duration = Toast.LENGTH_SHORT;
+//
+//            Toast toast = Toast.makeText(getApplicationContext(), text,
+//                    duration);
+//            toast.show();
+//        }
+//        
+//        boolean t = doILikeThisTask();
+//        
+//        //boolean t = myLikedIds.contains(taskId);
+//        String text = "";
+//        
+//        if(t){
+//            text = "Yes i like this task";
+//        }else{
+//            text = "NO I DONT";
+//        }
+//        
+//        int duration = Toast.LENGTH_SHORT;
+//
+//        Toast toast = Toast.makeText(getApplicationContext(), text,
+//                duration);
+//        toast.show();
         
       
     }

@@ -5,23 +5,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
-import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
@@ -37,7 +38,8 @@ public class ViewTasks extends Activity {
     private List<CrowdSourcerEntry> shallowEntryList = new ArrayList<CrowdSourcerEntry>();
     private boolean allTasks = false;
     private boolean myTasks = false;
-    private String[] localTaskIds;
+    private boolean likedTasks = false;
+    private String[] passedTaskIds;
 
 
     @Override
@@ -50,20 +52,28 @@ public class ViewTasks extends Activity {
         
         //grab the intent to see which filter we are using
         Intent intent = getIntent();
-        String local = intent.getStringExtra(MainPage.LOCAL);
+        String type = intent.getStringExtra(MainPage.TYPE);
 
-        localTaskIds = intent.getStringArrayExtra(MainPage.IDS);
+        passedTaskIds = intent.getStringArrayExtra(MainPage.IDS);
         
         //we know we want local tasks only
-        if(local.equals("yes")){
+        if(type.equals("my")){
         	myTasks = true;
         	allTasks = false;
+        	likedTasks = false;
         }
         
         //we know we want all tasks here
-        if(local.equals("no")){
+        if(type.equals("all")){
         	allTasks = true;
         	myTasks = false;
+        	likedTasks = false;
+        }
+        
+        if(type.equals("liked")){
+            allTasks = false;
+            myTasks = false;
+            likedTasks = true;
         }
         
       
@@ -83,7 +93,7 @@ public class ViewTasks extends Activity {
     }
     
     //used to remove specific entries
-    public void removeEntries(){
+    public void filterMyTasks(){
     	
     	//iterate over the list
     	Iterator<CrowdSourcerEntry> it = shallowEntryList.iterator();
@@ -95,9 +105,9 @@ public class ViewTasks extends Activity {
     		CrowdSourcerEntry entry = it.next();
     		String id = entry.getId();
     		
-    		for(int i = 0;i<localTaskIds.length;i++){
+    		for(int i = 0;i<passedTaskIds.length;i++){
     			
-    			if(localTaskIds[i].equals(id)){
+    			if(passedTaskIds[i].equals(id)){
     				temp.add(entry);
     			}
     			
@@ -109,6 +119,74 @@ public class ViewTasks extends Activity {
    	
     }
     
+    public void filterClicked(View view){
+        
+        final AlertDialog.Builder filter =
+                new AlertDialog.Builder(ViewTasks.this);
+
+        filter.setTitle("Filter Task List");
+        filter.setItems(R.array.filter_choices, new DialogInterface.OnClickListener() {
+            
+            public void onClick(DialogInterface dialog, int which) {
+                      
+                String[] get = getResources().getStringArray(R.array.filter_choices);
+                
+                //get the type selected
+                String type = get[which];
+                
+                //pass the value to be re-loaded
+                reloadWithNewTasks(type);
+                
+            }
+            
+            
+        });
+   
+        filter.show();
+    }
+    
+    public void reloadWithNewTasks(String type){
+        
+        Intent intent = new Intent(this, ViewTasks.class);
+        MyLocalTaskInformation lt = new MyLocalTaskInformation();
+        String[] ids;
+        
+        if(type.equals("View Your Tasks")){
+            
+            //getting my task ids 
+            ids = lt.loadMyTaskIds(getApplicationContext());
+            
+            intent.putExtra(MainPage.TYPE, "my");
+            intent.putExtra(MainPage.IDS, ids);
+            startActivity(intent);
+            
+        }else if(type.equals("View All Tasks")){
+            
+            //all task ids to be loaded dont need to grab any
+            intent.putExtra(MainPage.TYPE, "all");
+            startActivity(intent);
+            
+        }else if(type.equals("View Your Liked Tasks")){
+            
+            //getting my liked tasks
+            ArrayList<String> temp = new ArrayList<String>();
+            temp = lt.getLikedTasks(getApplicationContext());
+            
+            ids = temp.toArray(new String[temp.size()]);
+            
+            intent.putExtra(MainPage.TYPE, "liked");
+            intent.putExtra(MainPage.IDS, ids);
+            startActivity(intent);
+            
+            
+        }else if(type.equals("View Your Local Tasks")){
+            
+            
+        }
+       
+    }
+    
+ 
     /**
      * 
      * Async task for loading. Works now
@@ -140,8 +218,8 @@ public class ViewTasks extends Activity {
 			}
 	        
 			//if we only want to view local tasks only
-			if(myTasks){
-				removeEntries();
+			if(myTasks || likedTasks){
+				filterMyTasks();
 			}
 							
 			return null;

@@ -54,6 +54,7 @@
     <string name="unlike_task">Unlike this task</string>
     <string name="update_local">Update local task information</string>
 
+
     <string-array name="item_choices">
         <item>Text</item>
         <item>Audio</item>
@@ -64,6 +65,12 @@
         <item>E-mail</item>
         <item>Text</item>
         <item>Twitter</item>
+    </string-array>
+    <string-array name="filter_choices">
+        <item>View Your Tasks</item>
+        <item>View All Tasks</item>
+        <item>View Your Liked Tasks</item>
+        <item>View Your Local Tasks</item>
     </string-array>
 
     <string name="hello_world">Hello world!</string>
