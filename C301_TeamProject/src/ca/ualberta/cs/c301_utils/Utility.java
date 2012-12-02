@@ -3,18 +3,13 @@ package ca.ualberta.cs.c301_utils;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileInputStream;
-
-import ca.ualberta.cs.c301_interfaces.ItemType;
-import ca.ualberta.cs.c301_preview.PreviewAudio;
-import ca.ualberta.cs.c301_preview.PreviewPhoto;
-import ca.ualberta.cs.c301_preview.PreviewText;
-import ca.ualberta.cs.c301_preview.PreviewVideo;
+import java.io.FileOutputStream;
 
 import android.os.Environment;
 import android.util.Base64;
+import ca.ualberta.cs.c301_interfaces.ItemType;
+import ca.ualberta.cs.c301_teamproject.R;
 
 /**
  * Contains various utility methods used throughout the application.
@@ -95,5 +90,30 @@ public class Utility {
                 return null;
         }
     }
-
+    
+    public static int getIconFromType(ItemType type) {
+        switch (type) {
+        case TEXT:
+            return R.drawable.text_icon;
+        case PHOTO:
+            return R.drawable.photo_icon;
+        case AUDIO:
+            return R.drawable.audio_icon;
+        case VIDEO:
+            return R.drawable.video_icon;
+        default:
+            return 0;
+        }
+    } 
+    
+    public static int getIconFromString (String type) {
+        if (type.equals("Photo")) 
+            return R.drawable.photo_icon;
+        else if (type.equals("Audio")) 
+            return R.drawable.audio_icon;
+        else if (type.equals("Video")) 
+            return R.drawable.video_icon;
+        else 
+            return R.drawable.text_icon;
+    } 
 }

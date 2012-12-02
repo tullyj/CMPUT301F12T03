@@ -26,6 +26,7 @@ import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
+import ca.ualberta.cs.c301_utils.Utility;
 
 /**
  * This class is responsible for grabbing all of the information needed for 
@@ -190,7 +191,7 @@ public class CreateTask extends Activity {
     	
     	ArrayList<ItemListElement> item = new ArrayList<ItemListElement>();
     	
-    	for(int i = 0;i<currentTaskItems.size();i++) {
+    	for (int i = 0;i < currentTaskItems.size(); i++) {
     	
     		//map for item
     		//0 -> number of item
@@ -201,7 +202,8 @@ public class CreateTask extends Activity {
     		String bottom = "Description: " + s[2];
     		
     		//add the item to the list
-    		item.add(new ItemListElement(android.R.drawable.ic_input_get, 
+    		item.add(new ItemListElement(
+    		        Utility.getIconFromString(s[1]), 
     		        top, bottom));
     	}   	
     	return item;    	

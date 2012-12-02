@@ -22,6 +22,7 @@ import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
+import ca.ualberta.cs.c301_utils.Utility;
 
 /**
  * Shows items for a task in a list, click item to view. Click "+" button
@@ -109,8 +110,9 @@ public class ViewSingleTask extends Activity {
     		info = getTypeInfo(items.get(i).getType());
     		title = info[0];
     		//itemT = 
-    		elements[i] = new ItemListElement(android.R.drawable.ic_input_get, 
-    			title, items.get(i).getDescription());
+    		elements[i] = new ItemListElement(
+    		        Utility.getIconFromType(items.get(i).getType()), 
+    		        title, items.get(i).getDescription());
     		title = "";
     	}
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);

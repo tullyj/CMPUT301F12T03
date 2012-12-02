@@ -154,7 +154,7 @@ public class ItemList extends Activity {
     	
     	for (int i = 0; i < count; i++) {
     		listElements.add(new ItemListElement(
-    		        android.R.drawable.ic_input_get, itemType + " " + (i+1), 
+    		        Utility.getIconFromType(itemType), itemType + " " + (i+1), 
     				getTime(files.get(i).lastModified())));
     	}
     	
