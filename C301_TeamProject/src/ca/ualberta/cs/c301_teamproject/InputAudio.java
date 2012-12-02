@@ -143,7 +143,7 @@ public class InputAudio extends Activity {
     
     public InputAudio() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/Audio" + InputFile.inFileCount + ".3gp";
+        mFileName += "/Audio" + InputFile.inFileCount + ".3gp"; 
     }
 
     @Override
