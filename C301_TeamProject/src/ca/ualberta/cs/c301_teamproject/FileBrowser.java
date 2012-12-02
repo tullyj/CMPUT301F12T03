@@ -27,9 +27,9 @@ static private int id;
 final private List<String> imageExtensions = 
 		 Arrays.asList("png", "jpg", "jpeg", "gif", "bmp");
 final private List<String> audioExtensions =
-		 Arrays.asList("wav", "mid", "mp3", "wma", "flac", "ogg", "3ga");
+		 Arrays.asList("wav", "mid", "mp3", "wma", "3ga");
 final private List<String> videoExtensions =
-		 Arrays.asList("avi", "mp4", "wmv", "mkv", "3gp");
+		 Arrays.asList("avi", "mp4", "wmv", "mpg", "mpeg", "3gp");
 
     /**
      * This class is a modified version of the code given by Androider+ in the

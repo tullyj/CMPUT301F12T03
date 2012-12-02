@@ -2,7 +2,11 @@ package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+
+import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_repository.TfTaskItem;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +32,7 @@ public class InputFile extends Activity {
 	private static final int DIALOG_PHOTO = 2;
 	private static final int DIALOG_VIDEO = 5;
 	private static final int DIALOG_ABOUT = 3;
+	private static final long MAX_TASK_BYTES = 700000;
 	private static int itemType;
 	public static int inFileCount = 0;
 	private TaskItem item;
@@ -51,8 +56,9 @@ public class InputFile extends Activity {
         importFile((View) findViewById(R.layout.input_file));
         
         inFileCount = 0;
-        
+
         updateList();
+        
     }
 
     @Override
@@ -95,13 +101,35 @@ public class InputFile extends Activity {
      * @param v
      */
     public void saveClick(View v){
-    	if (files.size() > 0) {
+        
+        //check if the new inserted file(s) takes up too much space (bytes
+        long insertFilesSize = 0;
+        for (File file : files)
+            insertFilesSize += file.length();
+        long newTotalSize = getTotalTaskSize() + insertFilesSize;
+        if (newTotalSize > MAX_TASK_BYTES) {
+            System.out.println("DEBUG: It's too big!!");
+            System.out.println("DEBUG: the files are " + insertFilesSize + " bytes");
+            System.out.println("DEBUG: total bytes task is taking: " + getTotalTaskSize() + "bytes");
+            
+            Toast.makeText(getApplicationContext(), 
+                    "Sorry, insufficient space. \n" + 
+                    "The file(s) are :" + insertFilesSize + " bytes. \n" +
+                    "You only have " + (MAX_TASK_BYTES - getTotalTaskSize()) +
+                    " bytes left.\n" + "Please Upgrade Your" +
+                    " Account (coming soon).", Toast.LENGTH_LONG).show();
+                    
+            //clear the files list and update the displayed list
+            files.clear();
+            updateList();
+        } else if (files.size() > 0) {
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
 	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
 	    	setResult(RESULT_OK, intent);
+
 	    	try {
                 item.addFiles(files);
             } catch (Exception e) {
@@ -182,7 +210,7 @@ public class InputFile extends Activity {
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().
 			    	           getAbsolutePath();
-			           filePath += "/Audio" + inFileCount + ".3gp";
+			           filePath += "/Audio" + inFileCount + ".3ga";
 			    	   // start the AUDIO capture Intent
 			    	   startActivityForResult(intent, 
 			    	           CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
@@ -258,5 +286,24 @@ public class InputFile extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
         	android.R.layout.simple_list_item_1, filenames);
         listView.setAdapter(adapter);
+    }
+    
+    /**
+     * Gets the total number of bytes due to all files within the task 
+     * (includes all file types)
+     * @return      the total number of bytes a task is taking 
+     *              due to files in it
+     */
+    private long getTotalTaskSize() {
+        //retrieve all items
+        List<TfTaskItem> listTask = ViewSingleTask.task.getAllItems();
+        long totalSize = 0;
+        for (TaskItem item : listTask) {
+            List<File> listFile = item.getAllFiles();
+            for (File file : listFile) 
+                totalSize += file.length();
+        }
+        
+        return totalSize;
     }
 }
