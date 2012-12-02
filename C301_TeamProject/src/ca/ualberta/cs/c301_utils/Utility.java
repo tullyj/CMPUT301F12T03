@@ -7,6 +7,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 
+import ca.ualberta.cs.c301_interfaces.ItemType;
+import ca.ualberta.cs.c301_preview.PreviewAudio;
+import ca.ualberta.cs.c301_preview.PreviewPhoto;
+import ca.ualberta.cs.c301_preview.PreviewText;
+import ca.ualberta.cs.c301_preview.PreviewVideo;
+
 import android.os.Environment;
 import android.util.Base64;
 
@@ -68,6 +74,26 @@ public class Utility {
            e.printStackTrace();
         }
         return file;
+    }
+    
+    /**
+     * Based on ItemType give an extension to write files of given type.
+     * @param type
+     * @return
+     */
+    public static String getFileExtFromType(ItemType type) {
+        switch (type) {
+            case TEXT:
+                return ".txt";
+            case PHOTO:
+                return ".jpg";
+            case AUDIO:
+                return ".3ga";
+            case VIDEO:
+                return ".3gp";
+            default:
+                return null;
+        }
     }
 
 }

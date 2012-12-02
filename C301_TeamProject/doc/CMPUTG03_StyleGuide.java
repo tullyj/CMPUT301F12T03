@@ -62,7 +62,7 @@ public class ClassName {
             else 
                 System.out.print("condition5");
             // Examples of loops:
-            while(true)
+            while (true)
                 // do something
             for (int i = 0; i < num; i++)
                 // do something

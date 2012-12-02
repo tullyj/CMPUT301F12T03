@@ -3,20 +3,17 @@ package ca.ualberta.cs.c301_teamproject;
 import android.app.Activity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View;
-//import android.view.View.OnClickListener;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -143,7 +140,7 @@ public class InputAudio extends Activity {
     
     public InputAudio() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/Audio" + InputFile.inFileCount + ".3gp"; 
+        mFileName += "/Audio" + InputFile.inFileCount + ".3ga"; 
     }
 
     @Override
