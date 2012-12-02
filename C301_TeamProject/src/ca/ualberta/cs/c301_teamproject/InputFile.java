@@ -172,6 +172,8 @@ public class InputFile extends Activity {
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, 
 				    	           (Uri) mUri);
+				    	   photoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 
+				    	           MAX_TASK_BYTES);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
@@ -192,6 +194,9 @@ public class InputFile extends Activity {
 			    	           getAbsolutePath() + "/Video" + inFileCount;
 			    	   Uri mUri = Uri.fromFile(new File(filePath));
 			    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+			    	   photoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 
+                               MAX_TASK_BYTES);
+			    	   photoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			    	   // start the image capture Intent
 			    	   startActivityForResult(photoIntent, 
 			    	           CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
