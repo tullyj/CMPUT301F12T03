@@ -120,6 +120,14 @@
                 android:value="ca.ualberta.cs.c301_teamproject.ItemList" />
         </activity>
         <activity
+            android:name="ca.ualberta.cs.c301_teamproject.InputAudio"
+            android:label="@string/title_list_item"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.cs.c301_teamproject.InputFile" />
+        </activity>
+        <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewVideo"
             android:label="@string/title_list_item"
             android:screenOrientation="landscape" >

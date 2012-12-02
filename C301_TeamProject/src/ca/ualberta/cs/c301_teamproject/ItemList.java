@@ -206,10 +206,10 @@ public class ItemList extends Activity {
 				// Get the file the user selected and save the uri to file.
                 Uri mUri = Uri.fromFile(item.getFile(position));
 				Intent intent = new Intent(getApplicationContext(), getPreviewClass());
-				if (itemType == ItemType.AUDIO) {
-				    intent = new Intent(Intent.ACTION_VIEW, mUri);
-				    intent.setDataAndType(mUri, "audio/*");
-				}
+//				if (itemType == ItemType.AUDIO) {
+//				    intent = new Intent(Intent.ACTION_VIEW, mUri);
+//				    intent.setDataAndType(mUri, "audio/*");
+//				}
 				
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		    	

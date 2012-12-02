@@ -56,11 +56,7 @@ public class PreviewAudio extends Activity {
         ll.addView(speakerImage, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, 2));
-        setContentView(ll);
-
-        Toast.makeText(getApplicationContext(), 
-    			"Starting preview with: " + filePath, Toast.LENGTH_LONG).show();
-        
+        setContentView(ll);        
     }
     
 	private void onPlay(boolean start) {
@@ -76,9 +72,12 @@ public class PreviewAudio extends Activity {
                     ItemList.currFile.length(), Toast.LENGTH_LONG).show();
 		    
 			//mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			FileInputStream fis = new FileInputStream(ItemList.currFile);
-	        mPlayer.setDataSource(fis.getFD());
-			//mPlayer.setDataSource(this, mUri);
+			//FileInputStream fis = new FileInputStream(ItemList.currFile);
+	        //mPlayer.setDataSource(fis.getFD());
+		    //mUri = Uri.fromFile(new File(mUri.getPath() + ".mp3"));
+		    //
+		    Toast.makeText(getApplicationContext(), mUri.toString(), Toast.LENGTH_LONG).show();
+			mPlayer.setDataSource(this, mUri);
 			//mPlayer.setDataSource("/mnt/sdCard/Music/Test.mp3");
 			//mPlayer.setOnPreparedListener((OnPreparedListener) this);
 			mPlayer.prepare();

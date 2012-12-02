@@ -37,6 +37,7 @@ public class InputFile extends Activity {
 	static final int DIALOG_ABOUT = 3;
 	static final int DIALOG_FILE = 4;
 	static int itemType;
+	public static int inFileCount = 1;
 	//private Task task;
 	private TaskItem item;
 	//static boolean fromFile = false;
@@ -56,19 +57,12 @@ public class InputFile extends Activity {
         setContentView(R.layout.input_file);
         
         String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
-
-        //String taskId = inArgs[1];
-        //if(Integer.parseInt(inArgs[0]) > 0)
+        
         // Get item type in regards to final int representations.
         itemType = Integer.parseInt(inArgs[0]);
-         
         item = ViewSingleTask.task.getItemByType(inArgs[1]);
-//        if(getIntent().getIntExtra("FromFile", 0) == 4)
-//        	fromFile = true;
-//        else{
         importFile((View) findViewById(R.layout.input_file));
-//        	fromFile = false;
-//        }
+
         updateList();
         
     }
@@ -156,14 +150,17 @@ public class InputFile extends Activity {
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = 
 				    	           new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    	   String directory = 
-				    	           Environment.getExternalStorageDirectory().getAbsolutePath();
+				    	   inFileCount++;
+				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+				    	           + "/Photo" + inFileCount;
+				    	   
 //				    	   File folder = new File(directory);
 //				    	   folder.mkdirs();
 //				    	   Uri mUri = Uri.fromFile(new File(directory));
 //				    	   Uri mUri = Uri.fromFile(new File(
 //				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   filePath = "/sdcard/temp/";
+				    	   //filePath = "/sdcard/temp";
+
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
 				    	   //Uri mUri = getOutputMediaFileUri(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
 				    	   //File image
@@ -183,9 +180,9 @@ public class InputFile extends Activity {
 				           // User clicked "Take a Photo" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-				    	   
+				    	   inFileCount++;
 				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-				    	           + "/temp/";
+				    	           + "/Video" + inFileCount;
 //				    	   filePath = "sdcard/temp/";
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
 				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
@@ -201,13 +198,15 @@ public class InputFile extends Activity {
 				builder.setPositiveButton(R.string.import_captureaudio, new DialogInterface.OnClickListener() {
 				       public void onClick(DialogInterface dialog, int id) {
 				           // User clicked "Record Audio" button
-				    	   //Intent intent = new Intent(getApplicationContext(), InputAudio.class);
-				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+				    	   Intent intent = new Intent(getApplicationContext(), InputAudio.class);
+//				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
 				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   filePath = "/sdcard/temp/";
-				    	   Uri mUri = Uri.fromFile(new File(filePath));
+//				    	   filePath = "/sdcard/temp/";
+				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+				           filePath += "/Audio" + inFileCount + ".3gp";
+				    	   //Uri mUri = Uri.fromFile(new File(filePath));
 				    	   
-				    	   intent.putExtra("AudioExtra", mUri);
+//				    	   intent.putExtra("AudioPath", filePath);
 				    	   // start the AUDIO capture Intent
 				    	   startActivityForResult(intent, CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
 				       }
@@ -308,9 +307,11 @@ public class InputFile extends Activity {
             	}
             	updateList();
             } else if (resultCode == RESULT_CANCELED) {
+                inFileCount--;
                 // User cancelled the image capture
             } else {
                 // Image capture failed, advise user
+                inFileCount--;
             	Toast.makeText(this, "Image Capture Failed", Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE) {
@@ -323,14 +324,16 @@ public class InputFile extends Activity {
         			// capture failed, advise user
                 	Toast.makeText(this, "Unable to find Audio file", Toast.LENGTH_LONG).show();
         		}	
-        	}
+        	} else
+        	    inFileCount--;
         	
         } else if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
         	if (resultCode == RESULT_OK){
         		files.add(new File(data.getStringExtra("FromFile")));
         		//newFiles.add(new File(data.getStringExtra("FromFile")));
         		updateList();
-        	}
+        	} else
+        	    inFileCount--;
         }
     }
     
@@ -339,9 +342,8 @@ public class InputFile extends Activity {
 	 */
     public void updateList(){        
         String[] filenames = new String[files.size()];
-        for(int i = 0; i < files.size(); i++){
+        for(int i = 0; i < files.size(); i++)
         	filenames[i] = files.get(i).getName();
-        }
         
         ListView listView = (ListView) this.findViewById(R.id.importList);		
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
