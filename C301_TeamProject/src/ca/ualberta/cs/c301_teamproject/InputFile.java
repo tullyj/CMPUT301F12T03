@@ -182,7 +182,7 @@ public class InputFile extends Activity {
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().
 			    	           getAbsolutePath();
-			           filePath += "/Audio" + inFileCount + ".3gp";
+			           filePath += "/Audio" + inFileCount + ".3ga";
 			    	   // start the AUDIO capture Intent
 			    	   startActivityForResult(intent, 
 			    	           CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);

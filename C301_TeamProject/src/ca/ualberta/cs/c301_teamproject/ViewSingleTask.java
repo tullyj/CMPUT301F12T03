@@ -100,17 +100,10 @@ public class ViewSingleTask extends Activity {
 	/**
 	 * Refreshes, or recreates, the listview on the ItemList screen.
 	 */
-    public void updateList(final Task task){   	
-    	
-        Toast.makeText(getApplicationContext(), 
-        		task.getTaskId(), 
-					Toast.LENGTH_LONG).show();
-    	
-    	
+    public void updateList(final Task task){   	    	
     	final List<TfTaskItem> items = task.getAllItems();
     	ItemListElement[] elements = new ItemListElement[items.size()];
     	String title = "";
-    	//String itemType = null;
     	String[] info = new String[2];
     	for(int i = 0; i < items.size(); i++){
     		info = getTypeInfo(items.get(i).getType());
@@ -120,16 +113,12 @@ public class ViewSingleTask extends Activity {
     			title, items.get(i).getDescription());
     		title = "";
     	}
-        //final String itemT = itemType;
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
         ListView listView = (ListView) findViewById(R.id.singleTaskList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id){
-//				Toast.makeText(getApplicationContext(), 
-//					"Opening Item: " + items.get(position).getType().toString(), 
-//						Toast.LENGTH_LONG).show();
 				
 				Intent intent = new Intent(getApplicationContext(), ItemList.class);
 				// Pass TaskId, and Item Number
@@ -138,20 +127,12 @@ public class ViewSingleTask extends Activity {
 				intent.putExtra("SendItem", new String[]{infoT[1], 
 						infoT[0], items.get(position).getDescription()});
 				
-				
-				Toast.makeText(getApplicationContext(), 
-    					task.getTaskId(), 
-    						Toast.LENGTH_LONG).show();
-				
-				
 				startActivity(intent);
 			}	
         });
     }
     
     private String[] getTypeInfo(ItemType type) {
-    	//Toast.makeText(getApplicationContext(), 
-		//		"Opening Item: " + type.toString(), Toast.LENGTH_LONG).show();
     	switch(type) {
 		    case TEXT:
 		    	return new String[]{"Texts", "TEXT"};
