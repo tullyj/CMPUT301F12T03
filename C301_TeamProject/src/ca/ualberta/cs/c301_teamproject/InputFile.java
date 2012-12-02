@@ -31,25 +31,19 @@ import android.widget.Toast;
  */
 public class InputFile extends Activity {
 
-	static final int DIALOG_AUDIO = 1;
-	static final int DIALOG_PHOTO = 2;
-	static final int DIALOG_VIDEO = 5;
-	static final int DIALOG_ABOUT = 3;
-	static final int DIALOG_FILE = 4;
-	static int itemType;
-	public static int inFileCount = 1;
-	//private Task task;
+    private static final int DIALOG_AUDIO = 1;
+	private static final int DIALOG_PHOTO = 2;
+	private static final int DIALOG_VIDEO = 5;
+	private static final int DIALOG_ABOUT = 3;
+	private static int itemType;
+	public static int inFileCount = 0;
 	private TaskItem item;
-	//static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 	private static final int CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE = 300;
 	private static final int FILE_ACTIVITY_REQUEST_CODE = 400;
 	public ArrayList<File> files = new ArrayList<File>();
 	public String filePath = null;
-	//public ArrayList<File> newFiles = new ArrayList<File>();
-	
-	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,9 +56,10 @@ public class InputFile extends Activity {
         itemType = Integer.parseInt(inArgs[0]);
         item = ViewSingleTask.task.getItemByType(inArgs[1]);
         importFile((View) findViewById(R.layout.input_file));
-
-        updateList();
         
+        inFileCount = 0;
+        
+        updateList();
     }
 
     @Override
@@ -138,7 +133,6 @@ public class InputFile extends Activity {
     	//Context context = getApplicationContext();
     	if (id <= DIALOG_VIDEO && id != DIALOG_ABOUT){
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			
 			if(id == DIALOG_PHOTO){
 	    		builder.setTitle("Import Photo");
 				builder.setMessage("How would you like to add a photo?");				
@@ -151,22 +145,10 @@ public class InputFile extends Activity {
 				    	   Intent photoIntent = 
 				    	           new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				    	   inFileCount++;
-				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-				    	           + "/Photo" + inFileCount;
-				    	   
-//				    	   File folder = new File(directory);
-//				    	   folder.mkdirs();
-//				    	   Uri mUri = Uri.fromFile(new File(directory));
-//				    	   Uri mUri = Uri.fromFile(new File(
-//				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   //filePath = "/sdcard/temp";
-
+				    	   filePath = Environment.getExternalStorageDirectory()
+				    	           .getAbsolutePath() + "/Photo" + inFileCount;
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
-				    	   //Uri mUri = getOutputMediaFileUri(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
-				    	   //File image
-//				    	   photoIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, (Uri) mUri);
-//				    	   photoIntent.putExtra(MediaStore.Images.Media.TITLE, "TFImage");
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
@@ -177,15 +159,13 @@ public class InputFile extends Activity {
 				// Add "Take a Photo" button
 				builder.setPositiveButton(R.string.import_capturevideo, new DialogInterface.OnClickListener() {
 				       public void onClick(DialogInterface dialog, int id) {
-				           // User clicked "Take a Photo" button
+				           // User clicked "Take a Video" button
 				    	   // create Intent to take a picture and return control to the calling application
 				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 				    	   inFileCount++;
 				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
 				    	           + "/Video" + inFileCount;
-//				    	   filePath = "sdcard/temp/";
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
-				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
@@ -198,15 +178,11 @@ public class InputFile extends Activity {
 				builder.setPositiveButton(R.string.import_captureaudio, new DialogInterface.OnClickListener() {
 				       public void onClick(DialogInterface dialog, int id) {
 				           // User clicked "Record Audio" button
-				    	   Intent intent = new Intent(getApplicationContext(), InputAudio.class);
-//				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
-//				    	   filePath = "/sdcard/temp/";
+				    	   Intent intent = new Intent(getApplicationContext(), 
+				    	           InputAudio.class);
+				    	   inFileCount++;
 				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 				           filePath += "/Audio" + inFileCount + ".3gp";
-				    	   //Uri mUri = Uri.fromFile(new File(filePath));
-				    	   
-//				    	   intent.putExtra("AudioPath", filePath);
 				    	   // start the AUDIO capture Intent
 				    	   startActivityForResult(intent, CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
 				       }
@@ -223,7 +199,6 @@ public class InputFile extends Activity {
 			           startActivityForResult(intent, FILE_ACTIVITY_REQUEST_CODE);
 			       }
 			});
-			
 			// Add "Cancel" button
 			builder.setNegativeButton(R.string.import_cancel, new DialogInterface.OnClickListener() {
 			       public void onClick(DialogInterface dialog, int id) {
@@ -246,65 +221,10 @@ public class InputFile extends Activity {
 	 * @param data				The intent.
 	 */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    //super.onActivityResult(requestCode, resultCode, data);
-	    
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE ||
         	requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-            	try{
-//            	    String string = data.getData().toString();
-//            	    File file = new File(string);
-//            	    FileInputStream fstream = new FileInputStream(file);
-//            	    DataInputStream dataIs = new DataInputStream(fstream);
-//            	    if (data == null) 
-//                        throw new Exception();
-            		files.add(new File(filePath));
-            	    //if (data == null) 
-            	    //    throw new Exception();
-            		//Object obj = data.getExtras().get("data");
-            		//String str = data.getExtras().get(
-            		//        MediaStore.Images.Media.TITLE).toString();
-            		//newFiles.add(new File(str));
-            	}catch(Exception e){
-            		try{
-            			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
-	            			String[] projection = {
-	            			    MediaStore.Images.Thumbnails._ID,
-	            			    MediaStore.Images.Thumbnails.IMAGE_ID,
-	            				MediaStore.Images.Thumbnails.KIND,
-	            				MediaStore.Images.Thumbnails.DATA};
-	            			
-	            			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-	            			String selection = MediaStore.Images.Thumbnails.KIND + "="  
-	            				+ MediaStore.Images.Thumbnails.MINI_KIND;
-	            			
-	            			long iID = 0l;
-	
-	            			@SuppressWarnings("deprecation")
-							Cursor myCursor = this.managedQuery( 
-	            				MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
-	            					projection, selection, null, sort);
-	            			myCursor.moveToFirst();
-	            			iID = myCursor.getLong(myCursor.getColumnIndexOrThrow(
-	            					MediaStore.Images.Thumbnails.IMAGE_ID));
-	            			myCursor.close();
-	            			
-	            			Uri uriImage = Uri.withAppendedPath(
-	            				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-	            					String.valueOf(iID));
-	            			files.add(new File(uriImage.getPath()));
-	            			//newFiles.add(new File(uriImage.getPath()));
-	            			e.printStackTrace();
-            			} else 
-            			    throw new Exception();
-            			
-            		} catch(Exception ex){
-            			// prompt user that file was not found
-                    	Toast.makeText(this, "Unable to find file", Toast.LENGTH_LONG).show();
-                    	e.printStackTrace();
-            		}
-            	}
+            	files.add(new File(filePath));
             	updateList();
             } else if (resultCode == RESULT_CANCELED) {
                 inFileCount--;
