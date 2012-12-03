@@ -26,7 +26,7 @@ public class TfTaskRepositoryTest {
         Task task = new TfTask();
         task.setDescription("Test task");
         task.setTitle(taskTitle);
-        String taskId = TfTaskRepository.addTask(task);
+        String taskId = TfTaskRepository.addTask(task, null);
         Boolean success = false;
         Task gottenTask = null;
         try {
@@ -47,13 +47,13 @@ public class TfTaskRepositoryTest {
         Task task = new TfTask();
         task.setDescription("Test for update task");
         task.setTitle(taskTitle);
-        String taskId = TfTaskRepository.addTask(task);
+        String taskId = TfTaskRepository.addTask(task, null);
         
         task.setTaskId(taskId);
         task.setTitle(taskTitle2);
         
         try {
-            TfTaskRepository.updateTask(task);
+            TfTaskRepository.updateTask(task, null);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -70,26 +70,11 @@ public class TfTaskRepositoryTest {
     }
 
     @Test
-    public void testGetTasksByDeviceId() {
-        String deviceId = UUID.randomUUID().toString();
-        Task task = new TfTask();
-        task.setDeviceId(deviceId);
-        TfTaskRepository.addTask(task);
-        try {
-            List<Task> gottenTask = TfTaskRepository.getTasksByDeviceId(deviceId);
-            assertEquals(gottenTask.size(), 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception occurred");
-        }
-    }
-
-    @Test
     public void testGetAllTasks() {
         List<Task> taskList = null;
         Task testTask = new TfTask();
         try {
-            TfTaskRepository.addTask(testTask);
+            TfTaskRepository.addTask(testTask, null);
             taskList = TfTaskRepository.getAllTasks();
         } catch (Exception e) {
             // TODO Auto-generated catch block
