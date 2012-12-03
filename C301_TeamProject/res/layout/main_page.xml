@@ -1,57 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/white_bkg"
-    android:onClick="localTasks" >
+    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button1"
+    <ImageButton
+        android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="136dp"
-        android:text="@string/create_task"
-        android:onClick="createTask" />
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/all_tasks"
+        android:onClick="allTasks"
+        android:src="@drawable/alltasks_icon" />
 
-    <Button
-        android:id="@+id/button2"
+    <ImageButton
+        android:id="@+id/imageButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_centerVertical="true"
-        android:text="@string/your_tasks"
-        android:onClick="yourTasks" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="22dp"
-        android:text="@string/all_tasks"
-        android:onClick="allTasks" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_below="@+id/button3"
-        android:layout_marginTop="42dp"
-        android:onClick="goToInputText"
-        android:text="Input Text"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/buttonLocalTasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/tasks"
         android:onClick="localTasks"
-        android:text="Local Tasks" />
+        android:src="@drawable/localtasks_icon" />
 
-</RelativeLayout>
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/tasks"
+        android:layout_gravity="center_horizontal"
+        android:onClick="yourTasks"
+        android:src="@drawable/yourtasks_icon" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/create_task"
+        android:onClick="createTask"
+        android:src="@drawable/createtask_icon" />
+
+</LinearLayout>
