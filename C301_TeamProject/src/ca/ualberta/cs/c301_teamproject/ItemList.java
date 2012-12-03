@@ -44,6 +44,7 @@ import ca.ualberta.cs.c301_utils.Utility;
 
 /**
  * Displays a listview of files for a given item in a task.
+ * @author tullyj
  */
 public class ItemList extends Activity {
 
@@ -278,7 +279,6 @@ public class ItemList extends Activity {
         
         String to = ViewSingleTask.task.getEmail();
         String title = ViewSingleTask.task.getTitle();
-        String desc = ViewSingleTask.task.getDescription();
         
         String body1 = "This is task force automatic notification.\n\n" + 
                 "Your task: " + title + " appears to be fulfilled\n\n";
@@ -365,6 +365,7 @@ public class ItemList extends Activity {
                     dataIs.close();
                     // Write to the empty created file.
                     fOut.write(mByte);
+                    fOut.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
