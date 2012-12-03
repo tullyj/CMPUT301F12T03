@@ -18,7 +18,7 @@ import android.content.Context;
  * @author topched
  *
  */
-public class MyLocalTaskInformation extends Activity{
+public class MyLocalTaskInformation extends Activity {
 	
 	public static final String MYTASKS = "myTasks.sav";
 	public static final String MYLIKES = "myLikes.sav";
@@ -73,8 +73,7 @@ public class MyLocalTaskInformation extends Activity{
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
-	        
-	    
+	        	    
 	    //we have data    
 	    }else{
 	        
@@ -89,8 +88,7 @@ public class MyLocalTaskInformation extends Activity{
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        
+            }      
 	    }	    	    
 	}
 	
@@ -128,7 +126,7 @@ public class MyLocalTaskInformation extends Activity{
 	 * @param id   The task ID to be saved
 	 * @param c    The current context
 	 */
-	public void saveTaskId(String id, Context c){
+	public void saveTaskId(String id, Context c) {
 	        
         try{
 			FileOutputStream os = c.openFileOutput(MYTASKS, Context.MODE_APPEND);
@@ -138,8 +136,7 @@ public class MyLocalTaskInformation extends Activity{
 			e.printStackTrace();
 		} catch (IOException e){
 			e.printStackTrace();
-		}
-	    	
+		}	    	
 	}
 	
 	/**
@@ -147,7 +144,7 @@ public class MyLocalTaskInformation extends Activity{
 	 * @param c    The current context
 	 * @return     String[] containg the ids
 	 */
-	public String[] loadMyTaskIds(Context c){
+	public String[] loadMyTaskIds(Context c) {
 		
 		ArrayList<String> myIDS = new ArrayList<String>();
 		
@@ -170,5 +167,4 @@ public class MyLocalTaskInformation extends Activity{
 				
 		return myIDS.toArray(new String[myIDS.size()]);
 	}
-
 }

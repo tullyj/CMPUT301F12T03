@@ -25,9 +25,12 @@ import ca.ualberta.cs.c301_repository.TfTaskRepository;
 import ca.ualberta.cs.c301_utils.Utility;
 
 /**
- * Shows items for a task in a list, click item to view. Click "+" button
- * to add files to task/item (fulfilling the task).
- *
+ * This class shows items for a task in a list, click item to view. Click "+" 
+ * button to add files to task/item (fulfilling the task). You can also like
+ * and unlike a task from this activity.
+ * @author topched
+ * @author tullyj
+ * @author colin
  */
 public class ViewSingleTask extends Activity {
 
@@ -36,9 +39,6 @@ public class ViewSingleTask extends Activity {
 	public ArrayList<String> myLikedIds;
 	public Button like;
 	private boolean isLocal = false;
-
-
-	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class ViewSingleTask extends Activity {
             isLocal = false;
         }
         
-        
+        //check if i already like the task
         boolean likeTask = doILikeThisTask();
         
         //if i already like the task show unlike
@@ -87,7 +87,7 @@ public class ViewSingleTask extends Activity {
      * This method just modifies text on buttons. 
      * @param val   The flag to know what to update the text to
      */
-    public void updateButtonText(String val){
+    public void updateButtonText(String val) {
     
         if(val.equals("like")){
             like.setText(R.string.like_task);
@@ -171,8 +171,7 @@ public class ViewSingleTask extends Activity {
         }else{
             save.saveLikedTasks(taskId, getApplicationContext());
             updateButtonText("unlike");
-        }
-                
+        }                
     }
     
     /**
@@ -203,16 +202,16 @@ public class ViewSingleTask extends Activity {
     }
     
     /**
-     * Async task for loading of a single task
+     * Async task for loading of a single task either from the web service
+     * or if it is a local task we load from the device
      *
      */
-    private class loadSingleTask extends AsyncTask<String, String, String>{
+    private class loadSingleTask extends AsyncTask<String, String, String> {
     	
     	Dialog load = new Dialog(ViewSingleTask.this);
     	MyLocalTaskInformation lti = new MyLocalTaskInformation();
     	//private Task sTask = null;
     	
-
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -229,9 +228,10 @@ public class ViewSingleTask extends Activity {
     	     
     	    //we are grabbing a local task
 		    }else{
-		        
+		        //grabbing a local task
 		        try {
-		            task = TfTaskRepository.getLocalTaskById(taskId, getApplicationContext());
+		            task = TfTaskRepository.getLocalTaskById(taskId, 
+		                    getApplicationContext());
 		        } catch (Exception e) {
 		            System.err.println(e.getMessage());
 		            e.printStackTrace();
@@ -245,7 +245,7 @@ public class ViewSingleTask extends Activity {
 			return null;
 		}
     	
-    	protected void onPreExecute(){
+    	protected void onPreExecute() {
     		
     		load.setContentView(R.layout.save_load_dialog);
     		load.setTitle("Loading task");
@@ -253,10 +253,11 @@ public class ViewSingleTask extends Activity {
     	}
     	
     	@Override
-    	protected void onPostExecute(String result){
+    	protected void onPostExecute(String result) {
     		
     		super.onPostExecute(result);
     		
+    		//set the title and update the listview with the task
     		TextView title = (TextView) findViewById(R.id.showTaskTitle);
             title.setText(task.getTitle());
             updateList(task);

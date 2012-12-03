@@ -64,9 +64,7 @@ public class MainPage extends Activity {
         Intent intent = new Intent(this, ViewTasks.class);
 
         //grab all of the task IDs
-        intent.putExtra(TYPE, "all");
-        
-        
+        intent.putExtra(TYPE, "all");     
         startActivity(intent);
 
     }
