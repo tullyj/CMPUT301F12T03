@@ -27,9 +27,9 @@ static private int id;
 final private List<String> imageExtensions = 
 		 Arrays.asList("png", "jpg", "jpeg", "gif", "bmp");
 final private List<String> audioExtensions =
-		 Arrays.asList("wav", "mid", "mp3", "wma", "flac", "ogg", "3ga");
+		 Arrays.asList("wav", "mid", "mp3", "wma", "3ga");
 final private List<String> videoExtensions =
-		 Arrays.asList("avi", "mp4", "wmv", "mkv", "3gp");
+		 Arrays.asList("avi", "mp4", "wmv", "mpg", "mpeg", "3gp");
 
     /**
      * This class is a modified version of the code given by Androider+ in the
@@ -122,10 +122,6 @@ final private List<String> videoExtensions =
                 public void onClick(DialogInterface dialog, int which) {
                     File addFile = file.getAbsoluteFile();
                     if(checkExt(addFile.getName())){
-                    	//InputFile.files.add(addFile);
-                        //go back to input list
-                        //Intent intent = new Intent(getApplicationContext(), 
-                         //   InputFile.class);
                         Intent intent = getIntent();
                         intent.putExtra("FromFile", addFile.getAbsolutePath());
                     	setResult(RESULT_OK, intent);
@@ -140,7 +136,13 @@ final private List<String> videoExtensions =
             }).show();
             }
     }
-     
+    
+    /**
+     * Checks the extension of the filename passed to it with the list of 
+     * extensions by file type.
+     * @param   fileName    name of the file with extension included
+     * @return true if it is in the list, false otherwise
+     */
     public boolean checkExt(String fileName){
     	String ext = getExt(fileName).toLowerCase();
     	
@@ -154,6 +156,12 @@ final private List<String> videoExtensions =
     		return false;
     }
     
+    /**
+     * Takes in a filename with extension and trims the file name leaving the
+     * extension only.
+     * @param fileName  name of the file with extension
+     * @return  the extension of the file (denoted by the period)
+     */
     public String getExt(String fileName){
     	String ext = "";
     	String temp = fileName;
@@ -164,8 +172,6 @@ final private List<String> videoExtensions =
     	else {
     		//extract extension
     		ext = temp.substring(period_pos + 1);
-//    		Toast.makeText(getApplicationContext(), 
-//    				ext, Toast.LENGTH_LONG).show();
     	}
     	return ext;
     }

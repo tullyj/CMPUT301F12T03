@@ -14,7 +14,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
- * This class will create a item for a task. Always called with startActivityForResult
+ * This class will create a item for a task. This activity is called from
+ * CreateTask and simply allows the user to enter information about a task item
+ * then return it to the CreateTask activity
  * @author topched
  *
  */

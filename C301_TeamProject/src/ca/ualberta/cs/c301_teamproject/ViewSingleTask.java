@@ -22,11 +22,15 @@ import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
+import ca.ualberta.cs.c301_utils.Utility;
 
 /**
- * Shows items for a task in a list, click item to view. Click "+" button
- * to add files to task/item (fulfilling the task).
- *
+ * This class shows items for a task in a list, click item to view. Click "+" 
+ * button to add files to task/item (fulfilling the task). You can also like
+ * and unlike a task from this activity.
+ * @author topched
+ * @author tullyj
+ * @author colin
  */
 public class ViewSingleTask extends Activity {
 
@@ -34,8 +38,7 @@ public class ViewSingleTask extends Activity {
 	private String taskId;
 	public ArrayList<String> myLikedIds;
 	public Button like;
-	private String local;
-	
+	private boolean isLocal = false;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,15 @@ public class ViewSingleTask extends Activity {
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
+        String localTemp = intent.getExtras().getString(ViewTasks.LOCAL);
         
+        if(localTemp.equals("yes")){
+            isLocal = true;
+        }else{
+            isLocal = false;
+        }
+        
+        //check if i already like the task
         boolean likeTask = doILikeThisTask();
         
         //if i already like the task show unlike
@@ -76,7 +87,7 @@ public class ViewSingleTask extends Activity {
      * This method just modifies text on buttons. 
      * @param val   The flag to know what to update the text to
      */
-    public void updateButtonText(String val){
+    public void updateButtonText(String val) {
     
         if(val.equals("like")){
             like.setText(R.string.like_task);
@@ -90,36 +101,26 @@ public class ViewSingleTask extends Activity {
 	/**
 	 * Refreshes, or recreates, the listview on the ItemList screen.
 	 */
-    public void updateList(final Task task){   	
-    	
-        Toast.makeText(getApplicationContext(), 
-        		task.getTaskId(), 
-					Toast.LENGTH_LONG).show();
-    	
-    	
+    public void updateList(final Task task){   	    	
     	final List<TfTaskItem> items = task.getAllItems();
     	ItemListElement[] elements = new ItemListElement[items.size()];
     	String title = "";
-    	//String itemType = null;
     	String[] info = new String[2];
     	for(int i = 0; i < items.size(); i++){
     		info = getTypeInfo(items.get(i).getType());
     		title = info[0];
     		//itemT = 
-    		elements[i] = new ItemListElement(android.R.drawable.ic_input_get, 
-    			title, items.get(i).getDescription());
+    		elements[i] = new ItemListElement(
+    		        Utility.getIconFromType(items.get(i).getType()), 
+    		        title, items.get(i).getDescription());
     		title = "";
     	}
-        //final String itemT = itemType;
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.list_multi, elements);
         ListView listView = (ListView) findViewById(R.id.singleTaskList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener(){
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id){
-//				Toast.makeText(getApplicationContext(), 
-//					"Opening Item: " + items.get(position).getType().toString(), 
-//						Toast.LENGTH_LONG).show();
 				
 				Intent intent = new Intent(getApplicationContext(), ItemList.class);
 				// Pass TaskId, and Item Number
@@ -128,20 +129,12 @@ public class ViewSingleTask extends Activity {
 				intent.putExtra("SendItem", new String[]{infoT[1], 
 						infoT[0], items.get(position).getDescription()});
 				
-				
-				Toast.makeText(getApplicationContext(), 
-    					task.getTaskId(), 
-    						Toast.LENGTH_LONG).show();
-				
-				
 				startActivity(intent);
 			}	
         });
     }
     
     private String[] getTypeInfo(ItemType type) {
-    	//Toast.makeText(getApplicationContext(), 
-		//		"Opening Item: " + type.toString(), Toast.LENGTH_LONG).show();
     	switch(type) {
 		    case TEXT:
 		    	return new String[]{"Texts", "TEXT"};
@@ -178,8 +171,7 @@ public class ViewSingleTask extends Activity {
         }else{
             save.saveLikedTasks(taskId, getApplicationContext());
             updateButtonText("unlike");
-        }
-                
+        }                
     }
     
     /**
@@ -210,27 +202,42 @@ public class ViewSingleTask extends Activity {
     }
     
     /**
-     * Async task for loading of a single task
+     * Async task for loading of a single task either from the web service
+     * or if it is a local task we load from the device
      *
      */
-    private class loadSingleTask extends AsyncTask<String, String, String>{
+    private class loadSingleTask extends AsyncTask<String, String, String> {
     	
     	Dialog load = new Dialog(ViewSingleTask.this);
     	MyLocalTaskInformation lti = new MyLocalTaskInformation();
     	//private Task sTask = null;
     	
-
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
-			//grabbing the task from the repository
-	        try {
-	        	task = TfTaskRepository.getTaskById(taskId);
-	        } catch (Exception e) {
-	            System.err.println(e.getMessage());
-	            e.printStackTrace();
-	        }
+		    //we are grabbing from the web service
+		    if(!isLocal){
+    			//grabbing the task from the repository
+    	        try {
+    	        	task = TfTaskRepository.getTaskById(taskId);
+    	        } catch (Exception e) {
+    	            System.err.println(e.getMessage());
+    	            e.printStackTrace();
+    	        }
+    	     
+    	    //we are grabbing a local task
+		    }else{
+		        //grabbing a local task
+		        try {
+		            task = TfTaskRepository.getLocalTaskById(taskId, 
+		                    getApplicationContext());
+		        } catch (Exception e) {
+		            System.err.println(e.getMessage());
+		            e.printStackTrace();
+		        }
+		        
+		    }
 	        
 	        //grabbing the likedIDS	        
 	        myLikedIds = lti.getLikedTasks(getApplicationContext());
@@ -238,7 +245,7 @@ public class ViewSingleTask extends Activity {
 			return null;
 		}
     	
-    	protected void onPreExecute(){
+    	protected void onPreExecute() {
     		
     		load.setContentView(R.layout.save_load_dialog);
     		load.setTitle("Loading task");
@@ -246,10 +253,11 @@ public class ViewSingleTask extends Activity {
     	}
     	
     	@Override
-    	protected void onPostExecute(String result){
+    	protected void onPostExecute(String result) {
     		
     		super.onPostExecute(result);
     		
+    		//set the title and update the listview with the task
     		TextView title = (TextView) findViewById(R.id.showTaskTitle);
             title.setText(task.getTitle());
             updateList(task);

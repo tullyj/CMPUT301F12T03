@@ -14,31 +14,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ * Takes in a text file and displays the text in that file via TextView
+ * @author Edwin Chung
+ *
+ */
 public class PreviewText extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.preview_text);
+            
+            //get the file from the file list
             File file = ItemList.currFile;
             
+            //open up the file, read it and display it via TextView
             TextView tv = (TextView) findViewById(R.id.textPreview);
-
+            
             InputStream fis = null;
-
+            
             try{
-            	fis = new FileInputStream(file);
-            	System.out.println("DEBUG: file size = " + file.getTotalSpace());
-            	System.out.println("DEBUG: available? = " + fis.available());
-
-            	int ch;
+                int ch;
                 StringBuffer strContent = new StringBuffer("");
             	
+                fis = new FileInputStream(file);
+                
             	while((ch = fis.read()) != -1) {
             		strContent.append((char)ch);
             	}
 
-            	System.out.println("DEBUG: Text = " + strContent);
             	tv.setText(strContent);
             	
             } catch (Exception e) {

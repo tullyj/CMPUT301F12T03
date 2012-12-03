@@ -1,13 +1,12 @@
 package ca.ualberta.cs.c301_teamproject;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
-import ca.ualberta.cs.c301_repository.TfTaskRepository;
+import ca.ualberta.cs.c301_repository.TfTaskItem;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +16,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,28 +25,23 @@ import android.widget.Toast;
 
 /**
  * Import or capture files/items to be added to a task.
- * @author tullyj
  */
 public class InputFile extends Activity {
 
-	static final int DIALOG_AUDIO = 1;
-	static final int DIALOG_PHOTO = 2;
-	static final int DIALOG_VIDEO = 5;
-	static final int DIALOG_ABOUT = 3;
-	static final int DIALOG_FILE = 4;
-	static int itemType;
-	//private Task task;
+    private static final int DIALOG_AUDIO = 1;
+	private static final int DIALOG_PHOTO = 2;
+	private static final int DIALOG_VIDEO = 5;
+	private static final int DIALOG_ABOUT = 3;
+	private static final long MAX_TASK_BYTES = 700000;
+	private static int itemType;
+	public static int inFileCount = 0;
 	private TaskItem item;
-	//static boolean fromFile = false;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 	private static final int CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE = 300;
 	private static final int FILE_ACTIVITY_REQUEST_CODE = 400;
 	public ArrayList<File> files = new ArrayList<File>();
 	public String filePath = null;
-	//public ArrayList<File> newFiles = new ArrayList<File>();
-	
-	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,19 +49,14 @@ public class InputFile extends Activity {
         setContentView(R.layout.input_file);
         
         String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
-
-        //String taskId = inArgs[1];
-        //if(Integer.parseInt(inArgs[0]) > 0)
+        
         // Get item type in regards to final int representations.
         itemType = Integer.parseInt(inArgs[0]);
-         
         item = ViewSingleTask.task.getItemByType(inArgs[1]);
-//        if(getIntent().getIntExtra("FromFile", 0) == 4)
-//        	fromFile = true;
-//        else{
         importFile((View) findViewById(R.layout.input_file));
-//        	fromFile = false;
-//        }
+        
+        inFileCount = 0;
+
         updateList();
         
     }
@@ -85,13 +73,13 @@ public class InputFile extends Activity {
      */
     public void importFile(View v){    	
     	Dialog importDialog;
-    	if(itemType == DIALOG_PHOTO){
+    	if (itemType == DIALOG_PHOTO) {
     		importDialog = onCreateDialog(DIALOG_PHOTO);
-    	}else if(itemType == DIALOG_VIDEO){
+    	} else if (itemType == DIALOG_VIDEO) {
     		importDialog = onCreateDialog(DIALOG_VIDEO);
-    	}else if(itemType == DIALOG_AUDIO){
+    	} else if (itemType == DIALOG_AUDIO) {
     		importDialog = onCreateDialog(DIALOG_AUDIO);
-    	}else{
+    	} else {
     		return;
     	}
         importDialog.show();
@@ -113,13 +101,35 @@ public class InputFile extends Activity {
      * @param v
      */
     public void saveClick(View v){
-    	if(files.size() > 0){
+        
+        //check if the new inserted file(s) takes up too much space (bytes
+        long insertFilesSize = 0;
+        for (File file : files)
+            insertFilesSize += file.length();
+        long newTotalSize = getTotalTaskSize() + insertFilesSize;
+        if (newTotalSize > MAX_TASK_BYTES) {
+            System.out.println("DEBUG: It's too big!!");
+            System.out.println("DEBUG: the files are " + insertFilesSize + " bytes");
+            System.out.println("DEBUG: total bytes task is taking: " + getTotalTaskSize() + "bytes");
+            
+            Toast.makeText(getApplicationContext(), 
+                    "Sorry, insufficient space. \n" + 
+                    "The file(s) are :" + insertFilesSize + " bytes. \n" +
+                    "You only have " + (MAX_TASK_BYTES - getTotalTaskSize()) +
+                    " bytes left.\n" + "Please Upgrade Your" +
+                    " Account (coming soon).", Toast.LENGTH_LONG).show();
+                    
+            //clear the files list and update the displayed list
+            files.clear();
+            updateList();
+        } else if (files.size() > 0) {
 	    	Toast.makeText(getApplicationContext(), 
 	    		"Adding Files to Item of Task\n" +
 	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
 	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
 	    	setResult(RESULT_OK, intent);
+
 	    	try {
                 item.addFiles(files);
             } catch (Exception e) {
@@ -129,9 +139,9 @@ public class InputFile extends Activity {
                 e.printStackTrace();
             }
 	    	finish();
-    	}else{
-    		Toast.makeText(getApplicationContext(), 
-    	    		"Please add a file before saving." , Toast.LENGTH_LONG).show();
+    	} else {
+    		Toast.makeText(getApplicationContext(),
+    		        "Please add a file before saving." , Toast.LENGTH_LONG).show();
     	}
     }
     
@@ -142,10 +152,9 @@ public class InputFile extends Activity {
      */
     public Dialog onCreateDialog(int id){     
     	//Context context = getApplicationContext();
-    	if (id <= DIALOG_VIDEO && id != DIALOG_ABOUT){
+    	if ((id <= DIALOG_VIDEO) && (id != DIALOG_ABOUT)) {
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			
-			if(id == DIALOG_PHOTO){
+			if (id == DIALOG_PHOTO) {
 	    		builder.setTitle("Import Photo");
 				builder.setMessage("How would you like to add a photo?");				
 				// Add "Take a Photo" button
@@ -153,86 +162,85 @@ public class InputFile extends Activity {
 				        new DialogInterface.OnClickListener() {
 				    public void onClick(DialogInterface dialog, int id) {
 				           // User clicked "Take a Photo" button
-				    	   // create Intent to take a picture and return control to the calling application
+				    	   // create Intent to take a picture and return control
+				           // to the calling application
 				    	   Intent photoIntent = 
 				    	           new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				    	   String directory = 
-				    	           Environment.getExternalStorageDirectory().getAbsolutePath();
-//				    	   File folder = new File(directory);
-//				    	   folder.mkdirs();
-//				    	   Uri mUri = Uri.fromFile(new File(directory));
-//				    	   Uri mUri = Uri.fromFile(new File(
-//				    	       Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   filePath = "/sdcard/temp/";
+				    	   inFileCount++;
+				    	   filePath = Environment.getExternalStorageDirectory()
+				    	           .getAbsolutePath() + "/Photo" + inFileCount;
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
-				    	   //Uri mUri = getOutputMediaFileUri(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
-				    	   //File image
-//				    	   photoIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, (Uri) mUri);
-//				    	   photoIntent.putExtra(MediaStore.Images.Media.TITLE, "TFImage");
+				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, 
+				    	           (Uri) mUri);
+				    	   photoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 
+				    	           MAX_TASK_BYTES);
 				    	   // start the image capture Intent
 				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
 				});
-			}else if(id == DIALOG_VIDEO){
+			} else if (id == DIALOG_VIDEO) {
 	    		builder.setTitle("Import Video");
 				builder.setMessage("How would you like to add a video?");				
 				// Add "Take a Photo" button
-				builder.setPositiveButton(R.string.import_capturevideo, new DialogInterface.OnClickListener() {
-				       public void onClick(DialogInterface dialog, int id) {
-				           // User clicked "Take a Photo" button
-				    	   // create Intent to take a picture and return control to the calling application
-				    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-				    	   
-				    	   filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-				    	           + "/temp/";
-//				    	   filePath = "sdcard/temp/";
-				    	   Uri mUri = Uri.fromFile(new File(filePath));
-				    	   //Uri mUri = Uri.fromFile(new File("/sdcard/temp"));
-				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-				    	   // start the image capture Intent
-				    	   startActivityForResult(photoIntent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-				       }
+				builder.setPositiveButton(R.string.import_capturevideo, 
+				        new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			           // User clicked "Take a Video" button
+			    	   // create Intent to take a picture and 
+				       // return control to the calling application
+			    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			    	   inFileCount++;
+			    	   filePath = Environment.getExternalStorageDirectory().
+			    	           getAbsolutePath() + "/Video" + inFileCount;
+			    	   Uri mUri = Uri.fromFile(new File(filePath));
+			    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+			    	   photoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+			    	   // start the image capture Intent
+			    	   startActivityForResult(photoIntent, 
+			    	           CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+			       }
 				});
-			}else if(id == DIALOG_AUDIO){
+			} else if (id == DIALOG_AUDIO) {
 				builder.setTitle("Import Audio");
 				builder.setMessage("How would you like to add audio?");				
 				// Add "Record Audio" button
-				builder.setPositiveButton(R.string.import_captureaudio, new DialogInterface.OnClickListener() {
-				       public void onClick(DialogInterface dialog, int id) {
-				           // User clicked "Record Audio" button
-				    	   //Intent intent = new Intent(getApplicationContext(), InputAudio.class);
-				    	   Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-				    	   //Uri mUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()));
-				    	   filePath = "/sdcard/temp/";
-				    	   Uri mUri = Uri.fromFile(new File(filePath));
-				    	   
-				    	   intent.putExtra("AudioExtra", mUri);
-				    	   // start the AUDIO capture Intent
-				    	   startActivityForResult(intent, CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
-				       }
+				builder.setPositiveButton(R.string.import_captureaudio, 
+				        new DialogInterface.OnClickListener() {
+			       public void onClick(DialogInterface dialog, int id) {
+			           // User clicked "Record Audio" button
+			    	   Intent intent = new Intent(getApplicationContext(), 
+			    	           InputAudio.class);
+			    	   inFileCount++;
+			    	   filePath = Environment.getExternalStorageDirectory().
+			    	           getAbsolutePath();
+			           filePath += "/Audio" + inFileCount + ".3ga";
+			    	   // start the AUDIO capture Intent
+			    	   startActivityForResult(intent, 
+			    	           CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE);
+			       }
 				});     
 			}
-			
 			// Add "Import from File" button
-			builder.setNeutralButton(R.string.import_fromfile, new DialogInterface.OnClickListener() {
-			       public void onClick(DialogInterface dialog, int id) {
-			    	   // Start the FileBrowser activity
-			    	   Intent intent = new Intent(getApplicationContext(), FileBrowser.class);
-			    	   intent.putExtra("FileType", itemType);
-			           // need to send parameters to filter into all tasks
-			           startActivityForResult(intent, FILE_ACTIVITY_REQUEST_CODE);
-			       }
+			builder.setNeutralButton(R.string.import_fromfile, 
+			        new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+		    	   // Start the FileBrowser activity
+		    	   Intent intent = new Intent(getApplicationContext(), 
+		    	           FileBrowser.class);
+		    	   intent.putExtra("FileType", itemType);
+		           // need to send parameters to filter into all tasks
+		           startActivityForResult(intent, FILE_ACTIVITY_REQUEST_CODE);
+		       }
 			});
-			
 			// Add "Cancel" button
-			builder.setNegativeButton(R.string.import_cancel, new DialogInterface.OnClickListener() {
-			       public void onClick(DialogInterface dialog, int id) {
-			           // User clicked Cancel button
-			       }
+			builder.setNegativeButton(R.string.import_cancel, 
+			        new DialogInterface.OnClickListener() {
+		       public void onClick(DialogInterface dialog, int id) {
+		           // User clicked Cancel button
+		       }
 			});
 			return builder.create();
-		}else if(id == DIALOG_ABOUT){
+		} else if (id == DIALOG_ABOUT) {
 			PromptDialog mDialog = new PromptDialog();
 			return mDialog.aboutPrompt(this);
 		}
@@ -247,90 +255,25 @@ public class InputFile extends Activity {
 	 * @param data				The intent.
 	 */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    //super.onActivityResult(requestCode, resultCode, data);
-	    
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE ||
-        	requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+	    if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK){
+                files.add(new File(data.getStringExtra("FromFile")));
+                updateList();
+            } else
+                inFileCount--;
+        // Only one procedure from requestCodes is needed when receiving files.
+	    } else {
             if (resultCode == RESULT_OK) {
-            	try{
-//            	    String string = data.getData().toString();
-//            	    File file = new File(string);
-//            	    FileInputStream fstream = new FileInputStream(file);
-//            	    DataInputStream dataIs = new DataInputStream(fstream);
-//            	    if (data == null) 
-//                        throw new Exception();
-            		files.add(new File(filePath));
-            	    //if (data == null) 
-            	    //    throw new Exception();
-            		//Object obj = data.getExtras().get("data");
-            		//String str = data.getExtras().get(
-            		//        MediaStore.Images.Media.TITLE).toString();
-            		//newFiles.add(new File(str));
-            	}catch(Exception e){
-            		try{
-            			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            			/* from: http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/ */
-	            			String[] projection = {
-	            			    MediaStore.Images.Thumbnails._ID,
-	            			    MediaStore.Images.Thumbnails.IMAGE_ID,
-	            				MediaStore.Images.Thumbnails.KIND,
-	            				MediaStore.Images.Thumbnails.DATA};
-	            			
-	            			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-	            			String selection = MediaStore.Images.Thumbnails.KIND + "="  
-	            				+ MediaStore.Images.Thumbnails.MINI_KIND;
-	            			
-	            			long iID = 0l;
-	
-	            			@SuppressWarnings("deprecation")
-							Cursor myCursor = this.managedQuery( 
-	            				MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
-	            					projection, selection, null, sort);
-	            			myCursor.moveToFirst();
-	            			iID = myCursor.getLong(myCursor.getColumnIndexOrThrow(
-	            					MediaStore.Images.Thumbnails.IMAGE_ID));
-	            			myCursor.close();
-	            			
-	            			Uri uriImage = Uri.withAppendedPath(
-	            				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-	            					String.valueOf(iID));
-	            			files.add(new File(uriImage.getPath()));
-	            			//newFiles.add(new File(uriImage.getPath()));
-	            			e.printStackTrace();
-            			} else 
-            			    throw new Exception();
-            			
-            		} catch(Exception ex){
-            			// prompt user that file was not found
-                    	Toast.makeText(this, "Unable to find file", Toast.LENGTH_LONG).show();
-                    	e.printStackTrace();
-            		}
-            	}
+            	files.add(new File(filePath));
             	updateList();
             } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
+                inFileCount--;
             } else {
-                // Image capture failed, advise user
-            	Toast.makeText(this, "Image Capture Failed", Toast.LENGTH_LONG).show();
+                // Capture of file failed, advise user
+                inFileCount--;
+            	Toast.makeText(this, "Unable to capture file, please try again.", 
+            	        Toast.LENGTH_LONG).show();
             }
-        } else if (requestCode == CAPTURE_AUDIO_ACTIVITY_REQUEST_CODE) {
-        	if (resultCode == RESULT_OK) {
-        		try{
-        			files.add(new File(filePath));
-        			//newFiles.add(new File(data.getData().getPath()));
-        			updateList();
-        		} catch(Exception ex){
-        			// capture failed, advise user
-                	Toast.makeText(this, "Unable to find Audio file", Toast.LENGTH_LONG).show();
-        		}	
-        	}
-        	
-        } else if (requestCode == FILE_ACTIVITY_REQUEST_CODE) {
-        	if (resultCode == RESULT_OK){
-        		files.add(new File(data.getStringExtra("FromFile")));
-        		//newFiles.add(new File(data.getStringExtra("FromFile")));
-        		updateList();
-        	}
         }
     }
     
@@ -339,13 +282,31 @@ public class InputFile extends Activity {
 	 */
     public void updateList(){        
         String[] filenames = new String[files.size()];
-        for(int i = 0; i < files.size(); i++){
+        for (int i = 0; i < files.size(); i++)
         	filenames[i] = files.get(i).getName();
-        }
         
         ListView listView = (ListView) this.findViewById(R.id.importList);		
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
         	android.R.layout.simple_list_item_1, filenames);
         listView.setAdapter(adapter);
+    }
+    
+    /**
+     * Gets the total number of bytes due to all files within the task 
+     * (includes all file types)
+     * @return      the total number of bytes a task is taking 
+     *              due to files in it
+     */
+    private long getTotalTaskSize() {
+        //retrieve all items
+        List<TfTaskItem> listTask = ViewSingleTask.task.getAllItems();
+        long totalSize = 0;
+        for (TaskItem item : listTask) {
+            List<File> listFile = item.getAllFiles();
+            for (File file : listFile) 
+                totalSize += file.length();
+        }
+        
+        return totalSize;
     }
 }

@@ -45,7 +45,6 @@ public class TaskProperties extends Activity {
         Intent intent = getIntent();
         edit = intent.getStringExtra(CreateTask.EDIT);
         
-        //looks weird with 80 character limit
         RadioGroup vis = (RadioGroup)findViewById(R.id.visibilityRadioGroup);
         Spinner spinner = (Spinner) findViewById(R.id.responseType);
         ArrayAdapter<CharSequence> adapter = 
@@ -54,8 +53,7 @@ public class TaskProperties extends Activity {
 	    adapter.setDropDownViewResource
 	    (android.R.layout.simple_spinner_dropdown_item);
     	spinner.setAdapter(adapter);
-    	
-    	
+    	  	
     	//setting the spinner listener
     	spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -129,7 +127,7 @@ public class TaskProperties extends Activity {
 		TextView showType = (TextView)findViewById(R.id.showNotificationType);
 		EditText hint = (EditText)findViewById(R.id.notificationResponse);
 			
-		//NOTE the unfocusing doesnt work
+		//NOTE the unfocusing doesnt work so its commented out for now
 		if(type.equals(TWITTER)) {
 			
 			showType.setText(TWITTER_HANDLE);
@@ -157,7 +155,7 @@ public class TaskProperties extends Activity {
 		if(type.equals(TWITTER) || type.equals(TEXT)) {
 			
 			Context context = getApplicationContext();
-			CharSequence text = "Feature not yet available!\nComing Soon!";
+			CharSequence text = "Feature coming soon!!";
 			int duration = Toast.LENGTH_SHORT;
 
 			Toast toast = Toast.makeText(context, text, duration);

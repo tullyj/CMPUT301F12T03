@@ -29,36 +29,44 @@ import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
 
 /**
- * This class is used for viewing tasks. When fully implemented the screen wont freeze when loading
- * 
- *
+ * This class is used for viewing a list of all the tasks. This activity is
+ * used with different types of filters. For example you can view you tasks,
+ * your local tasks, all tasks, your liked tasks. This activity is also
+ * used to start ViewSingleTask, when a specific task is selected from the
+ * list view
+ * @author topched
+ * @author colin
  */
 public class ViewTasks extends Activity {
     
-    public static final String TASK_ID = "ca.ualberta.cs.c301_teamproject.TASK_ID";
+    public static final String TASK_ID = 
+            "ca.ualberta.cs.c301_teamproject.TASK_ID";
     ArrayAdapter<CrowdSourcerEntry> adapter;
     ArrayAdapter<TfTask> adapterLocal;
     private List<Map<String,String>> mapList;
-    private List<CrowdSourcerEntry> shallowEntryList = new ArrayList<CrowdSourcerEntry>();
+    private List<CrowdSourcerEntry> shallowEntryList = 
+            new ArrayList<CrowdSourcerEntry>();
     private List<TfTask> localEntryList = new ArrayList<TfTask>();
     private boolean allTasks = false;
     private boolean myTasks = false;
     private boolean likedTasks = false;
     private boolean localTasks = false;
     private String[] passedTaskIds;
-
+    public static final String LOCAL = "local";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_tasks);
         
+        //strings used for changing the title above the list view
         String showMy = "<u>Your Tasks<u>";
         String showAll = "<u>All Tasks<u>";
         String showLike = "<u>Your Liked Tasks<u>";
         String showLocal = "<u>Your Local Tasks<u>";
         
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = 
+                new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
         //grab the intent to see which filter we are using
@@ -89,6 +97,7 @@ public class ViewTasks extends Activity {
         	showType.setText(Html.fromHtml(showAll));
         }
         
+        //we want liked tasks here
         if(type.equals("liked")){
             allTasks = false;
             myTasks = false;
@@ -98,6 +107,7 @@ public class ViewTasks extends Activity {
             showType.setText(Html.fromHtml(showLike));
         }
         
+        //we want our local tasks
         if(type.equals("local")){
             allTasks = false;
             myTasks = false;
@@ -117,21 +127,20 @@ public class ViewTasks extends Activity {
                     int position, long id) {
                 viewTask(position, shallowEntryList);
             }
-        });
-           
+        });          
     }
     
     /**
      * This method is used to filer the tasks. It simply only grabs
-     * the passedTaskIds
+     * the passedTaskIds from all of list of all the ids
      */
-    public void filterMyTasks(){
+    public void filterMyTasks() {
     	
     	//iterate over the list
     	Iterator<CrowdSourcerEntry> it = shallowEntryList.iterator();
     	List<CrowdSourcerEntry> temp = new ArrayList<CrowdSourcerEntry>();
     	
-    	//looping through the entries and grabbing
+    	//looping through the entries and grabbing only the ones we need
     	while(it.hasNext()){
     		
     		CrowdSourcerEntry entry = it.next();
@@ -145,8 +154,7 @@ public class ViewTasks extends Activity {
     		}
     	}
     	
-    	shallowEntryList = temp;
-   	
+    	shallowEntryList = temp;  	
     }
     
     /**
@@ -155,24 +163,25 @@ public class ViewTasks extends Activity {
      * a new set of parameters
      * @param view
      */
-    public void filterClicked(View view){
+    public void filterClicked(View view) {
         
         final AlertDialog.Builder filter =
                 new AlertDialog.Builder(ViewTasks.this);
 
         filter.setTitle("Filter Task List");
-        filter.setItems(R.array.filter_choices, new DialogInterface.OnClickListener() {
+        filter.setItems(R.array.filter_choices, 
+                new DialogInterface.OnClickListener() {
             
             public void onClick(DialogInterface dialog, int which) {
                       
-                String[] get = getResources().getStringArray(R.array.filter_choices);
+                String[] get = 
+                        getResources().getStringArray(R.array.filter_choices);
                 
                 //get the type selected
                 String type = get[which];
                 
                 //pass the value to be re-loaded
-                reloadWithNewTasks(type);
-                
+                reloadWithNewTasks(type);               
             }     
         });
    
@@ -183,9 +192,9 @@ public class ViewTasks extends Activity {
      * This is called from filterClicked. This simply takes in the "type" of
      * filter we want to apply to the task list. This methods re-loads
      * viewTasks with the new parameters
-     * @param type
+     * @param type  Type of filter to apply
      */
-    public void reloadWithNewTasks(String type){
+    public void reloadWithNewTasks(String type) {
         
         Intent intent = new Intent(this, ViewTasks.class);
         MyLocalTaskInformation lt = new MyLocalTaskInformation();
@@ -227,20 +236,16 @@ public class ViewTasks extends Activity {
             intent.putExtra(MainPage.TYPE, "local");
             intent.putExtra(MainPage.IDS, ids);
             startActivity(intent);
-        }
-       
+        }      
     }
     
- 
     /**
-     * 
-     * Async task for loading. Works now
+     * Private AsyncTask used for loading the task list
      *
      */
-    private class loadTasks extends AsyncTask<String, String, String>{
+    private class loadTasks extends AsyncTask<String, String, String> {
     	
     	Dialog load = new Dialog(ViewTasks.this);
-
 
 		@Override
 		protected String doInBackground(String... arg0) {
@@ -265,10 +270,9 @@ public class ViewTasks extends Activity {
     			}
     		
     		//we are loading locally
-		    }else {
-		        
-		        localEntryList = TfTaskRepository.getLocalTasks(getApplicationContext());
-     
+		    }else {		        
+		        localEntryList = 
+		                TfTaskRepository.getLocalTasks(getApplicationContext());    
 		    }
 	        
 			//if we need to filter some tasks
@@ -284,8 +288,7 @@ public class ViewTasks extends Activity {
 			//show this loading spinner
             load.setContentView(R.layout.save_load_dialog);
             load.setTitle("Loading Tasks");
-    		load.show();
-   		
+    		load.show();   		
     	}
     	
 		@Override
@@ -295,19 +298,22 @@ public class ViewTasks extends Activity {
 			
 			//update the list view and then dismiss the loading spinner
 			updateListView();
-			load.dismiss();
-
-		
+			load.dismiss();	
 		}	
     }//end of load tasks
-    
-   public void updateListView(){
+   
+   /**
+    * This method just updates the list view. It makes a decision on what to do
+    * based off if we are viewing local tasks or not 
+    */
+   public void updateListView() {
        
        ListView listView = (ListView)findViewById(R.id.taskList);
     
        //we have public tasks so print those
        if(!localTasks){
-        	adapter = new ArrayAdapter<CrowdSourcerEntry>(this, android.R.layout.simple_list_item_1, shallowEntryList);
+        	adapter = new ArrayAdapter<CrowdSourcerEntry>(this, 
+        	        android.R.layout.simple_list_item_1, shallowEntryList);
         	//ListView listView = (ListView)findViewById(R.id.taskList);
         	listView.setAdapter(adapter);
        }
@@ -324,7 +330,6 @@ public class ViewTasks extends Activity {
        }	
     }
    
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -335,12 +340,29 @@ public class ViewTasks extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
+    /**
+     * This method is called when a item is selected from the list view
+     * @param position              The position selected
+     * @param shallowEntryList      List of tasks
+     */
     private void viewTask(int position, 
             List<CrowdSourcerEntry> shallowEntryList) {
-        CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
+        
         Intent intent = new Intent(this, ViewSingleTask.class);
-        intent.putExtra(TASK_ID, shallowEntry.getId());
-        startActivity(intent);
+        
+        //if we clicked on a public task
+        if(!localTasks){
+            CrowdSourcerEntry shallowEntry = shallowEntryList.get(position);
+            intent.putExtra(TASK_ID, shallowEntry.getId());
+            intent.putExtra(LOCAL, "no");
+            startActivity(intent);
+                       
+        //we clicked a private task    
+        }else{
+            TfTask t = localEntryList.get(position);
+            intent.putExtra(TASK_ID, t.getTaskId());
+            intent.putExtra(LOCAL, "yes");
+            startActivity(intent);
+        }
     }
-
 }

@@ -64,36 +64,16 @@ public class MainPage extends Activity {
         Intent intent = new Intent(this, ViewTasks.class);
 
         //grab all of the task IDs
-        intent.putExtra(TYPE, "all");
-        
-        
+        intent.putExtra(TYPE, "all");     
         startActivity(intent);
 
     }
 
-    //for debugging input file menu
-    public void goToInputFile(View view) {
-
-        Intent intent = new Intent(this, ItemList.class);
-
-        // need to send parameters to filter into all tasks
-        startActivity(intent);
-
-    }
     
-    //for debugging input text menu
-    public void goToInputText(View view){
-    	
-        Intent intent = new Intent(this, InputText.class);
-
-        // need to send parameters to filter into all tasks
-        startActivity(intent);
-    }
-    
-    // temporary button to list local tasks for testing
+    //need to implement this right after class
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
-        startActivity(intent);
+        //startActivity(intent);
         
     }
 }
