@@ -99,7 +99,7 @@ public class MainPage extends Activity {
      * @param view
      */
     public void localTasks(View view) {
-        Intent intent = new Intent(this, LocalTaskList.class);
+        Intent intent = new Intent(this, ViewTasks.class);
         
         //grab the local ids
         String[] ids = 

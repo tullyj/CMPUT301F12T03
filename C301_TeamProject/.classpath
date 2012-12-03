@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="ca/ualberta/cs/c301_tests/TfTaskRepositoryTest.java|ca/ualberta/cs/c301_crowdclient/CrowdSourcerContent.java|ca/ualberta/cs/c301_crowdclient/Content.java|ca/ualberta/cs/c301_tests/UtilityTest.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry excluding="ca/ualberta/cs/c301_tests/TfTaskRepositoryTest.java|ca/ualberta/cs/c301_crowdclient/CrowdSourcerContent.java|ca/ualberta/cs/c301_crowdclient/Content.java|ca/ualberta/cs/c301_tests/UtilityTest.java" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
