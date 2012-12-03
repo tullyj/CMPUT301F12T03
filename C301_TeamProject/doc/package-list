@@ -1,5 +1,7 @@
 ca.ualberta.cs.c301_crowdclient
+ca.ualberta.cs.c301_emailClient
 ca.ualberta.cs.c301_interfaces
+ca.ualberta.cs.c301_preview
 ca.ualberta.cs.c301_repository
 ca.ualberta.cs.c301_teamproject
-ca.ualberta.cs.c301_tests
+ca.ualberta.cs.c301_utils
