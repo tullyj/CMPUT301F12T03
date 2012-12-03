@@ -49,6 +49,19 @@ public class TfTask implements Task {
         return success;
     }
     
+    /**
+     * Gets an item by a given item type.
+     * @param itemType The enum type of the item.
+     * @return The item matching the type.
+     */
+    public TaskItem getItemByType(String itemType) {
+        for(int i = 0; i < itemList.size(); i++){
+            if(itemList.get(i).getType().toString().equals(itemType))
+                return itemList.get(i);
+        }
+        return null;
+    }
+    
     public List<TfTaskItem> getAllItems() {
         return itemList;
     }
@@ -125,13 +138,5 @@ public class TfTask implements Task {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    public TaskItem getItemByType(String itemType) {
-        for(int i = 0; i < itemList.size(); i++){
-            if(itemList.get(i).getType().toString().equals(itemType))
-                return itemList.get(i);
-        }
-        return null;
     }
 }
