@@ -47,7 +47,7 @@ public class InputText extends Activity {
         return true;
     }
 
-    public Dialog onCreateDialog(int id){    
+    public Dialog onCreateDialog(int id) {    
         if (id == MainPage.DIALOG_ABOUT) {
             // Show details about Task Force.
             PromptDialog mDialog = new PromptDialog();
@@ -75,9 +75,9 @@ public class InputText extends Activity {
     	
     	//create the directory, if it does not exist
     	File folder = new File(directory);
-    	if(!folder.exists()){
+    	if (!folder.exists()){
     		//Toast if created
-    		if(folder.mkdirs()){
+    		if (folder.mkdirs()){
     			Toast.makeText(getBaseContext(), "folder Created", 
         				Toast.LENGTH_SHORT).show();
     		}
@@ -107,7 +107,7 @@ public class InputText extends Activity {
      * 
      * @param myTextFile			text file to be added
      */
-    public void addToList(File myTextFile){
+    public void addToList(File myTextFile) {
     	String[] inArgs = getIntent().getStringArrayExtra("ItemArgs");
 		TaskItem item = ViewSingleTask.task.getItemByType(inArgs[1]);
 		

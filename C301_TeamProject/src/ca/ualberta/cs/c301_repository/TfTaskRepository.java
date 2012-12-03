@@ -120,24 +120,6 @@ public class TfTaskRepository {
     }
 
     /**
-     * Gets a list of tasks that match a given device id from the webservice.
-     * 
-     * @param deviceId
-     * @return A list of tasks.
-     * @throws Exception
-     */
-    public static List<Task> getTasksByDeviceId(String deviceId)
-            throws Exception {
-        List<Task> taskList = getAllTasks();
-        for (Task task : taskList) {
-            if (task.getDeviceId() == deviceId) {
-                taskList.add(task);
-            }
-        }
-        return taskList;
-    }
-
-    /**
      * Gets all tasks that are currently in the webservice.
      * 
      * @return A list of tasks.
