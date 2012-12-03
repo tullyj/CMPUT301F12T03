@@ -389,8 +389,8 @@ public class ViewTasks extends Activity {
            
            ItemListElement[] elm2 = new ItemListElement[show.size()];
            show.toArray(elm2);
-           ItemListAdapter a = new ItemListAdapter(this,R.layout.list_multi, elm2);
-           listView.setAdapter(a);
+           ItemListAdapter b = new ItemListAdapter(this,R.layout.list_multi, elm2);
+           listView.setAdapter(b);
        }	
     }
     

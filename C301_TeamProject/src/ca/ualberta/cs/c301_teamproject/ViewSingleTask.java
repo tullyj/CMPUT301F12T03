@@ -3,6 +3,7 @@ package ca.ualberta.cs.c301_teamproject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -50,10 +51,12 @@ public class ViewSingleTask extends Activity {
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
         String localTemp = intent.getExtras().getString(ViewTasks.LOCAL);
         
-        if (localTemp.equals("yes"))
+        if (localTemp.equals("yes")){
             isLocal = true;
-        else
+            like.setVisibility(View.GONE);
+        }else{
             isLocal = false;
+        }
         
         //check if i already like the task
         boolean likeTask = doILikeThisTask();
