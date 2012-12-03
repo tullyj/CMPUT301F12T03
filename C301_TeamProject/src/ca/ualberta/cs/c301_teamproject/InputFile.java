@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import android.net.Uri;
 import android.os.Bundle;
@@ -116,7 +117,8 @@ public class InputFile extends Activity {
             insertFilesSize += file.length();
         long newTotalSize = getTotalTaskSize() + insertFilesSize;
         // Don't push to web service if adding files is too big for task.
-        if (newTotalSize > MAX_TASK_BYTES) {
+        if (newTotalSize > MAX_TASK_BYTES && ViewSingleTask.task.getVisibility()
+                == Visibility.PUBLIC) {
             String message = "Sorry, insufficient space \n" +
                     "The file(s) are: " + insertFilesSize + " bytes. \n" +
                     "You only have " + (MAX_TASK_BYTES - getTotalTaskSize()) +
