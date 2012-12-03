@@ -1,17 +1,15 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import ca.ualberta.cs.c301_repository.TfTaskRepository;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-
 /**
  * This class just has the buttons for the main page.
- * NOTE: there are extra buttons on this page for demonstration purposes
  *
  */
 public class MainPage extends Activity {
@@ -35,13 +33,20 @@ public class MainPage extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Create task was clicked
+     * @param view
+     */
     public void createTask(View view) {
 
         Intent intent = new Intent(this, CreateTask.class);
         startActivity(intent);
-
     }
 
+    /**
+     * Your tasks was clicked. Grab the filter parameters then start
+     * @param view
+     */
     public void yourTasks(View view) {
 
         Intent intent = new Intent(this, ViewTasks.class);
@@ -56,9 +61,13 @@ public class MainPage extends Activity {
         intent.putExtra(TYPE, "my");
         intent.putExtra(IDS, ids);
         startActivity(intent);
-
     }
 
+    /**
+     * View all tasks was clicked. No parameters to be sent since we want
+     * all of the tasks
+     * @param view
+     */
     public void allTasks(View view) {
 
         Intent intent = new Intent(this, ViewTasks.class);
@@ -66,14 +75,20 @@ public class MainPage extends Activity {
         //grab all of the task IDs
         intent.putExtra(TYPE, "all");     
         startActivity(intent);
-
     }
 
-    
-    //need to implement this right after class
+    /**
+     * When local tasks was clicked. Grab the parameters then start
+     * @param view
+     */
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
-        //startActivity(intent);
         
+        //grab the local ids
+        String[] ids = 
+                TfTaskRepository.getLocalTaskIds(getApplicationContext());
+        intent.putExtra(TYPE, "local");
+        intent.putExtra(IDS, ids);
+        startActivity(intent);        
     }
 }

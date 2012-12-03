@@ -42,7 +42,7 @@ public class TfLocalRepository /* extends Activity */ {
      * Inserts the given task into the local repository.
      * @param task Task to be inserted.
      * @param c    Context of the calling activity.
-     * @return
+     * @return ID of inserted task, or emptry string if failed.
      */
     public String insertTask(Task task, Context c) {
         loadLocalList(c);
@@ -56,6 +56,25 @@ public class TfLocalRepository /* extends Activity */ {
         } else {
             return "";
         }
+    }
+    
+    /**
+     * Removes a task with the given task ID.
+     * @param taskId ID of task to be removed.
+     * @param c      Context of calling activity.
+     * @return
+     */
+    public Boolean removeTask(String taskId, Context c) {
+        loadLocalList(c);
+        Boolean success = false;
+        for (Task task : entryList) {
+            if (task.getTaskId().equals(taskId)) {
+                success = entryList.remove(task);
+                break;
+            }
+        }
+        saveLocalList(c);
+        return success;
     }
 
     /**
@@ -81,10 +100,22 @@ public class TfLocalRepository /* extends Activity */ {
                 break;
             }
         }
+        saveLocalList(c);
+    }
+
+    public Task getTask(String taskId, Context c) {
+        loadLocalList(c);
+        for (Task task : entryList) {
+            if (task.getTaskId().equals(taskId))
+                return task;
+        }
+        return null;
     }
 
     // Save the local list to the phone using given context.
     private void saveLocalList(Context c) {
+        if (c == null)
+            return;
         try {
             String jsonArray = gson.toJson(entryList, listType);
             
@@ -103,27 +134,19 @@ public class TfLocalRepository /* extends Activity */ {
     
     // Load the local list from the phone using given context.
     private void loadLocalList(Context c) {
-      try {
-          FileInputStream fIn = c.openFileInput(STORAGE_FILE);
-          InputStreamReader isr = new InputStreamReader(fIn);
-          BufferedReader buffreader = new BufferedReader (isr);
-          
-          String jsonArray = buffreader.readLine();
-          entryList = gson.fromJson(jsonArray, listType);
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
+        if (c == null)
+            return;
+        try {
+            FileInputStream fIn = c.openFileInput(STORAGE_FILE);
+            InputStreamReader isr = new InputStreamReader(fIn);
+            BufferedReader buffreader = new BufferedReader (isr);
 
-    }
-
-    public Task getTask(String taskId, Context c) {
-        loadLocalList(c);
-        for (Task task : entryList) {
-            if (task.getTaskId().equals(taskId))
-                return task;
+            String jsonArray = buffreader.readLine();
+            entryList = gson.fromJson(jsonArray, listType);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 }
