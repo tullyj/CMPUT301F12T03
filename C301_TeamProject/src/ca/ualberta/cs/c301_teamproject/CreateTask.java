@@ -348,7 +348,8 @@ public class CreateTask extends Activity {
 				taskResponseType = result[3];
 				taskResponseString = result[0];
 				taskDescription = result[2];
-				propertiesGrabbed = true;   			
+				propertiesGrabbed = true;  
+				
     		}	
     	} 	
     }
@@ -390,7 +391,7 @@ public class CreateTask extends Activity {
 	    		    	
 	    	//set the description
 	    	t.setDescription(taskDescription);
-	    	
+
 	    	//set the email to respond to
 	    	t.setEmail(taskResponseString);
 	    	
