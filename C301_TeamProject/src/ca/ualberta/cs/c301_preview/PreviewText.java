@@ -4,16 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import ca.ualberta.cs.c301_interfaces.ItemType;
-import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_teamproject.ItemList;
 import ca.ualberta.cs.c301_teamproject.MainPage;
 import ca.ualberta.cs.c301_teamproject.PromptDialog;
 import ca.ualberta.cs.c301_teamproject.R;
-import ca.ualberta.cs.c301_teamproject.ViewSingleTask;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

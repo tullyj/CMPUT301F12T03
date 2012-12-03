@@ -6,8 +6,6 @@ import ca.ualberta.cs.c301_teamproject.ItemList;
 import ca.ualberta.cs.c301_teamproject.MainPage;
 import ca.ualberta.cs.c301_teamproject.PromptDialog;
 import ca.ualberta.cs.c301_teamproject.R;
-import ca.ualberta.cs.c301_teamproject.R.layout;
-import ca.ualberta.cs.c301_teamproject.R.menu;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
