@@ -51,7 +51,7 @@ public class InputText extends Activity {
     	
     	//hardcoded file directory
     	String directory = Environment.getExternalStorageDirectory().toString()
-    			+ "/temp/TextFiles";
+    			+ "/TextFiles";
 
     	EditText et = (EditText) findViewById(R.id.text_input_box);
     	inputText = et.getText().toString();
