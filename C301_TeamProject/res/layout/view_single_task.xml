@@ -65,12 +65,5 @@
         android:layout_height="wrap_content"
         android:text="@string/like_task"
         android:onClick="likeTaskAction" />
-
-    <Button
-        android:id="@+id/emailFiles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="emailFiles"
-        android:text="@string/email_files" />
 	    	
 </LinearLayout>
