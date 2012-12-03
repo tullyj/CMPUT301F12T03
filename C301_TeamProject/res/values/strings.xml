@@ -84,5 +84,9 @@
     <string name="no_comment"/>
     <color name="black">#00000000</color>
     <string name="email_files">Email Files</string>
+    <string name="preview_text">Preview Text</string>
+    <string name="preview_picture">Preview Photo</string>
+    <string name="preview_audio">Preview Audio</string>
+    <string name="preview_video">Preview Video</string>
 
 </resources>
