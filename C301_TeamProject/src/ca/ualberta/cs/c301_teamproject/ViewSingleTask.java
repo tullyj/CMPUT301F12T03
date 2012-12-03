@@ -82,6 +82,7 @@ public class ViewSingleTask extends Activity {
 
     public Dialog onCreateDialog(int id){    
         if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
             PromptDialog mDialog = new PromptDialog();
             return mDialog.aboutPrompt(this);
         }

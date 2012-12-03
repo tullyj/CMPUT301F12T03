@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 /**
  * Import or capture files/items to be added to a task.
+ * @author tullyj
+ * @author cedwin
  */
 public class InputFile extends Activity {
 

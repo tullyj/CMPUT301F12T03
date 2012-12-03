@@ -35,7 +35,7 @@
     <string name="import_capturevideo">Record Video</string>
     <string name="import_cancel">Cancel</string>
     <string name="about_task_force">Created by Colin Hunt, Edwin Chung, Kris Kushniruk, Tully Johnson</string>
-    <string name="about_title">.</string>
+    <string name="about_title">'</string>
     <string name="row_carrot">></string>
     <string name="row_title_blank">Title</string>
     <string name="row_sub_blank">Description</string>
