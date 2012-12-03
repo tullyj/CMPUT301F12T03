@@ -350,9 +350,9 @@ public class ViewTasks extends Activity {
                CrowdSourcerEntry entry = shallowEntryList.get(i);
                
                String title = entry.getSummary();
-               String desc = entry.getDescription();
+               //String desc = entry.getDescription();
                String top = title;
-               String bottom = "Description: " + desc;
+               String bottom = "Click task to view and fulfill";
                
                show.add(new ItemListElement(Utility.getIconFromString("Task"),top,bottom));
                
@@ -371,10 +371,26 @@ public class ViewTasks extends Activity {
            
            List<TfTask> entryList = 
                    TfTaskRepository.getLocalTasks(getApplicationContext());
-           adapterLocal = new ArrayAdapter<TfTask>(this, 
-                   android.R.layout.simple_list_item_1, entryList);
            
-           listView.setAdapter(adapterLocal);
+           for(int j = 0;j<entryList.size();j++){
+               
+               TfTask t = entryList.get(j);
+               
+               String title = t.getTitle();
+               String desc = t.getDescription();
+               String top = title;
+               String bottom = "Description: " + desc;
+               
+               show.add(new ItemListElement(
+                       Utility.getIconFromString("Task"),top,bottom));
+               
+               
+           }
+           
+           ItemListElement[] elm2 = new ItemListElement[show.size()];
+           show.toArray(elm2);
+           ItemListAdapter a = new ItemListAdapter(this,R.layout.list_multi, elm2);
+           listView.setAdapter(a);
        }	
     }
     
