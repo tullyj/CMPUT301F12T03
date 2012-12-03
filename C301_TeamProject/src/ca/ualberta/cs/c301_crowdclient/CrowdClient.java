@@ -185,26 +185,19 @@ public class CrowdClient {
                 "content", gson.toJson(entry.getContent()))
         );
         nvps.add(new BasicNameValuePair("id", entry.getId()));
-//        System.out.println(entry.getSummary());
-//        System.out.println(nvps.get(1).getValue());
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
         System.out.println(convertStreamToString(httpPost.getEntity().getContent()));
         
-        CrowdSourcerEntry updatedEntry = updateEntry();
-        
-        HttpResponse response = httpclient.execute(httpPost);
-
-        String status = response.getStatusLine().toString();
-        HttpEntity entity = response.getEntity();
-
-        System.out.println(status);
-        
-        entity.consumeContent();
+        CrowdSourcerEntry updatedEntry = updateEntry();        
 	}
 
     private CrowdSourcerEntry updateEntry() throws Exception {
         HttpResponse response = httpclient.execute(httpPost);
+
+        String status = response.getStatusLine().toString();
+        System.out.println(status);
+
         HttpEntity entity = response.getEntity();
         CrowdSourcerEntry updatedEntry = null;
         if (entity != null) {
@@ -224,6 +217,7 @@ public class CrowdClient {
                 throw myException;
             }
         }
+        entity.consumeContent();
         return updatedEntry;
     }
 	
