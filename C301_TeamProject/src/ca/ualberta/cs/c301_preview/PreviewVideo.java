@@ -29,7 +29,6 @@ public class PreviewVideo extends Activity {
         setContentView(R.layout.preview_video);
 
         mUri = Uri.fromFile(ItemList.currFile);
-        filePath = ItemList.currFile.getAbsolutePath();
         mVideo = (VideoView) findViewById(R.id.previewvid);
         mVideo.setVideoURI(mUri);
         mVideo.start();
