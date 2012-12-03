@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,6 +70,12 @@ public class ViewSingleTask extends Activity {
         new loadSingleTask().execute();     
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_item_list, menu);
+        return true;
+    }
+    
     @Override
     /**
      * When the menu button item "About" is selected display about dialog.

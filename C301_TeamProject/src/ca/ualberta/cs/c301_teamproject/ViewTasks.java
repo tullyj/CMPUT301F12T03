@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -127,6 +128,36 @@ public class ViewTasks extends Activity {
                 viewTask(position, shallowEntryList);
             }
         });          
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_item_list, menu);
+        return true;
+    }
+    
+    @Override
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+    
+    /**
+     * Creates a dialog for this activity (InputFile).
+     * @param id        Selects what dialog to create/return.
+     * @return          Dialog to be displayed.
+     */
+    public Dialog onCreateDialog(int id){   
+        if (id == MainPage.DIALOG_ABOUT) {
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
     
     /**
@@ -345,16 +376,6 @@ public class ViewTasks extends Activity {
            
            listView.setAdapter(adapterLocal);
        }	
-    }
-   
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
     
     /**
