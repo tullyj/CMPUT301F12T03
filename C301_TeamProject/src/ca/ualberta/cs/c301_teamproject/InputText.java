@@ -46,12 +46,12 @@ public class InputText extends Activity {
     public void saveChanges(View view) {
     	String inputText = "";
     	
-    	//hardcoded filename for now, going to be getNumber() + 1?
+    	//hardcoded filename
     	String fileName = "/001";
     	
-    	//hardcoded file directory for now, may be changed later
+    	//hardcoded file directory
     	String directory = Environment.getExternalStorageDirectory().toString()
-    			+ "/TextFiles";
+    			+ "/temp/TextFiles";
 
     	EditText et = (EditText) findViewById(R.id.text_input_box);
     	inputText = et.getText().toString();
@@ -65,11 +65,7 @@ public class InputText extends Activity {
         				Toast.LENGTH_SHORT).show();
     		}
     	}
-    	//Toast if not created
-//    	else
-//    		Toast.makeText(getBaseContext(), "folder not Created", 
-//    				Toast.LENGTH_SHORT).show();
-    	//create and write the text into the saved file
+
     	try {
     		File myTextFile = new File(directory + fileName + ".txt");
     		    		
@@ -82,7 +78,6 @@ public class InputText extends Activity {
     		//call method to add to the item list
     		addToList(myTextFile);
     		
-    		//item.addFiles(List<File> list = new List<File>(){add(myTextFile)});
     	} catch (Exception e) {
     		Toast.makeText(getBaseContext(), e.getMessage(), 
     				Toast.LENGTH_SHORT).show();

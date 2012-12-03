@@ -12,18 +12,24 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.ImageView;
 
+/**
+ * Takes in an image and displays it via ImageView as a preview function.
+ * @author Edwin Chung
+ *
+ */
 public class PreviewPhoto extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preview_picture);
+        
+        //get the file from the item list
         File file = ItemList.currFile;
         
+        //display the image via ImageView
         ImageView iv = (ImageView) findViewById(R.id.imageView1);
-        
         Uri mUri = Uri.fromFile(file);
-        
         iv.setImageURI(mUri);
     }
 
