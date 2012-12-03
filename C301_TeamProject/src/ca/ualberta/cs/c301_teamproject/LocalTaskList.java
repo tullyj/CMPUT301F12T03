@@ -4,9 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -51,7 +53,26 @@ public class LocalTaskList extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_local_task_list, menu);
+        getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
 }

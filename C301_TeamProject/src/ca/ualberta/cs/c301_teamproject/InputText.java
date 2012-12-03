@@ -4,16 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import ca.ualberta.cs.c301_interfaces.TaskItem;
-
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,11 +30,30 @@ public class InputText extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_text);
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.input_text, menu);
+        getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
     /**
      * Will take the user's input and generate a text file in a set directory
