@@ -32,7 +32,7 @@ import com.google.gson.reflect.TypeToken;
  * @author colinhunt
  *
  */
-public class TfLocalRepository /* extends Activity */ {
+public class TfLocalRepository {
 
     // JSON Utilities
     private Gson gson = new Gson();
@@ -112,6 +112,12 @@ public class TfLocalRepository /* extends Activity */ {
         saveLocalList(c);
     }
 
+    /**
+     * Gets a task given the task ID.
+     * @param taskId Task ID of task to get.
+     * @param c      Context of the calling activity.
+     * @return       The task.
+     */
     public Task getTask(String taskId, Context c) {
         loadLocalList(c);
         for (Task task : entryList) {

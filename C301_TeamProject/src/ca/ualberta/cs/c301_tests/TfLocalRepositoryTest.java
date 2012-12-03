@@ -9,8 +9,10 @@
  */
 package ca.ualberta.cs.c301_tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -32,7 +34,12 @@ public class TfLocalRepositoryTest {
 
     @Test
     public void testGetTaskList() {
-        fail("Not yet implemented");
+        Task task = new TfTask();
+        task.setDescription("TestDescription");
+        String taskId = localRepo.insertTask(task, null);
+        List<TfTask> taskList = localRepo.getTaskList(null);
+        assertFalse(taskList.isEmpty());
+        localRepo.removeTask(taskId, null);
     }
 
     @Test

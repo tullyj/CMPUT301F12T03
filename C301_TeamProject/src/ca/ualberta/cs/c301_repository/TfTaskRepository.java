@@ -199,22 +199,19 @@ public class TfTaskRepository {
         return localRepo.getTaskList(c);
     }
     
+    /**
+     * Gets a list of IDs of all tasks stored locally on the phone.
+     * @param c Context of calling activity.
+     * @return  A string array of task IDs.
+     */
     public static String[] getLocalTaskIds(Context c) {
-        
         List<TfTask> temp = localRepo.getTaskList(c);
-        
         ArrayList<String> send = new ArrayList<String>();
-        
         Iterator<TfTask> it = temp.iterator();
-        
         while(it.hasNext()){
-            
             TfTask task = it.next();
             send.add(task.getTaskId());
-            
         }
-   
         return send.toArray(new String[send.size()]);
     }
-    
 }
