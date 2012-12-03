@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +15,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,10 +23,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.cs.c301_crowdclient.CrowdSourcerEntry;
 import ca.ualberta.cs.c301_repository.TfTask;
 import ca.ualberta.cs.c301_repository.TfTaskRepository;
+import ca.ualberta.cs.c301_utils.Utility;
 
 /**
  * This class is used for viewing a list of all the tasks. This activity is
@@ -128,6 +128,36 @@ public class ViewTasks extends Activity {
                 viewTask(position, shallowEntryList);
             }
         });          
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_item_list, menu);
+        return true;
+    }
+    
+    @Override
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+    
+    /**
+     * Creates a dialog for this activity (InputFile).
+     * @param id        Selects what dialog to create/return.
+     * @return          Dialog to be displayed.
+     */
+    public Dialog onCreateDialog(int id){   
+        if (id == MainPage.DIALOG_ABOUT) {
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
     
     /**
@@ -309,13 +339,31 @@ public class ViewTasks extends Activity {
    public void updateListView() {
        
        ListView listView = (ListView)findViewById(R.id.taskList);
+       ArrayList<ItemListElement> show = new ArrayList<ItemListElement>();
+
     
        //we have public tasks so print those
        if(!localTasks){
-        	adapter = new ArrayAdapter<CrowdSourcerEntry>(this, 
-        	        android.R.layout.simple_list_item_1, shallowEntryList);
-        	//ListView listView = (ListView)findViewById(R.id.taskList);
-        	listView.setAdapter(adapter);
+           
+           for(int i = 0;i<shallowEntryList.size();i++){
+               
+               CrowdSourcerEntry entry = shallowEntryList.get(i);
+               
+               String title = entry.getSummary();
+               //String desc = entry.getDescription();
+               String top = title;
+               String bottom = "Click task to view and fulfill";
+               
+               show.add(new ItemListElement(Utility.getIconFromString("Task"),top,bottom));
+               
+               
+           }
+           
+           ItemListElement[] elm = new ItemListElement[show.size()];
+           show.toArray(elm);
+           
+        	ItemListAdapter a = new ItemListAdapter(this,R.layout.list_multi, elm);
+        	listView.setAdapter(a);
        }
        
        //we have local tasks so print those 
@@ -323,21 +371,27 @@ public class ViewTasks extends Activity {
            
            List<TfTask> entryList = 
                    TfTaskRepository.getLocalTasks(getApplicationContext());
-           adapterLocal = new ArrayAdapter<TfTask>(this, 
-                   android.R.layout.simple_list_item_1, entryList);
            
-           listView.setAdapter(adapterLocal);
+           for(int j = 0;j<entryList.size();j++){
+               
+               TfTask t = entryList.get(j);
+               
+               String title = t.getTitle();
+               String desc = t.getDescription();
+               String top = title;
+               String bottom = "Description: " + desc;
+               
+               show.add(new ItemListElement(
+                       Utility.getIconFromString("Task"),top,bottom));
+               
+               
+           }
+           
+           ItemListElement[] elm2 = new ItemListElement[show.size()];
+           show.toArray(elm2);
+           ItemListAdapter a = new ItemListAdapter(this,R.layout.list_multi, elm2);
+           listView.setAdapter(a);
        }	
-    }
-   
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
     
     /**

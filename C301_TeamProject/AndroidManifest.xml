@@ -113,7 +113,7 @@
         </activity>
         <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewAudio"
-            android:label="@string/title_list_item"
+            android:label="@string/preview_audio"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -121,7 +121,7 @@
         </activity>
         <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewPhoto"
-            android:label="@string/title_list_item"
+            android:label="@string/preview_picture"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -137,7 +137,7 @@
         </activity>
         <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewVideo"
-            android:label="@string/title_list_item"
+            android:label="@string/preview_video"
             android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -145,7 +145,7 @@
         </activity>
         <activity
             android:name="ca.ualberta.cs.c301_preview.PreviewText"
-            android:label="@string/title_list_item"
+            android:label="@string/preview_text"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

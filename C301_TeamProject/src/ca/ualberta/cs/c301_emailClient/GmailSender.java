@@ -16,7 +16,15 @@ import java.io.InputStream;
 import java.io.OutputStream;   
 import java.security.Security;   
 import java.util.Properties;   
-
+/**
+ * This code was found at this link: (Split between 2 lines)
+ * http://stackoverflow.com/questions/2020088/sending-email-in-android-using-
+ * javamail-api-without-using-the-default-built-in-a
+ * 
+ * This class is used to send mail from Gmail
+ * @author stackOverflow
+ *
+ */
 public class GmailSender extends javax.mail.Authenticator {   
     private String mailhost = "smtp.gmail.com";   
     private String user;   

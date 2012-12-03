@@ -1,11 +1,14 @@
 package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View;
@@ -171,6 +174,31 @@ public class InputAudio extends Activity {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, 0));        
         setContentView(ll);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
 
     @Override

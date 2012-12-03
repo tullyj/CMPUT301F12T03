@@ -35,7 +35,7 @@
     <string name="import_capturevideo">Record Video</string>
     <string name="import_cancel">Cancel</string>
     <string name="about_task_force">Created by Colin Hunt, Edwin Chung, Kris Kushniruk, Tully Johnson</string>
-    <string name="about_title">About Task Force</string>
+    <string name="about_title">></string>
     <string name="row_carrot">></string>
     <string name="row_title_blank">Title</string>
     <string name="row_sub_blank">Description</string>
@@ -84,5 +84,9 @@
     <string name="no_comment"/>
     <color name="black">#00000000</color>
     <string name="email_files">Email Files</string>
+    <string name="preview_text">Preview Text</string>
+    <string name="preview_picture">Preview Photo</string>
+    <string name="preview_audio">Preview Audio</string>
+    <string name="preview_video">Preview Video</string>
 
 </resources>

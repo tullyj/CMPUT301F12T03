@@ -50,7 +50,6 @@ public class ItemList extends Activity {
 	static final int DIALOG_AUDIO = 1;
 	static final int DIALOG_PHOTO = 2;
 	static final int DIALOG_VIDEO = 5;
-	static final int DIALOG_ABOUT = 3;
 	static final int TEXT_INTENT = 6;
 	static final int FILE_INTENT = 7;
 	private ItemType itemType;
@@ -122,7 +121,7 @@ public class ItemList extends Activity {
      * @param item	item clicked.
      */
     public boolean onOptionsItemSelected(MenuItem item){
-    	Dialog helpDialog = onCreateDialog(DIALOG_ABOUT);
+    	Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
         helpDialog.show();
         return true;
     }
@@ -133,7 +132,7 @@ public class ItemList extends Activity {
      * @return 			Dialog to be displayed.
      */
     public Dialog onCreateDialog(int id){   
-		if (id == DIALOG_ABOUT) {
+		if (id == MainPage.DIALOG_ABOUT) {
 			PromptDialog mDialog = new PromptDialog();
 			return mDialog.aboutPrompt(this);
 		}

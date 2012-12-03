@@ -1,23 +1,23 @@
 package ca.ualberta.cs.c301_teamproject;
 
+import ca.ualberta.cs.c301_repository.TfTaskRepository;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
 /**
  * This class just has the buttons for the main page.
- * NOTE: there are extra buttons on this page for demonstration purposes
  *
  */
 public class MainPage extends Activity {
 	
 	public static String TYPE = "type";
 	public static String IDS = "ids";
+	public static final int DIALOG_ABOUT = 3;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,22 +26,44 @@ public class MainPage extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
     }
 
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
+    }
+
+    /**
+     * Create task was clicked
+     * @param view
+     */
     public void createTask(View view) {
 
         Intent intent = new Intent(this, CreateTask.class);
         startActivity(intent);
-
     }
 
+    /**
+     * Your tasks was clicked. Grab the filter parameters then start
+     * @param view
+     */
     public void yourTasks(View view) {
 
         Intent intent = new Intent(this, ViewTasks.class);
@@ -56,9 +78,13 @@ public class MainPage extends Activity {
         intent.putExtra(TYPE, "my");
         intent.putExtra(IDS, ids);
         startActivity(intent);
-
     }
 
+    /**
+     * View all tasks was clicked. No parameters to be sent since we want
+     * all of the tasks
+     * @param view
+     */
     public void allTasks(View view) {
 
         Intent intent = new Intent(this, ViewTasks.class);
@@ -66,14 +92,20 @@ public class MainPage extends Activity {
         //grab all of the task IDs
         intent.putExtra(TYPE, "all");     
         startActivity(intent);
-
     }
 
-    
-    //need to implement this right after class
+    /**
+     * When local tasks was clicked. Grab the parameters then start
+     * @param view
+     */
     public void localTasks(View view) {
         Intent intent = new Intent(this, LocalTaskList.class);
-        //startActivity(intent);
         
+        //grab the local ids
+        String[] ids = 
+                TfTaskRepository.getLocalTaskIds(getApplicationContext());
+        intent.putExtra(TYPE, "local");
+        intent.putExtra(IDS, ids);
+        startActivity(intent);        
     }
 }

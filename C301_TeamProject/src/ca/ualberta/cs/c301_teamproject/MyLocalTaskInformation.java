@@ -18,7 +18,7 @@ import android.content.Context;
  * @author topched
  *
  */
-public class MyLocalTaskInformation extends Activity {
+public class MyLocalTaskInformation {
 	
 	public static final String MYTASKS = "myTasks.sav";
 	public static final String MYLIKES = "myLikes.sav";
@@ -35,7 +35,7 @@ public class MyLocalTaskInformation extends Activity {
 	    ids.remove(id);
 	    
 	    try{
-            FileOutputStream fOut = c.openFileOutput(MYLIKES, MODE_PRIVATE);
+            FileOutputStream fOut = c.openFileOutput(MYLIKES, Context.MODE_PRIVATE);
             ObjectOutputStream objOut = new ObjectOutputStream(fOut);
             objOut.writeObject(ids);
             objOut.close();
@@ -64,7 +64,7 @@ public class MyLocalTaskInformation extends Activity {
 	        use.add(id);
 	        
 	        try{
-	            FileOutputStream fOut = c.openFileOutput(MYLIKES, MODE_PRIVATE);
+	            FileOutputStream fOut = c.openFileOutput(MYLIKES, Context.MODE_PRIVATE);
 	            ObjectOutputStream objOut = new ObjectOutputStream(fOut);
 	            objOut.writeObject(use);
 	            objOut.close();
@@ -80,7 +80,7 @@ public class MyLocalTaskInformation extends Activity {
 	        ids.add(id);
 	        
 	        try{
-                FileOutputStream fOut = c.openFileOutput(MYLIKES, MODE_PRIVATE);
+                FileOutputStream fOut = c.openFileOutput(MYLIKES, Context.MODE_PRIVATE);
                 ObjectOutputStream objOut = new ObjectOutputStream(fOut);
                 objOut.writeObject(ids);
                 objOut.close();

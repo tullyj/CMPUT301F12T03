@@ -140,12 +140,14 @@ public class CrowdClient {
 	 * @return JSON representation of the entry created
 	 * @throws Exception
 	 */
-	public CrowdSourcerEntry insertEntry(CrowdSourcerEntry entryP) throws Exception {
+	public CrowdSourcerEntry insertEntry(CrowdSourcerEntry entryP) 
+	        throws Exception {
 		
 		//CrowdSourcerEntry newEntry = new CrowdSourcerEntry();
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
 		nvps.add(new BasicNameValuePair("action", "post"));
 		nvps.add(new BasicNameValuePair("summary", entryP.getSummary()));
+        nvps.add(new BasicNameValuePair("description", entryP.getDescription()));
 		nvps.add(new BasicNameValuePair(
 		        "content", gson.toJson(entryP.getContent()))
 		);

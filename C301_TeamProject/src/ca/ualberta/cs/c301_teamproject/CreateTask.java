@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.NavUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -130,13 +130,28 @@ public class CreateTask extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
         }
-        return super.onOptionsItemSelected(item);
+        return null;
     }
     
     /**
@@ -348,7 +363,8 @@ public class CreateTask extends Activity {
 				taskResponseType = result[3];
 				taskResponseString = result[0];
 				taskDescription = result[2];
-				propertiesGrabbed = true;   			
+				propertiesGrabbed = true;  
+				
     		}	
     	} 	
     }
@@ -390,7 +406,7 @@ public class CreateTask extends Activity {
 	    		    	
 	    	//set the description
 	    	t.setDescription(taskDescription);
-	    	
+
 	    	//set the email to respond to
 	    	t.setEmail(taskResponseString);
 	    	
