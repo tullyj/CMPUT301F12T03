@@ -194,18 +194,18 @@ public class InputFile extends Activity {
 			           // User clicked "Take a Video" button
 			    	   // create Intent to take a picture and 
 				       // return control to the calling application
-			    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			    	   Intent videoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 			    	   // increment counter for naming files.
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().
 			    	           getAbsolutePath() + "/Video" + inFileCount;
 			    	   Uri mUri = Uri.fromFile(new File(filePath));
 			    	   // Give the location of file to intent
-			    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+			    	   videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 			    	   // Set the quality to MMS for video intent.
-			    	   photoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+			    	   videoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			    	   // start the image capture Intent
-			    	   startActivityForResult(photoIntent, 
+			    	   startActivityForResult(videoIntent, 
 			    	           CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 			       }
 				});
