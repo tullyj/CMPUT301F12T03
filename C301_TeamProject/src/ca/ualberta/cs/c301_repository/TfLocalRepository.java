@@ -103,9 +103,10 @@ public class TfLocalRepository {
      */
     public void update(Task changedTask, Context c) {
         loadLocalList(c);
-        for (Task oldTask : entryList) {
+        for (int i = 0; i < entryList.size(); ++i) {
+            Task oldTask = entryList.get(i);
             if (oldTask.getTaskId().equals(changedTask.getTaskId())) {
-                oldTask = changedTask;
+                entryList.set(i, (TfTask) changedTask);
                 break;
             }
         }
