@@ -43,7 +43,7 @@ public class PreviewText extends Activity {
             	while((ch = fis.read()) != -1) {
             		strContent.append((char)ch);
             	}
-
+            	
             	tv.setText(strContent);
             	
             } catch (Exception e) {
