@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
@@ -194,7 +203,8 @@ public class InputFile extends Activity {
 			           // User clicked "Take a Video" button
 			    	   // create Intent to take a picture and 
 				       // return control to the calling application
-			    	   Intent videoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			    	   Intent videoIntent = new Intent(
+			    	           MediaStore.ACTION_VIDEO_CAPTURE);
 			    	   // increment counter for naming files.
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().

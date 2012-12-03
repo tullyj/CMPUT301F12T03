@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
@@ -20,7 +29,12 @@ import android.media.MediaPlayer;
 import java.io.File;
 import java.io.IOException;
 
-/* http://developer.android.com/guide/topics/media/audio-capture.html */
+/**
+ * Records, plays and saves audio to .3ga format.
+ * http://developer.android.com/guide/topics/media/audio-capture.html
+ * @author tullyj
+ *
+ */
 public class InputAudio extends Activity {
 	
 	private static final String LOG_TAG = "InputAudio";
@@ -141,6 +155,9 @@ public class InputAudio extends Activity {
         }
     }
     
+    /**
+     * Constructor for InputAudio with a file path.
+     */
     public InputAudio() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/Audio" + InputFile.inFileCount + ".3ga"; 
@@ -216,7 +233,6 @@ public class InputAudio extends Activity {
     }
 	
     private void onSave() {
-    	//Intent mIntent = parseUri(Uri.fromFile(new File(mFileName)), 0);
     	Intent mIntent = getIntent();
     	mIntent.putExtra("AudioExtra", Uri.fromFile(new File(mFileName)));
     	

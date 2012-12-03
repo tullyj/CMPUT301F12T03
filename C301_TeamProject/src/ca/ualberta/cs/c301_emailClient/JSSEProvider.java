@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_emailClient;
 
 /*
@@ -25,15 +34,11 @@ package ca.ualberta.cs.c301_emailClient;
  * @version $Revision$
  */
 
-
 import java.security.AccessController;
 import java.security.Provider;
 
 public final class JSSEProvider extends Provider {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public JSSEProvider() {

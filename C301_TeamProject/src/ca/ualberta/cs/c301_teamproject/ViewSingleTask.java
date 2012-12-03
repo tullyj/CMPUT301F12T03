@@ -1,9 +1,17 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -122,7 +130,6 @@ public class ViewSingleTask extends Activity {
     	for (int i = 0; i < items.size(); i++) {
     		info = getTypeInfo(items.get(i).getType());
     		title = info[0];
-    		//itemT = 
     		elements[i] = new ItemListElement(
     		        Utility.getIconFromType(items.get(i).getType()), 
     		        title, items.get(i).getDescription());

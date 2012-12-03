@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_utils;
 
 import java.io.BufferedOutputStream;
@@ -91,6 +100,11 @@ public class Utility {
         }
     }
     
+    /**
+     * Get drawable icon from ItemType.
+     * @param type
+     * @return
+     */
     public static int getIconFromType(ItemType type) {
         switch (type) {
         case TEXT:
@@ -106,6 +120,11 @@ public class Utility {
         }
     } 
     
+    /**
+     * Get drawable icon from String format of item type.
+     * @param type
+     * @return
+     */
     public static int getIconFromString (String type) {
         if (type.equals("Photo")) 
             return R.drawable.photo_icon;

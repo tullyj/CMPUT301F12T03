@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_preview;
 
 import android.app.Activity;
@@ -6,9 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 import android.widget.VideoView;
 import ca.ualberta.cs.c301_teamproject.ItemList;
 import ca.ualberta.cs.c301_teamproject.MainPage;

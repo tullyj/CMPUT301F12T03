@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import java.io.DataInputStream;
@@ -61,7 +70,6 @@ public class ItemList extends Activity {
 	private boolean fulfilled = true;
 	private static File savingFile = null;
 	private String directory = null;
-	
 	public ArrayList<ItemListElement> listElements = 
 	        new ArrayList<ItemListElement>();
 	
@@ -77,14 +85,15 @@ public class ItemList extends Activity {
         // Set Description from item.getDescription()
         ((TextView) findViewById(R.id.listItemDesc)).setText(inArgs[2]);
         
-        if (inArgs[0].equals("TEXT")) 
+        if (inArgs[0].equals("TEXT")) {
             itemType = ItemType.TEXT;
-        else if (inArgs[0].equals("PHOTO")) 
+        } else if (inArgs[0].equals("PHOTO")) { 
             itemType = ItemType.PHOTO;
-        else if (inArgs[0].equals("VIDEO")) 
+        } else if (inArgs[0].equals("VIDEO")) {
             itemType = ItemType.VIDEO;
-        else 
+        } else {
             itemType = ItemType.AUDIO;
+        }
         
         // Set the progress bar and textview listItemFraction.
         int[] progress = populateList();
@@ -106,6 +115,9 @@ public class ItemList extends Activity {
         
         updateT = new updateTask();
         saveFile = new saveToFile();
+        
+        Toast.makeText(ItemList.this, "Click to preview files, long click to "
+                + "save the file to device.", Toast.LENGTH_LONG).show();
         
         updateList();
     }
@@ -161,6 +173,11 @@ public class ItemList extends Activity {
     	return new int[]{count, total};
     }
     
+    /**
+     * Parse long format date to a given string format.
+     * @param time
+     * @return     String formated to date.
+     */
     public String getTime(long time) {
         Date date = new Date(time);
         Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -227,7 +244,8 @@ public class ItemList extends Activity {
 			        int position, long id) {
 				// Get the file the user selected and save the uri to file.
                 Uri mUri = Uri.fromFile(item.getFile(position));
-				Intent intent = new Intent(getApplicationContext(), getPreviewClass());
+				Intent intent = new Intent(getApplicationContext(), 
+				        getPreviewClass());
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		    	// Keep a reference to the file the user selected.
 		    	currFile = item.getFile(position);
@@ -238,14 +256,18 @@ public class ItemList extends Activity {
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id){
                 savingFile = item.getFile(position);
-                Toast.makeText(ItemList.this, "File Path: " + directory, 
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(ItemList.this, "File save locally to Path: "
+                        + directory, Toast.LENGTH_LONG).show();
                 saveFile.execute();
                 return true;
             }
         });
     }
     
+    /**
+     * Return class to preview a given ItemType.
+     * @return  the class to preview.
+     */
     private Class<?> getPreviewClass() {
     	switch (itemType) {
     	case TEXT:
@@ -319,9 +341,6 @@ public class ItemList extends Activity {
             //count of each
             int desiredNum = task.getNumber();
             int actualNum = files.size();
-        
-            //System.out.println("desired = " + desiredNum);
-            //System.out.println("actual = " + actualNum);
             
             //if we have actualNum < desiredNum item not fulfilled
             //therefore task is not fulfilled
@@ -348,12 +367,11 @@ public class ItemList extends Activity {
     		if (savingFile != null) {
                 String fileName = savingFile.getName() + 
                         Utility.getFileExtFromType(item.getType());
-                
-                // Create the directory, if it does not exist
-                File folder = new File(directory);
-                folder.mkdirs();
-                File nFile = new File(directory + "/" + fileName);
                 try {
+                    // Create the directory, if it does not exist
+                    File folder = new File(directory);
+                    folder.mkdirs();
+                    File nFile = new File(directory + "/" + fileName);
                     // Create the file
                     nFile.createNewFile();
                     FileOutputStream fOut = new FileOutputStream(nFile);

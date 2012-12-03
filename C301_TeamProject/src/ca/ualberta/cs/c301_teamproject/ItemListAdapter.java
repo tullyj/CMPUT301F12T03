@@ -1,3 +1,12 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import android.app.Activity;
@@ -12,7 +21,6 @@ import android.widget.TextView;
 /**
  * Custom ListAdapter for Task Force's multiline, with icon, ListView.
  * @author tullyj
- *
  */
 public class ItemListAdapter extends ArrayAdapter<ItemListElement>{
 	Context context;

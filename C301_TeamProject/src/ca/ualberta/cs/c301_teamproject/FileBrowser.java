@@ -1,10 +1,18 @@
+/**
+ * Task Force Application
+ * See github for license and other information: 
+ * github.com/tullyj/CMPUT301F12T03/
+ * 
+ * Task Force is created by: 
+ * Colin Hunt, Edwin Chung, 
+ * Kris Kushniruk, and Tully Johnson.
+ */
 package ca.ualberta.cs.c301_teamproject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -19,6 +27,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This class is a modified version of the code given by Androider+ in the
+ * following URL:
+ * 
+ * http://android-er.blogspot.ca/2010/01
+ *                              /implement-simple-file-explorer-in.html
+ * 
+ * @author Edwin Chung
+ */
 public class FileBrowser extends ListActivity {
     private List<String> item = null;
     private List<String> path = null;
@@ -33,16 +50,6 @@ public class FileBrowser extends ListActivity {
             Arrays.asList("wav", "mid", "mp3", "wma", "3ga");
     final private List<String> videoExtensions =
             Arrays.asList("avi", "mp4", "wmv", "mpg", "mpeg", "3gp");
-
-    /**
-     * This class is a modified version of the code given by Androider+ in the
-     * following URL:
-     * 
-     * http://android-er.blogspot.ca/2010/01
-     *                              /implement-simple-file-explorer-in.html
-     * 
-     * @author Edwin Chung
-     */
 
     @Override
 
