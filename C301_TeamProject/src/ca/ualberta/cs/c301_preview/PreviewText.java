@@ -41,7 +41,7 @@ public class PreviewText extends Activity {
 
             fis = new FileInputStream(file);
 
-            while((ch = fis.read()) != -1)
+            while ((ch = fis.read()) != -1)
                 strContent.append((char)ch);
 
             tv.setText(strContent);
