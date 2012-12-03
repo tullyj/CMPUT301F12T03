@@ -18,6 +18,9 @@ package ca.ualberta.cs.c301_emailClient;
  */
 
 /**
+ * Found this code at: (Split between 2 lines)
+ * http://stackoverflow.com/questions/2020088/sending-email-in-android-using-
+ * javamail-api-without-using-the-default-built-in-a
  * @author Alexander Y. Kleymenov
  * @version $Revision$
  */
