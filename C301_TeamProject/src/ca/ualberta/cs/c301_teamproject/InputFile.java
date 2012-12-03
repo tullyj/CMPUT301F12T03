@@ -106,19 +106,28 @@ public class InputFile extends Activity {
         for (File file : files)
             insertFilesSize += file.length();
         long newTotalSize = getTotalTaskSize() + insertFilesSize;
-        // Don't push to webservice if adding files is too big for task.
-        if (newTotalSize > MAX_TASK_BYTES) {            
-            Toast.makeText(getApplicationContext(), 
-                    "Sorry, insufficient space. \n" + 
-                    "The file(s) are :" + insertFilesSize + " bytes. \n" +
+        // Don't push to web service if adding files is too big for task.
+        if (newTotalSize > MAX_TASK_BYTES) {
+            String message = "Sorry, insufficient space \n" +
+                    "The file(s) are: " + insertFilesSize + " bytes. \n" +
                     "You only have " + (MAX_TASK_BYTES - getTotalTaskSize()) +
-                    " bytes left.\n" + "Please Upgrade Your" +
-                    " Account (coming soon).", Toast.LENGTH_LONG).show();
+                    " bytes left. \n" + "Please Upgrade Your Account " +
+                    "(coming soon).";
+            
+            //create a dialog to display the message
+            new AlertDialog.Builder(this).setIcon(R.drawable.taskforcebar)
+            .setMessage(message).setPositiveButton("OK", 
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, 
+                    int which) {
+                    //close the dialog, (do nothing)
+                }
+            }).show();
                     
             //clear the files list and update the displayed list
             files.clear();
             updateList();
-        // If at least 1 file to updload, update files of task item.
+        // If at least 1 file to upload, update files of task item.
         } else if (files.size() > 0) {
 	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
