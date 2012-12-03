@@ -16,6 +16,7 @@ public class MainPage extends Activity {
 	
 	public static String TYPE = "type";
 	public static String IDS = "ids";
+	public static final int DIALOG_ABOUT = 3;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

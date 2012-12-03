@@ -3,8 +3,6 @@ package ca.ualberta.cs.c301_teamproject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.ualberta.cs.c301_interfaces.Task;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
 import android.net.Uri;
@@ -31,7 +29,6 @@ public class InputFile extends Activity {
     private static final int DIALOG_AUDIO = 1;
 	private static final int DIALOG_PHOTO = 2;
 	private static final int DIALOG_VIDEO = 5;
-	private static final int DIALOG_ABOUT = 3;
 	private static final long MAX_TASK_BYTES = 700000;
 	private static int itemType;
 	public static int inFileCount = 0;
@@ -55,10 +52,10 @@ public class InputFile extends Activity {
         item = ViewSingleTask.task.getItemByType(inArgs[1]);
         importFile((View) findViewById(R.layout.input_file));
         
+        // Initiate the counter for the file naming. ie: "Photo1"
         inFileCount = 0;
 
         updateList();
-        
     }
 
     @Override
@@ -71,7 +68,7 @@ public class InputFile extends Activity {
      * When "+" is clicked create a dialog for obtaining the desired item.
      * @param v		Current view.
      */
-    public void importFile(View v){    	
+    public void importFile(View v) {    	
     	Dialog importDialog;
     	if (itemType == DIALOG_PHOTO) {
     		importDialog = onCreateDialog(DIALOG_PHOTO);
@@ -91,7 +88,7 @@ public class InputFile extends Activity {
      * @param item	item clicked.
      */
     public boolean onOptionsItemSelected(MenuItem item){
-    	Dialog helpDialog = onCreateDialog(DIALOG_ABOUT);
+    	Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
         helpDialog.show();
         return true;
     }
@@ -107,11 +104,8 @@ public class InputFile extends Activity {
         for (File file : files)
             insertFilesSize += file.length();
         long newTotalSize = getTotalTaskSize() + insertFilesSize;
-        if (newTotalSize > MAX_TASK_BYTES) {
-            System.out.println("DEBUG: It's too big!!");
-            System.out.println("DEBUG: the files are " + insertFilesSize + " bytes");
-            System.out.println("DEBUG: total bytes task is taking: " + getTotalTaskSize() + "bytes");
-            
+        // Don't push to webservice if adding files is too big for task.
+        if (newTotalSize > MAX_TASK_BYTES) {            
             Toast.makeText(getApplicationContext(), 
                     "Sorry, insufficient space. \n" + 
                     "The file(s) are :" + insertFilesSize + " bytes. \n" +
@@ -122,14 +116,12 @@ public class InputFile extends Activity {
             //clear the files list and update the displayed list
             files.clear();
             updateList();
+        // If at least 1 file to updload, update files of task item.
         } else if (files.size() > 0) {
-	    	Toast.makeText(getApplicationContext(), 
-	    		"Adding Files to Item of Task\n" +
-	    		"Then returning to Task Items Screen", Toast.LENGTH_LONG).show();
 	    	ViewSingleTask.task.setModified(true);
 	    	Intent intent = getIntent();
 	    	setResult(RESULT_OK, intent);
-
+	    	// Add files to item of task.
 	    	try {
                 item.addFiles(files);
             } catch (Exception e) {
@@ -139,6 +131,7 @@ public class InputFile extends Activity {
                 e.printStackTrace();
             }
 	    	finish();
+	    // No files to add, prompt user to add files.
     	} else {
     		Toast.makeText(getApplicationContext(),
     		        "Please add a file before saving." , Toast.LENGTH_LONG).show();
@@ -151,8 +144,7 @@ public class InputFile extends Activity {
      * @return 			Dialog to be displayed.
      */
     public Dialog onCreateDialog(int id){     
-    	//Context context = getApplicationContext();
-    	if ((id <= DIALOG_VIDEO) && (id != DIALOG_ABOUT)) {
+    	if ((id <= DIALOG_VIDEO) && (id != MainPage.DIALOG_ABOUT)) {
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			if (id == DIALOG_PHOTO) {
 	    		builder.setTitle("Import Photo");
@@ -166,12 +158,15 @@ public class InputFile extends Activity {
 				           // to the calling application
 				    	   Intent photoIntent = 
 				    	           new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				    	   // increment counter for naming files.
 				    	   inFileCount++;
 				    	   filePath = Environment.getExternalStorageDirectory()
 				    	           .getAbsolutePath() + "/Photo" + inFileCount;
 				    	   Uri mUri = Uri.fromFile(new File(filePath));
+				    	   // Give the location of file to intent
 				    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, 
 				    	           (Uri) mUri);
+				    	   // Set the size limit for photo intent.
 				    	   photoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 
 				    	           MAX_TASK_BYTES);
 				    	   // start the image capture Intent
@@ -189,11 +184,14 @@ public class InputFile extends Activity {
 			    	   // create Intent to take a picture and 
 				       // return control to the calling application
 			    	   Intent photoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			    	   // increment counter for naming files.
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().
 			    	           getAbsolutePath() + "/Video" + inFileCount;
 			    	   Uri mUri = Uri.fromFile(new File(filePath));
+			    	   // Give the location of file to intent
 			    	   photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+			    	   // Set the quality to MMS for video intent.
 			    	   photoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 			    	   // start the image capture Intent
 			    	   startActivityForResult(photoIntent, 
@@ -210,6 +208,7 @@ public class InputFile extends Activity {
 			           // User clicked "Record Audio" button
 			    	   Intent intent = new Intent(getApplicationContext(), 
 			    	           InputAudio.class);
+			    	   // increment counter for naming files.
 			    	   inFileCount++;
 			    	   filePath = Environment.getExternalStorageDirectory().
 			    	           getAbsolutePath();
@@ -240,7 +239,7 @@ public class InputFile extends Activity {
 		       }
 			});
 			return builder.create();
-		} else if (id == DIALOG_ABOUT) {
+		} else if (id == MainPage.DIALOG_ABOUT) {
 			PromptDialog mDialog = new PromptDialog();
 			return mDialog.aboutPrompt(this);
 		}
@@ -264,7 +263,13 @@ public class InputFile extends Activity {
         // Only one procedure from requestCodes is needed when receiving files.
 	    } else {
             if (resultCode == RESULT_OK) {
-            	files.add(new File(filePath));
+                try {
+                    files.add(new File(filePath));
+                } catch (Exception e) {
+                    Toast.makeText(this, "Adding file unsuccessful, " +
+                            "please try again.", 
+                            Toast.LENGTH_LONG).show();
+                }
             	updateList();
             } else if (resultCode == RESULT_CANCELED) {
                 inFileCount--;
@@ -306,7 +311,6 @@ public class InputFile extends Activity {
             for (File file : listFile) 
                 totalSize += file.length();
         }
-        
         return totalSize;
     }
 }
