@@ -3,13 +3,17 @@ package ca.ualberta.cs.c301_preview;
 import java.io.File;
 
 import ca.ualberta.cs.c301_teamproject.ItemList;
+import ca.ualberta.cs.c301_teamproject.MainPage;
+import ca.ualberta.cs.c301_teamproject.PromptDialog;
 import ca.ualberta.cs.c301_teamproject.R;
 import ca.ualberta.cs.c301_teamproject.R.layout;
 import ca.ualberta.cs.c301_teamproject.R.menu;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 /**
@@ -32,10 +36,29 @@ public class PreviewPhoto extends Activity {
         Uri mUri = Uri.fromFile(file);
         iv.setImageURI(mUri);
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.preview_picture, menu);
+        getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    /**
+     * When the menu button item "About" is selected display about dialog.
+     * @param item  item clicked.
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        Dialog helpDialog = onCreateDialog(MainPage.DIALOG_ABOUT);
+        helpDialog.show();
+        return true;
+    }
+
+    public Dialog onCreateDialog(int id){    
+        if (id == MainPage.DIALOG_ABOUT) {
+            // Show details about Task Force.
+            PromptDialog mDialog = new PromptDialog();
+            return mDialog.aboutPrompt(this);
+        }
+        return null;
     }
 }
