@@ -188,6 +188,9 @@ public class CrowdClient {
 
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
         System.out.println(convertStreamToString(httpPost.getEntity().getContent()));
+        
+        CrowdSourcerEntry updatedEntry = updateEntry();
+        
         HttpResponse response = httpclient.execute(httpPost);
 
         String status = response.getStatusLine().toString();
@@ -195,31 +198,32 @@ public class CrowdClient {
 
         System.out.println(status);
         
+        entity.consumeContent();
+	}
+
+    private CrowdSourcerEntry updateEntry() throws Exception {
+        HttpResponse response = httpclient.execute(httpPost);
+        HttpEntity entity = response.getEntity();
         CrowdSourcerEntry updatedEntry = null;
         if (entity != null) {
             InputStream is = entity.getContent();
             String jsonStringVersion = convertStreamToString(is);
-            Type entryType = CrowdSourcerEntry.class;     
+            Type entryType = CrowdSourcerEntry.class;
             try {
                 updatedEntry = gson.fromJson(jsonStringVersion, entryType);
             } catch (Exception e) {
-                // Know there was a problem deserializing the entry so there
-                // should be a CrowdSource error returned. Throw the error
-                // to the calling method.
-                Exception myException = new Exception(
-                        "There was an error " 
+                Exception myException = new Exception("There was an error "
                         + "getting the entry from JSON. Here is the "
-                        + "httpPost entity content: " 
+                        + "httpPost entity content: "
                         + convertStreamToString(httpPost.getEntity()
                                 .getContent()) + "\n"
-                        + "CrowdSource response:\n" + jsonStringVersion
-                );
+                        + "CrowdSource response:\n" + jsonStringVersion);
                 myException.setStackTrace(e.getStackTrace());
                 throw myException;
             }
         }
-        entity.consumeContent();
-	}
+        return updatedEntry;
+    }
 	
 	/** 
      * Consumes the REMOVE operation of the service
