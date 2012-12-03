@@ -40,8 +40,11 @@ public class TfTaskRepository {
             CrowdSourcerEntry entry = new CrowdSourcerEntry();
             // We set the device id into the summary
             entry.setSummary(task.getTitle());
-            entry.setDescription(task.getDeviceId());
+            entry.setDescription(task.getDescription());
             entry.setContent((TfTask) task);
+            
+            System.out.println("T: " + task.getDescription());
+            System.out.println("E: " + entry.getDescription());
 
             switch (task.getVisibility()) {
                 case PUBLIC:
@@ -107,7 +110,7 @@ public class TfTaskRepository {
             entry.setSummary(task.getTitle());
             // We set the device id into the description
             // Right now description is not being saved in webservice
-            entry.setDescription(task.getDeviceId());
+            entry.setDescription(task.getDescription());
             entry.setContent((TfTask) task);
 
             crowdClient.updateEntry(entry);

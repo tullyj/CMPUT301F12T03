@@ -113,6 +113,8 @@ public class Utility {
             return R.drawable.audio_icon;
         else if (type.equals("Video")) 
             return R.drawable.video_icon;
+        else if (type.equals("Task"))
+            return R.drawable.notepad_icon;
         else 
             return R.drawable.text_icon;
     } 
