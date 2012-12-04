@@ -47,6 +47,8 @@ public class ViewSingleTask extends Activity {
 	public Button like;
 	private boolean isLocal = false;
 	
+
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +59,24 @@ public class ViewSingleTask extends Activity {
         
         Intent intent = getIntent();
         taskId = intent.getExtras().getString(ViewTasks.TASK_ID);
-        String localTemp = intent.getExtras().getString(ViewTasks.LOCAL);
+        String local = intent.getExtras().getString(ViewTasks.LOCAL);
         
-        if (localTemp.equals("yes")){
+        //check if i already like the task
+        boolean likeTask = doILikeThisTask();
+        
+        //check if this is my task
+        boolean myTask = isThisMyTask();
+        
+        if(myTask)
+            like.setVisibility(View.GONE);
+        
+        //remove like button if it is a local task
+        if (local.equals("yes")){
             isLocal = true;
             like.setVisibility(View.GONE);
         }else{
             isLocal = false;
         }
-        
-        //check if i already like the task
-        boolean likeTask = doILikeThisTask();
         
         //if i already like the task show unlike
         //else if i dont like it show like
@@ -104,6 +113,20 @@ public class ViewSingleTask extends Activity {
             return mDialog.aboutPrompt(this);
         }
         return null;
+    }
+    
+    public boolean isThisMyTask() {
+        
+        MyLocalTaskInformation lti = new MyLocalTaskInformation();
+        String[] ids = lti.loadMyTaskIds(getApplicationContext());
+        
+        for(int i = 0;i<ids.length;i++){
+            
+            if(ids[i].equals(taskId))
+                return true;
+        }
+        
+        return false;
     }
     
     /**

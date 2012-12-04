@@ -20,7 +20,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -43,6 +45,7 @@ import android.widget.Toast;
 import ca.ualberta.cs.c301_emailClient.GmailSender;
 import ca.ualberta.cs.c301_interfaces.ItemType;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
+import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_preview.PreviewAudio;
 import ca.ualberta.cs.c301_preview.PreviewPhoto;
 import ca.ualberta.cs.c301_preview.PreviewText;
@@ -67,6 +70,7 @@ public class ItemList extends Activity {
 	public static File currFile;
 	private updateTask updateT;
 	private boolean fulfilled = true;
+	private int positionClicked;
 	private static File savingFile = null;
 	private String directory = null;
 	public ArrayList<ItemListElement> listElements = 
@@ -253,7 +257,35 @@ public class ItemList extends Activity {
         listView.setOnItemLongClickListener(new OnItemLongClickListener(){
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id){
-                savingFile = item.getFile(position);
+
+                positionClicked = position;
+                
+                //here was your stuff tully. Just moved it down so there
+                //was a dialog asking if they wanted to save
+                saveTaskItemToDevice();               
+                return true;
+            }
+        });
+    }
+    
+    /**
+     * This method just shows an alert dialog asking the user if they want
+     * to save the item to the local device
+     */
+    public void saveTaskItemToDevice() {
+                
+        final AlertDialog.Builder saveItem = 
+                new AlertDialog.Builder(ItemList.this);
+        saveItem.setTitle("Save item to device?");
+        
+        //setting the confirm button and click listener
+        saveItem.setPositiveButton("Confirm", 
+                new DialogInterface.OnClickListener() {
+
+            //we know to remove the task here
+            public void onClick(DialogInterface arg0, int arg1) {
+                
+                savingFile = item.getFile(positionClicked);
                 String fileName = savingFile.getName() + 
                         Utility.getFileExtFromType(item.getType());
                 try {
@@ -280,10 +312,22 @@ public class ItemList extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
-                return true;
-            }
-        });
+                                       
+                }                               
+        });//end of confirm button
+        
+        //setting the cancel button and click listener
+        saveItem.setNegativeButton("Cancel", 
+                new DialogInterface.OnClickListener() {
+
+            //cancel was clicked -- do nothiing
+            public void onClick(DialogInterface dialog, int which) {
+            }                                       
+        });//end of cancel button
+        
+        //show the alert dialog
+        saveItem.show();
+                      
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -377,9 +421,12 @@ public class ItemList extends Activity {
             
             //check is a task is fulfilled
             fulfilled = checkFulfillment();
-                    
-            //fulfilled task - send notification email
-            if(fulfilled)             
+            
+            //grab the task visibility
+            Visibility vis = ViewSingleTask.task.getVisibility();
+                                         
+            //fulfilled task and public - send notification email
+            if(fulfilled && vis.equals(Visibility.PUBLIC))             
                 sendAutoEmail();
             
             return null;
