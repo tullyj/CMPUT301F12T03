@@ -18,6 +18,10 @@ import java.io.FileOutputStream;
 import android.os.Environment;
 import android.util.Base64;
 import ca.ualberta.cs.c301_interfaces.ItemType;
+import ca.ualberta.cs.c301_preview.PreviewAudio;
+import ca.ualberta.cs.c301_preview.PreviewPhoto;
+import ca.ualberta.cs.c301_preview.PreviewText;
+import ca.ualberta.cs.c301_preview.PreviewVideo;
 import ca.ualberta.cs.c301_teamproject.R;
 
 /**
@@ -137,4 +141,23 @@ public class Utility {
         else 
             return R.drawable.text_icon;
     } 
+    
+    /**
+     * Return class to preview a given ItemType.
+     * @return  the class to preview.
+     */
+    public static Class<?> getPreviewClass(ItemType itemType) {
+        switch (itemType) {
+        case TEXT:
+            return PreviewText.class;
+        case PHOTO:
+            return PreviewPhoto.class;
+        case AUDIO:
+            return PreviewAudio.class;
+        case VIDEO:
+            return PreviewVideo.class;
+        default:
+            return null;
+        }
+    }
 }

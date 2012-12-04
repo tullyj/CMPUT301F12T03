@@ -66,7 +66,6 @@ public class ItemList extends Activity {
 	private TaskItem item;
 	public static File currFile;
 	private updateTask updateT;
-	private saveToFile saveFile;
 	private boolean fulfilled = true;
 	private static File savingFile = null;
 	private String directory = null;
@@ -114,7 +113,6 @@ public class ItemList extends Activity {
 
         
         updateT = new updateTask();
-        saveFile = new saveToFile();
         
         Toast.makeText(ItemList.this, "Click to preview files, long click to "
                 + "save the file to device.", Toast.LENGTH_LONG).show();
@@ -245,7 +243,7 @@ public class ItemList extends Activity {
 				// Get the file the user selected and save the uri to file.
                 Uri mUri = Uri.fromFile(item.getFile(position));
 				Intent intent = new Intent(getApplicationContext(), 
-				        getPreviewClass());
+				        Utility.getPreviewClass(itemType));
 		    	intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		    	// Keep a reference to the file the user selected.
 		    	currFile = item.getFile(position);
@@ -256,31 +254,36 @@ public class ItemList extends Activity {
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id){
                 savingFile = item.getFile(position);
-                Toast.makeText(ItemList.this, "File save locally to Path: "
-                        + directory, Toast.LENGTH_LONG).show();
-                saveFile.execute();
+                String fileName = savingFile.getName() + 
+                        Utility.getFileExtFromType(item.getType());
+                try {
+                    // Create the directory, if it does not exist
+                    File folder = new File(directory);
+                    folder.mkdirs();
+                    File nFile = new File(directory + "/" + fileName);
+                    // Create the file
+                    nFile.createNewFile();
+                    FileOutputStream fOut = new FileOutputStream(nFile);
+                    // Create a byte array of file to save to device
+                    byte[] mByte = new byte[(int) savingFile.length()];
+                    DataInputStream dataIs = new DataInputStream(
+                            new FileInputStream(savingFile));
+                    dataIs.readFully(mByte);
+                    dataIs.close();
+                    // Write to the empty created file.
+                    fOut.write(mByte);
+                    fOut.close();
+                    
+                    Toast.makeText(ItemList.this, "File save locally to Path: "
+                            + directory, Toast.LENGTH_LONG).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
                 return true;
             }
         });
-    }
-    
-    /**
-     * Return class to preview a given ItemType.
-     * @return  the class to preview.
-     */
-    private Class<?> getPreviewClass() {
-    	switch (itemType) {
-    	case TEXT:
-			return PreviewText.class;
-    	case PHOTO:
-			return PreviewPhoto.class;
-		case AUDIO:
-			return PreviewAudio.class;
-		case VIDEO:
-			return PreviewVideo.class;
-		default:
-			return null;
-    	}
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -354,62 +357,6 @@ public class ItemList extends Activity {
         return true;
     }
     
-    /**
-     * Displays dialog to show the file/item of file being saved to storage of
-     * the android device.
-     */
-    private class saveToFile extends AsyncTask<String, String, String>{
-    	
-    	Dialog load = new Dialog(ItemList.this);
-
-    	@Override
-		protected String doInBackground(String... params) {
-    		if (savingFile != null) {
-                String fileName = savingFile.getName() + 
-                        Utility.getFileExtFromType(item.getType());
-                try {
-                    // Create the directory, if it does not exist
-                    File folder = new File(directory);
-                    folder.mkdirs();
-                    File nFile = new File(directory + "/" + fileName);
-                    // Create the file
-                    nFile.createNewFile();
-                    FileOutputStream fOut = new FileOutputStream(nFile);
-                    // Create a byte array of file to save to device
-                    byte[] mByte = new byte[(int) savingFile.length()];
-                    DataInputStream dataIs = new DataInputStream(
-                            new FileInputStream(savingFile));
-                    dataIs.readFully(mByte);
-                    dataIs.close();
-                    // Write to the empty created file.
-                    fOut.write(mByte);
-                    fOut.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-    		}
-			return null;
-		}
-    	
-		protected void onPreExecute(){
-			//show this loading spinner
-            load.setContentView(R.layout.save_load_dialog);
-            load.setTitle("Saving File to Your Device Storage");
-            // Add file path to show user where file is being stored.
-            TextView descView = new TextView(ItemList.this);
-            descView.setText("Path: " + directory);
-            load.addContentView(descView, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-    		load.show();
-    	}
-    	
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			load.dismiss();
-		}	
-    }
     /**
      * Displays dialog to show the file/item of task is being saved.
      */

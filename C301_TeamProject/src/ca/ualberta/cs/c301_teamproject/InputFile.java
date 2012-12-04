@@ -15,6 +15,7 @@ import java.util.List;
 import ca.ualberta.cs.c301_interfaces.TaskItem;
 import ca.ualberta.cs.c301_interfaces.Visibility;
 import ca.ualberta.cs.c301_repository.TfTaskItem;
+import ca.ualberta.cs.c301_utils.Utility;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,12 +25,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 /**
  * Import or capture files/items to be added to a task.
@@ -67,6 +72,9 @@ public class InputFile extends Activity {
         // Initiate the counter for the file naming. ie: "Photo1"
         inFileCount = 0;
 
+        Toast.makeText(InputFile.this, "Long click to delete newly added files.", 
+                Toast.LENGTH_LONG).show();
+        
         updateList();
     }
 
@@ -135,8 +143,6 @@ public class InputFile extends Activity {
                 }
             }).show();
                     
-            //clear the files list and update the displayed list
-            files.clear();
             updateList();
         // If at least 1 file to upload, update files of task item.
         } else if (files.size() > 0) {
@@ -166,6 +172,7 @@ public class InputFile extends Activity {
      * @return 			Dialog to be displayed.
      */
     public Dialog onCreateDialog(int id){     
+        filePath = null;
     	if ((id <= DIALOG_VIDEO) && (id != MainPage.DIALOG_ABOUT)) {
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			if (id == DIALOG_PHOTO) {
@@ -192,7 +199,8 @@ public class InputFile extends Activity {
 				    	   photoIntent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 
 				    	           MAX_TASK_BYTES);
 				    	   // start the image capture Intent
-				    	   startActivityForResult(photoIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+				    	   startActivityForResult(photoIntent, 
+				    	           CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				       }
 				});
 			} else if (id == DIALOG_VIDEO) {
@@ -281,24 +289,21 @@ public class InputFile extends Activity {
             if (resultCode == RESULT_OK){
                 files.add(new File(data.getStringExtra("FromFile")));
                 updateList();
-            } else
-                inFileCount--;
+            }
         // Only one procedure from requestCodes is needed when receiving files.
 	    } else {
             if (resultCode == RESULT_OK) {
                 try {
                     files.add(new File(filePath));
                 } catch (Exception e) {
+                    onConfigurationChanged(null);
                     Toast.makeText(this, "Adding file unsuccessful, " +
                             "please try again.", 
                             Toast.LENGTH_LONG).show();
                 }
             	updateList();
-            } else if (resultCode == RESULT_CANCELED) {
-                inFileCount--;
             } else {
                 // Capture of file failed, advise user
-                inFileCount--;
             	Toast.makeText(this, "Unable to capture file, please try again.", 
             	        Toast.LENGTH_LONG).show();
             }
@@ -317,6 +322,40 @@ public class InputFile extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
         	android.R.layout.simple_list_item_1, filenames);
         listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(new OnItemLongClickListener(){
+            public boolean onItemLongClick(AdapterView<?> parent, View view, 
+                    final int position, long id) {
+                final AlertDialog.Builder eraseItem = 
+                        new AlertDialog.Builder(InputFile.this);
+                eraseItem.setTitle("Erase item?");
+                
+                //setting the confirm button and click listener
+                eraseItem.setPositiveButton("Confirm", 
+                        new DialogInterface.OnClickListener() {
+
+                    //we know to remove the task here
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        
+                        //remove the task then update the UI
+                        files.remove(position);
+                        updateList();                       
+                        }                               
+                });//end of confirm button
+                
+                //setting the cancel button and click listener
+                eraseItem.setNegativeButton("Cancel", 
+                        new DialogInterface.OnClickListener() {
+
+                    //cancel was clicked -- do nothiing
+                    public void onClick(DialogInterface dialog, int which) {
+                    }                                       
+                });//end of cancel button
+                
+                //show the alert dialog
+                eraseItem.show();
+                return true;
+            }               
+        });
     }
     
     /**
